@@ -3,7 +3,6 @@
     <item android:width="160dp"
         android:height="160dp"
         android:drawable="@drawable/tasty_music_logo"
-        android:gravity="center"
-        tools:targetApi="m">
+        android:gravity="center">
     </item>
 </layer-list>
