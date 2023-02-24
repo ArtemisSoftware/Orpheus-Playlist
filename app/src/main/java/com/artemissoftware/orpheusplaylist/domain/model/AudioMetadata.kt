@@ -10,4 +10,7 @@ data class AudioMetadata(
     val songTitle: String = "",
     val artist: String = "",
     val duration: Int = 0
-)
+){
+    fun isNotEmpty() = contentUri != Uri.EMPTY
+
+}
