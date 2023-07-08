@@ -10,7 +10,11 @@ data class Audio(
     val data: String,
     val duration: Int,
     val title: String,
-){
+) {
+    fun fileName() = displayName.substringBefore(".")
+
+    fun artistName() = if (artist.contains("<unknown>")) "Unknown Artist" else artist
+
     fun timeStampToDuration(): String {
         val totalSeconds = Math.floor(duration.toLong() / 1E3).toInt()
         val minutes = totalSeconds / 60

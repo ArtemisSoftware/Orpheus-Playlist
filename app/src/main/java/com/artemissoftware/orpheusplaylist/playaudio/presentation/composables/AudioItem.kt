@@ -21,14 +21,14 @@ import com.artemissoftware.orpheusplaylist.playaudio.data.models.Audio
 @Composable
 fun AudioItem(
     audio: Audio,
-    onItemClick: (id: Long) -> Unit,
+    onItemClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
             .clickable {
-                onItemClick.invoke(audio.id)
+                onItemClick.invoke()
             },
         backgroundColor = MaterialTheme.colors.surface.copy(alpha = .5f),
     ) {
@@ -42,14 +42,14 @@ fun AudioItem(
             ) {
                 Spacer(modifier = Modifier.size(4.dp))
                 Text(
-                    text = audio.displayName,
+                    text = audio.fileName(),
                     style = MaterialTheme.typography.h6,
                     overflow = TextOverflow.Clip,
                     maxLines = 1,
                 )
                 Spacer(modifier = Modifier.size(4.dp))
                 Text(
-                    text = audio.artist,
+                    text = audio.artistName(),
                     style = MaterialTheme.typography.subtitle1,
                     maxLines = 1,
                     overflow = TextOverflow.Clip,
