@@ -88,4 +88,5 @@ dependencies {
     implementation 'com.google.android.exoplayer:extension-mediasession:2.17.0'
 
 
+    implementation "androidx.compose.material:material-icons-extended:1.0.1"
 }
