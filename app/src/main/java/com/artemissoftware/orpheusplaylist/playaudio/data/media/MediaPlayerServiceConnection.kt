@@ -20,10 +20,12 @@ import javax.inject.Inject
 class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext context: Context) {
 
     private val _playBackState: MutableStateFlow<PlaybackStateCompat?> = MutableStateFlow(null)
-    val plaBackState: StateFlow<PlaybackStateCompat?> = _playBackState.asStateFlow()
+    val plaBackState: StateFlow<PlaybackStateCompat?>
+        get() = _playBackState
 
     private val _isConnected: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isConnected: StateFlow<Boolean> = _isConnected.asStateFlow()
+    val isConnected: StateFlow<Boolean>
+        get() = _isConnected
 
     val currentPlayingAudio = mutableStateOf<Audio?>(null)
 
@@ -41,9 +43,11 @@ class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext conte
 
     private var audioList = listOf<Audio>()
 
-    val rootMediaId: String = mediaBrowser.root
+    val rootMediaId: String
+        get() = mediaBrowser.root
 
-    val transportControl: MediaControllerCompat.TransportControls = mediaControllerCompat.transportControls
+    val transportControl: MediaControllerCompat.TransportControls
+        get() = mediaControllerCompat.transportControls
 
     fun playAudio(audios: List<Audio>) {
         audioList = audios
