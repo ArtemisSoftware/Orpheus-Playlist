@@ -30,6 +30,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".playaudio.data.media.service.MediaPlayerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.media.browser.MediaBrowserService"/>
+            </intent-filter>
+
+        </service>
+
     </application>
 
 </manifest>

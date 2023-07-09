@@ -10,11 +10,10 @@ import com.artemissoftware.orpheusplaylist.playaudio.data.media.constants.MediaC
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 
-internal class MediaPlayerNotificationManager(
-    context: Context,
-    sessionToken: MediaSessionCompat.Token,
-    notificationListener: PlayerNotificationManager.NotificationListener,
-) {
+/**
+ * For user to control music playback in the notification
+ */
+internal class MediaPlayerNotificationManager(context: Context, sessionToken: MediaSessionCompat.Token, notificationListener: PlayerNotificationManager.NotificationListener) {
 
     private val notificationManager: PlayerNotificationManager
 
@@ -52,6 +51,9 @@ internal class MediaPlayerNotificationManager(
         notificationManager.setPlayer(player)
     }
 
+    /**
+     * Helps to set the description or content of the media
+     */
     inner class DescriptionAdapter(private val controller: MediaControllerCompat) : PlayerNotificationManager.MediaDescriptionAdapter {
 
         override fun getCurrentContentTitle(player: Player): CharSequence =
