@@ -1,7 +1,7 @@
 package com.artemissoftware.orpheusplaylist.ui.theme
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 
 val Teal200 = Color(0xFF39AFEA)
 
@@ -38,6 +38,19 @@ val BackGroundColor = Color(0xFFDDEAF7)
 val ButtonGradient = Brush.verticalGradient(
     listOf(
         Color(0xFF39AFEA),
-        Color(0xFF16DAD8)
-    )
+        Color(0xFF16DAD8),
+    ),
 )
+
+val Purple200 = Color(0xFFBB86FC)
+val Purple500 = Color(0xFF6200EE)
+val Purple700 = Color(0xFF3700B3)
+
+val Blue200 = Color(0xFF30189F)
+val Blue500 = Color(0xFF483974)
+val Blue700 = Color(0xFF1c1348)
+val Orange200 = Color(0xFFeb7603)
+
+val BackgroundOne = Color(0xFF421F80)
+val BackgroundTwo = Color(0xFFFF256F)
+val BackgroundThree = Color(0xFFCC3403)
