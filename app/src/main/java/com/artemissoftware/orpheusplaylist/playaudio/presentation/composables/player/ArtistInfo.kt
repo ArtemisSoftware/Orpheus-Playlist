@@ -64,7 +64,7 @@ fun ArtistInfo(
 
 @Preview(showBackground = true)
 @Composable
-fun ArtistInfoPreview() {
+private fun ArtistInfoPreview() {
     ArtistInfo(
         audio = DummyAudio.audioList[0],
     )

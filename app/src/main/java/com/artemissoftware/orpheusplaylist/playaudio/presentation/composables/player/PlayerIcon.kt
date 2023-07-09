@@ -54,7 +54,7 @@ fun PlayerIcon(
 
 @Preview(showBackground = true)
 @Composable
-fun PlayerIconPreview() {
+private fun PlayerIconPreview() {
     PlayerIcon(
         icon = Icons.Default.Add,
         border = BorderStroke(
