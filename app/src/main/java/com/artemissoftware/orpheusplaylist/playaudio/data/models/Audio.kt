@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.playaudio.data.models
 
+import android.graphics.Bitmap
 import android.net.Uri
 
 data class Audio(
@@ -10,6 +11,7 @@ data class Audio(
     val data: String,
     val duration: Int,
     val title: String,
+    val albumArt: Bitmap,
 ) {
     fun fileName() = displayName.substringBefore(".")
 

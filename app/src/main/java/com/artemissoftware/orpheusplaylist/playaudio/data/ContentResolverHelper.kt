@@ -3,9 +3,14 @@ package com.artemissoftware.orpheusplaylist.playaudio.data
 import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.WorkerThread
+import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.playaudio.data.models.Audio
 import com.artemissoftware.orpheusplaylist.playaudio.data.models.AudioQuery
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -64,6 +69,8 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
                             id,
                         )
 
+                        val albumCover = getAlbumArt(context = context, uri = uri)
+
                         audioList += Audio(
                             uri,
                             displayName,
@@ -72,6 +79,7 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
                             data,
                             duration,
                             title,
+                            albumArt = albumCover,
                         )
                     }
                 }
@@ -79,5 +87,16 @@ class ContentResolverHelper @Inject constructor(@ApplicationContext val context:
         }
 
         return audioList
+    }
+
+    private fun getAlbumArt(context: Context, uri: Uri): Bitmap {
+        val mmr = MediaMetadataRetriever()
+        mmr.setDataSource(context, uri)
+        val data = mmr.embeddedPicture
+        return if (data != null) {
+            BitmapFactory.decodeByteArray(data, 0, data.size)
+        } else {
+            BitmapFactory.decodeResource(context.resources, R.drawable.musics)
+        }
     }
 }

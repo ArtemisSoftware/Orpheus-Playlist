@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.playaudio.presentation.composables
 
+import android.graphics.Bitmap
 import androidx.core.net.toUri
 import com.artemissoftware.orpheusplaylist.playaudio.data.models.Audio
 
@@ -14,6 +15,7 @@ object DummyAudio {
             data = "",
             duration = 12345,
             title = "Android Programming",
+            albumArt = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888),
         ),
         Audio(
             uri = "".toUri(),
@@ -23,6 +25,7 @@ object DummyAudio {
             data = "",
             duration = 25678,
             title = "Android Programming",
+            albumArt = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888),
         ),
         Audio(
             uri = "".toUri(),
@@ -32,6 +35,7 @@ object DummyAudio {
             data = "",
             duration = 8765454,
             title = "Android Programming",
+            albumArt = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888),
         ),
         Audio(
             uri = "".toUri(),
@@ -41,6 +45,7 @@ object DummyAudio {
             data = "",
             duration = 23456,
             title = "Android Programming",
+            albumArt = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888),
         ),
         Audio(
             uri = "".toUri(),
@@ -50,6 +55,7 @@ object DummyAudio {
             data = "",
             duration = 65788,
             title = "Android Programming",
+            albumArt = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888),
         ),
         Audio(
             uri = "".toUri(),
@@ -59,6 +65,7 @@ object DummyAudio {
             data = "",
             duration = 234567,
             title = "Android Programming",
+            albumArt = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888),
         ),
 
     )
