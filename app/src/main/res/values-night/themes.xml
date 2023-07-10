@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.OrpheusPlaylist" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:statusBarColor">@color/colorBackgroundDark</item>
-        <item name="android:windowTranslucentStatus">true</item>
-    </style>
+<!--    <style name="Theme.OrpheusPlaylist" parent="android:Theme.Material.Light.NoActionBar">-->
+<!--&lt;!&ndash;        <item name="android:statusBarColor">@color/colorBackgroundDark</item>&ndash;&gt;-->
+<!--&lt;!&ndash;        <item name="android:windowTranslucentStatus">true</item>&ndash;&gt;-->
+<!--    </style>-->
 </resources>
