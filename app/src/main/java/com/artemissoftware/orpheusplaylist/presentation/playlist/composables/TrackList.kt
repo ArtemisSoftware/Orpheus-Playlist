@@ -12,18 +12,17 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.domain.model.AudioMetadata
+import com.artemissoftware.orpheusplaylist.data.model.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.activity.AudioPlayerState
 
 @Composable
 fun TrackList(
     state: AudioPlayerState,
-    onClick: (AudioMetadata) -> Unit = {}
+    onClick: (AudioMetadata) -> Unit = {},
 ) {
-
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         Text(
             text = stringResource(id = R.string.lbl_tracks),
@@ -32,10 +31,10 @@ fun TrackList(
             modifier = Modifier
                 .padding(
                     bottom = 3.dp,
-                    top = 12.dp
+                    top = 12.dp,
                 ),
             textDecoration = TextDecoration.Underline,
-            color = MaterialTheme.colors.onBackground
+            color = MaterialTheme.colors.onBackground,
         )
     }
 
@@ -45,10 +44,11 @@ fun TrackList(
             isPlaying = audio.songId == state.selectedAudio.songId,
             modifier = Modifier
                 .padding(
-                    horizontal = 8.dp, vertical = 10.dp
+                    horizontal = 8.dp,
+                    vertical = 10.dp,
                 )
                 .requiredHeight(height = 100.dp),
-            onClick = onClick
+            onClick = onClick,
         )
         Divider(modifier = Modifier.padding(horizontal = 8.dp))
     }

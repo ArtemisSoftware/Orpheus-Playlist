@@ -25,25 +25,22 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         setContent {
-
             val isLoading = mainViewModel.state.collectAsState().value.isLoading
 
-            installSplashScreen().apply {
-                setKeepOnScreenCondition { isLoading }
-            }
+//            installSplashScreen().apply {
+//                setKeepOnScreenCondition { isLoading }
+//            }
 
             OrpheusPlaylistTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colors.background,
                 ) {
                     PlayListScreen(
                         state = mainViewModel.state.collectAsState().value,
-                        event = mainViewModel::onEvent
+                        event = mainViewModel::onEvent,
                     )
                 }
             }

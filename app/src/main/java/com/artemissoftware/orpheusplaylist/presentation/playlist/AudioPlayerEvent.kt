@@ -1,7 +1,7 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist
 
 import android.content.Context
-import com.artemissoftware.orpheusplaylist.domain.model.AudioMetadata
+import com.artemissoftware.orpheusplaylist.data.model.AudioMetadata
 
 sealed class AudioPlayerEvent{
 

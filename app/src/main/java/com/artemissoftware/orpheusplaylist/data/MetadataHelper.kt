@@ -1,15 +1,14 @@
-package com.artemissoftware.orpheusplaylist.util.audio
+package com.artemissoftware.orpheusplaylist.data
 
 import android.content.ContentUris
 import android.content.Context
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.annotation.WorkerThread
-import com.artemissoftware.orpheusplaylist.domain.model.AudioMetadata
+import com.artemissoftware.orpheusplaylist.data.model.AudioMetadata
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -19,19 +18,18 @@ class MetadataHelper @Inject constructor(@ApplicationContext val context: Contex
     fun getAudios() = getCursorData()
 
     @WorkerThread
-    fun getAlbumArt(context: Context, uri: Uri): Bitmap?{
-
+    fun getAlbumArt(context: Context, uri: Uri): Bitmap? {
         val mediaMetadataRetriever = MediaMetadataRetriever()
         mediaMetadataRetriever.setDataSource(context, uri)
 
-        val bitmap: Bitmap? = try{
+        val bitmap: Bitmap? = try {
             val data = mediaMetadataRetriever.embeddedPicture
-            if (data != null){
+            if (data != null) {
                 BitmapFactory.decodeByteArray(data, 0, data.size)
-            } else{
+            } else {
                 null
             }
-        } catch (exp: Exception){
+        } catch (exp: Exception) {
             null
         } finally {
             mediaMetadataRetriever.release()
@@ -47,7 +45,7 @@ class MetadataHelper @Inject constructor(@ApplicationContext val context: Contex
             PROJECTION,
             SELECTION_CLAUSE,
             SELECTION_ARG,
-            SORT_ORDER
+            SORT_ORDER,
         )
 
         cursor?.let { cursorIndex ->
@@ -67,23 +65,23 @@ class MetadataHelper @Inject constructor(@ApplicationContext val context: Contex
             cursorIndex.apply {
                 if (count > 0) {
                     while (cursorIndex.moveToNext()) {
-
                         val id = cursorIndex.getLong(idColumn)
                         val duration = cursorIndex.getInt(durationColumn)
                         val title = cursorIndex.getString(titleColumn)
                         val artist = cursorIndex.getString(artistColumn)
                         val contentUri: Uri = ContentUris.withAppendedId(
                             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                            id
+                            id,
                         )
 
+                        // TODO: não obter o cover logo mudar isto quando juntar os dois códigos
                         audioList += AudioMetadata(
                             songId = id,
                             contentUri = contentUri,
-                            cover = null,
+                            cover = null, // Time consuming operation to get this. Better do it on demand
                             songTitle = title,
                             artist = artist,
-                            duration = duration
+                            duration = duration,
                         )
                     }
                 }
@@ -93,10 +91,10 @@ class MetadataHelper @Inject constructor(@ApplicationContext val context: Contex
     }
 
     private fun getColumn(mediaId: String): String? {
-        return PROJECTION.find { it ==  mediaId}
+        return PROJECTION.find { it == mediaId }
     }
 
-    private companion object{
+    private companion object {
 
         private val PROJECTION = arrayOf(
             MediaStore.Audio.Media._ID,
@@ -104,12 +102,11 @@ class MetadataHelper @Inject constructor(@ApplicationContext val context: Contex
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.TITLE,
             MediaStore.Audio.Media.ALBUM_ID,
-            MediaStore.Audio.Media.ARTIST
+            MediaStore.Audio.Media.ARTIST,
         )
 
         private const val SELECTION_CLAUSE = "${MediaStore.Audio.AudioColumns.IS_MUSIC} = ?"
         private val SELECTION_ARG = arrayOf("1")
         private const val SORT_ORDER = "${MediaStore.Audio.AudioColumns.DISPLAY_NAME} ASC"
     }
-
 }

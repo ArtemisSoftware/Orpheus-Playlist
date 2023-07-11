@@ -1,10 +1,10 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist.composables
 
-import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -14,11 +14,9 @@ fun TopBar(
     modifier: Modifier = Modifier,
     leadingIcon: @Composable () -> Unit,
     title: (@Composable () -> Unit)? = null,
-    trailingIcon: (@Composable () -> Unit)? = null
+    trailingIcon: (@Composable () -> Unit)? = null,
 ) {
-
     Box(modifier = modifier.fillMaxWidth()) {
-
         Box(modifier = Modifier.align(alignment = Alignment.CenterStart)) {
             leadingIcon()
         }
@@ -34,7 +32,5 @@ fun TopBar(
                 trailingIcon()
             }
         }
-
     }
-
 }

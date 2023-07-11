@@ -1,6 +1,6 @@
 package com.artemissoftware.orpheusplaylist.presentation.activity
 
-import com.artemissoftware.orpheusplaylist.domain.model.AudioMetadata
+import com.artemissoftware.orpheusplaylist.data.model.AudioMetadata
 
 data class AudioPlayerState(
     val isLoading: Boolean = false,

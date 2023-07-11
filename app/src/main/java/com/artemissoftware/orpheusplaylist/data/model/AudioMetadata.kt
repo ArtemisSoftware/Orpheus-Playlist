@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.domain.model
+package com.artemissoftware.orpheusplaylist.data.model
 
 import android.graphics.Bitmap
 import android.net.Uri

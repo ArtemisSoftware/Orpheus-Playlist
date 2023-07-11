@@ -3,7 +3,7 @@ package com.artemissoftware.orpheusplaylist.domain.repository
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import com.artemissoftware.orpheusplaylist.domain.model.AudioMetadata
+import com.artemissoftware.orpheusplaylist.data.model.AudioMetadata
 import kotlinx.coroutines.flow.Flow
 
 interface AudioPlayerRepository {

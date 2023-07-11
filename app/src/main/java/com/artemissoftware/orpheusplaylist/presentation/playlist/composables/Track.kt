@@ -16,16 +16,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.domain.model.AudioMetadata
+import com.artemissoftware.orpheusplaylist.data.model.AudioMetadata
 
 @Composable
 fun Track(
     audio: AudioMetadata,
     onClick: (AudioMetadata) -> Unit,
     modifier: Modifier = Modifier,
-    isPlaying: Boolean
+    isPlaying: Boolean, // TODO: adicionar isto para meter a bold a musica que está a tocar no momento
 ) {
-
     Row(
         modifier = modifier
             .fillMaxSize()
@@ -33,12 +32,11 @@ fun Track(
                 onClick(audio)
             },
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-
         Row(
             modifier = Modifier.fillMaxHeight(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.mp3_logo),
@@ -46,26 +44,32 @@ fun Track(
                 modifier = Modifier
                     .size(size = 60.dp)
                     .padding(all = 5.dp),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(start = 10.dp),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
             ) {
                 Text(
                     text = audio.songTitle,
                     modifier = Modifier.padding(bottom = 3.dp),
                     fontWeight = FontWeight.Bold,
                     overflow = TextOverflow.Ellipsis,
-                    color = if (isPlaying) MaterialTheme.colors.primary
-                    else MaterialTheme.colors.onBackground
+                    color = if (isPlaying) {
+                        MaterialTheme.colors.primary
+                    } else {
+                        MaterialTheme.colors.onBackground
+                    },
                 )
                 Text(
                     text = audio.artist,
-                    color = if (isPlaying) MaterialTheme.colors.primary
-                    else MaterialTheme.colors.onBackground
+                    color = if (isPlaying) {
+                        MaterialTheme.colors.primary
+                    } else {
+                        MaterialTheme.colors.onBackground
+                    },
                 )
             }
         }
@@ -75,11 +79,10 @@ fun Track(
                 painter = painterResource(id = R.drawable.chart_simple_solid),
                 contentDescription = "",
                 tint = MaterialTheme.colors.primaryVariant,
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp),
             )
         }
     }
-
 }
 
 @Preview(showBackground = true)

@@ -1,13 +1,13 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist.composables
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -24,8 +24,8 @@ fun LoadingDialog(
         dismissOnClickOutside = false,
         securePolicy = SecureFlagPolicy.Inherit,
         usePlatformDefaultWidth = true,
-        decorFitsSystemWindows = true
-    )
+        decorFitsSystemWindows = true,
+        ),
 ) {
     if (isLoading) {
         Dialog(
@@ -35,7 +35,7 @@ fun LoadingDialog(
                 Box(modifier = modifier, contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(modifier = Modifier.padding(all = 26.dp))
                 }
-            }
+            },
         )
     }
 }
