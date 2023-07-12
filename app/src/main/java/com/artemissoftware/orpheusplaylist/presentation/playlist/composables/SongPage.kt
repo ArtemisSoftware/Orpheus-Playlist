@@ -4,9 +4,12 @@ import android.Manifest
 import android.content.Context
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.rememberScrollState
@@ -20,6 +23,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -31,6 +35,8 @@ import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.presentation.activity.AudioPlayerState
 import com.artemissoftware.orpheusplaylist.presentation.playlist.AudioPlayerEvent
+import com.artemissoftware.orpheusplaylist.ui.theme.Black3
+import com.artemissoftware.orpheusplaylist.util.audio.VisualizerData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -135,22 +141,25 @@ fun SongPage(
 
         Spacer(modifier = Modifier.requiredHeight(height = 16.dp))
 
-//                StackedBarVisualizer(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .height(height = 200.dp)
-//                        .padding(vertical = 4.dp, horizontal = 8.dp),
-//                    shape = MaterialTheme.shapes.large,
-//                    barCount = 32,
-//                    barColors = listOf(
-//                        Color(0xFF1BEBE9),
-//                        Color(0xFF39AFEA),
-//                        Color(0xFF0291D8)
-//                    ),
-//                    stackBarBackgroundColor = if (isSystemInDarkTheme()) Black3 else
-//                        MaterialTheme.colors.onSurface.copy(alpha = 0.25f),
-//                    data = mainViewModel.visualizerData.value
-//                )
+        StackedBarVisualizer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(height = 200.dp)
+                .padding(vertical = 4.dp, horizontal = 8.dp),
+            shape = MaterialTheme.shapes.large,
+            barCount = 32,
+            barColors = listOf(
+                Color(0xFF1BEBE9),
+                Color(0xFF39AFEA),
+                Color(0xFF0291D8),
+            ),
+            stackBarBackgroundColor = if (isSystemInDarkTheme()) {
+                Black3
+            } else {
+                MaterialTheme.colors.onSurface.copy(alpha = 0.25f)
+            },
+            data = /*mainViewModel.visualizerData.value*/VisualizerData(),
+        )
 
         Spacer(modifier = Modifier.requiredHeight(height = 10.dp))
 
