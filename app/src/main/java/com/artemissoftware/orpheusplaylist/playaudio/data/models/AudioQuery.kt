@@ -26,5 +26,18 @@ data class AudioQuery(
             selectionArg = arrayOf("1"),
             sortOrder = "${MediaStore.Audio.AudioColumns.DISPLAY_NAME} ASC",
         )
+
+        val ALBUMS = AudioQuery(
+            projection = arrayOf(
+                MediaStore.Audio.Albums._ID,
+                MediaStore.Audio.Albums.ALBUM,
+                // TODO: fazer isto no fim. Depende de mudar o sdk
+                //  MediaStore.Audio.Albums.ARTIST_ID,
+                MediaStore.Audio.Albums.ARTIST,
+            ),
+            selectionClause = "${MediaStore.Audio.AudioColumns.IS_MUSIC} = ?",
+            selectionArg = arrayOf("1"),
+            sortOrder = "${MediaStore.Audio.AudioColumns.DISPLAY_NAME} ASC",
+        )
     }
 }

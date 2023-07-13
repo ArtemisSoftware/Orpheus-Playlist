@@ -48,7 +48,7 @@
         android:requestLegacyExternalStorage="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.activity.MainActivity"
+            android:name=".headphone.presentation.activity.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.OrpheusPlaylist">

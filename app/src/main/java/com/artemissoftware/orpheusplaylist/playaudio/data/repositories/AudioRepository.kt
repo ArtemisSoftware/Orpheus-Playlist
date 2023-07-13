@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-// TODO: criar interface + tirar o dispacher e invocar no viewmodel lifecycle
+
 class AudioRepository @Inject constructor(private val contentResolverHelper: ContentResolverHelper) {
 
     suspend fun getAudioData(): List<Audio> = withContext(Dispatchers.IO) {
