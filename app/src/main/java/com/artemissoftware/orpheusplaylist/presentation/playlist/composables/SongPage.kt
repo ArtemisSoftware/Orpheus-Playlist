@@ -158,18 +158,18 @@ fun SongPage(
             } else {
                 MaterialTheme.colors.onSurface.copy(alpha = 0.25f)
             },
-            data = /*mainViewModel.visualizerData.value*/VisualizerData(),
+            data = /*mainViewModel.visualizerData.value*/VisualizerData(), // TODO: pegar numa lista de exemplo para depois usar para perceber como este composable funciona
         )
 
         Spacer(modifier = Modifier.requiredHeight(height = 10.dp))
 
-//                TimeBar(
-//                    currentPosition = state.currentPosition,
-//                    onValueChange = { position ->
-//                        mainViewModel.onEvent(event = AudioPlayerEvent.Seek(position = position))
-//                    },
-//                    duration = state.selectedAudio.duration
-//                )
+        TimeBar(
+            currentPosition = state.currentPosition,
+            onValueChange = { position ->
+                /*mainViewModel.onEvent(event = AudioPlayerEvent.Seek(position = position))*/
+            },
+            duration = state.selectedAudio.duration,
+        )
 
         Spacer(modifier = Modifier.requiredHeight(height = 10.dp))
 /*
