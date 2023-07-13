@@ -11,4 +11,8 @@ interface AudioPlayerRepository {
     suspend fun loadCoverBitmap(context: Context, uri: Uri): Bitmap?
 
     suspend fun getAudios(): List<AudioMetadata>
+
+    suspend fun likeOrNotSong(id: Long)
+
+    fun getLikedSongs(): Flow<List<Long>>
 }

@@ -50,7 +50,7 @@ class MainViewModel @Inject constructor(
 
             is AudioPlayerEvent.Seek -> seek(position = event.position)
 
-            is AudioPlayerEvent.LikeOrNotSong -> "" // likeOrNotSong(id = event.id)
+            is AudioPlayerEvent.LikeOrNotSong -> likeOrNotSong(id = event.id)
 
             AudioPlayerEvent.Pause -> pause()
 
@@ -100,13 +100,15 @@ class MainViewModel @Inject constructor(
             _state.update { it.copy(isLoading = true) }
             val audios = mutableStateListOf<AudioMetadata>()
             audios.addAll(prepareAudios())
-            _state.update { it.copy(audios = audios, isLoading = false) }
-//             repository.getLikedSongs().collect { likedSongs ->
-//                 _state = _state.copy(
-//                     likedSongs = likedSongs,
-//                     isLoading = false,
-//                 )
-//             }
+            _state.update { it.copy(audios = audios) }
+            repository.getLikedSongs().collect { likedSongs ->
+                _state.update {
+                    it.copy(
+                        likedSongs = likedSongs,
+                        isLoading = false,
+                    )
+                }
+            }
         }
     }
 
@@ -177,5 +179,11 @@ class MainViewModel @Inject constructor(
 
     private fun hideLoadingDialog() {
         _state.update { it.copy(isLoading = false) }
+    }
+
+    private fun likeOrNotSong(id: Long) {
+        viewModelScope.launch {
+            repository.likeOrNotSong(id = id)
+        }
     }
 }

@@ -6,12 +6,15 @@ import android.net.Uri
 import com.artemissoftware.orpheusplaylist.data.MetadataHelper
 import com.artemissoftware.orpheusplaylist.data.model.AudioMetadata
 import com.artemissoftware.orpheusplaylist.domain.repository.AudioPlayerRepository
+import com.artemissoftware.orpheusplaylist.util.UserPreferences
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AudioPlayerRepositoryImpl @Inject constructor(
     private val metadataHelper: MetadataHelper,
+    private val userPreferences: UserPreferences,
 ) : AudioPlayerRepository {
 
     override suspend fun loadCoverBitmap(context: Context, uri: Uri): Bitmap? {
@@ -24,5 +27,15 @@ class AudioPlayerRepositoryImpl @Inject constructor(
         return withContext(Dispatchers.IO) {
             metadataHelper.getAudios()
         }
+    }
+
+    override suspend fun likeOrNotSong(id: Long) {
+        withContext(Dispatchers.IO){
+            userPreferences.likeOrNotSong(id = id)
+        }
+    }
+
+    override fun getLikedSongs(): Flow<List<Long>> {
+        return userPreferences.likedSongs
     }
 }

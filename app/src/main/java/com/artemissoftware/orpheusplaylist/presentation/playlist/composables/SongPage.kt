@@ -72,11 +72,7 @@ fun SongPage(
                     isLiked = state.likedSongs.contains(state.selectedAudio.songId),
                     enabled = state.selectedAudio.isNotEmpty(),
                     onClick = {
-//                                mainViewModel.onEvent(
-//                                    event = AudioPlayerEvent.LikeOrNotSong(
-//                                        id = state.selectedAudio.songId
-//                                    )
-//                                )
+                        event.invoke(AudioPlayerEvent.LikeOrNotSong(id = state.selectedAudio.songId))
                     },
                 )
             },
@@ -117,7 +113,7 @@ fun SongPage(
                             onPermissionsGranted = {
                                 scope.launch {
                                     if (state.audios.isEmpty()) {
-//                                            mainViewModel.onEvent(event = AudioPlayerEvent.LoadMedias)
+                                        event.invoke(AudioPlayerEvent.LoadMedias)
                                     }
                                     sheetState.show()
                                 }
