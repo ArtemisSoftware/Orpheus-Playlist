@@ -71,6 +71,7 @@ class MainActivity : ComponentActivity() {
                     PlayListScreen(
                         state = mainViewModel.state.collectAsState().value,
                         event = mainViewModel::onEvent,
+                        visualizerData = mainViewModel.visualizerData,
                         requestPermissionLauncher = requestPermissionLauncher,
                     )
                 }

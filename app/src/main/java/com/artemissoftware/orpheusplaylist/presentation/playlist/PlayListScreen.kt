@@ -1,23 +1,21 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist
 
 import androidx.activity.compose.ManagedActivityResultLauncher
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.presentation.activity.AudioPlayerState
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.LoadingDialog
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.SongPage
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.TracksSheet
-import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.showPermissionsRationalDialog
+import com.artemissoftware.orpheusplaylist.util.audio.VisualizerData
 import kotlinx.coroutines.launch
 import kotlin.reflect.KFunction1
 
@@ -27,6 +25,7 @@ fun PlayListScreen(
     state: AudioPlayerState,
     event: KFunction1<AudioPlayerEvent, Unit>,
     requestPermissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>,
+    visualizerData: State<VisualizerData>,
 ) {
     val context = LocalContext.current
 
@@ -80,6 +79,7 @@ fun PlayListScreen(
                 context = context,
                 sheetState = sheetState,
                 scope = scope,
+                visualizerData = visualizerData,
                 requestPermissionLauncher = requestPermissionLauncher,
             )
         },

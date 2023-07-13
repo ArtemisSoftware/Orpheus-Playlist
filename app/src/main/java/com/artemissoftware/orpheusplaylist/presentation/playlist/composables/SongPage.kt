@@ -21,6 +21,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +37,7 @@ import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.presentation.activity.AudioPlayerState
 import com.artemissoftware.orpheusplaylist.presentation.playlist.AudioPlayerEvent
 import com.artemissoftware.orpheusplaylist.ui.theme.Black3
+import com.artemissoftware.orpheusplaylist.util.Constants.FORWARD_BACKWARD_STEP
 import com.artemissoftware.orpheusplaylist.util.audio.VisualizerData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -45,6 +47,7 @@ import kotlinx.coroutines.launch
 fun SongPage(
     state: AudioPlayerState,
     event: (AudioPlayerEvent) -> Unit,
+    visualizerData: State<VisualizerData>,
     context: Context,
     sheetState: ModalBottomSheetState,
     scope: CoroutineScope,
@@ -158,7 +161,7 @@ fun SongPage(
             } else {
                 MaterialTheme.colors.onSurface.copy(alpha = 0.25f)
             },
-            data = /*mainViewModel.visualizerData.value*/VisualizerData(), // TODO: pegar numa lista de exemplo para depois usar para perceber como este composable funciona
+            data = visualizerData.value, // TODO: pegar numa lista de exemplo para depois usar para perceber como este composable funciona
         )
 
         Spacer(modifier = Modifier.requiredHeight(height = 10.dp))
@@ -166,48 +169,34 @@ fun SongPage(
         TimeBar(
             currentPosition = state.currentPosition,
             onValueChange = { position ->
-                /*mainViewModel.onEvent(event = AudioPlayerEvent.Seek(position = position))*/
+                event.invoke(AudioPlayerEvent.Seek(position = position))
             },
             duration = state.selectedAudio.duration,
         )
 
         Spacer(modifier = Modifier.requiredHeight(height = 10.dp))
-/*
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 10.dp),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    FastButton(
-                        enabled = state.currentPosition > FORWARD_BACKWARD_STEP,
-                        onClick = {
-                            mainViewModel.onEvent(
-                                event = AudioPlayerEvent.Seek(position = state.currentPosition - FORWARD_BACKWARD_STEP.toFloat())
-                            )
-                        },
-                        iconResId = R.drawable.backward_solid,
-                        stringResId = R.string.lbl_fast_backward
-                    )
-                    PlayPauseButton(
-                        modifier = Modifier.padding(horizontal = 26.dp),
-                        enabled = state.selectedAudio.isNotEmpty(),
-                        isPlaying = state.isPlaying,
-                        onPlay = { mainViewModel.onEvent(event = AudioPlayerEvent.Play) },
-                        onPause = { mainViewModel.onEvent(event = AudioPlayerEvent.Pause) }
-                    )
-                    FastButton(
-                        enabled = state.currentPosition < (state.selectedAudio.duration - FORWARD_BACKWARD_STEP),
-                        onClick = {
-                            mainViewModel.onEvent(
-                                event = AudioPlayerEvent.Seek(position = state.currentPosition + FORWARD_BACKWARD_STEP.toFloat())
-                            )
-                        },
-                        iconResId = R.drawable.forward_solid,
-                        stringResId = R.string.lbl_fast_forward
-                    )
-                }
-                */
+
+        TrackBar(
+            currentPosition = state.currentPosition,
+            isPlaying = state.isPlaying,
+            selectedAudio = state.selectedAudio,
+            step = FORWARD_BACKWARD_STEP,
+            onFastBackward = {
+                event.invoke(AudioPlayerEvent.Seek(position = state.currentPosition - FORWARD_BACKWARD_STEP.toFloat()))
+            },
+            onPlay = {
+                event.invoke(AudioPlayerEvent.Play)
+            },
+            onPause = {
+                event.invoke(AudioPlayerEvent.Pause)
+            },
+            onFastForward = {
+                event.invoke(AudioPlayerEvent.Seek(position = state.currentPosition + FORWARD_BACKWARD_STEP.toFloat()))
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 10.dp),
+        )
     }
 }
 

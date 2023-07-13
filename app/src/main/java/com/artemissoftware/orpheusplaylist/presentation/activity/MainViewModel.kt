@@ -2,6 +2,8 @@ package com.artemissoftware.orpheusplaylist.presentation.activity
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,6 +33,8 @@ class MainViewModel @Inject constructor(
 
     private val _visualizerData = mutableStateOf(value = VisualizerData.emptyVisualizerData())
     val visualizerData: State<VisualizerData> = _visualizerData
+
+    private val _handler = Handler(Looper.getMainLooper())
 
     init {
         loadMedias()
@@ -79,9 +83,9 @@ class MainViewModel @Inject constructor(
                 prepare()
             }
 
-//            _player?.setOnCompletionListener {
-//                pause()
-//            }
+            _player?.setOnCompletionListener {
+                pause()
+            }
 
             _player?.setOnPreparedListener {
                 onAudioInitialized()
@@ -132,6 +136,20 @@ class MainViewModel @Inject constructor(
                 )
             }
         }
+
+        _handler.postDelayed(
+            object : Runnable {
+                override fun run() {
+                    try {
+                        _state.update { it.copy(currentPosition = _player!!.currentPosition) }
+                        _handler.postDelayed(this, 1000)
+                    } catch (exp: Exception) {
+                        _state.update { it.copy(currentPosition = 0) }
+                    }
+                }
+            },
+            0,
+        )
     }
 
     private fun pause() {
@@ -147,7 +165,7 @@ class MainViewModel @Inject constructor(
             it.reset()
             it.release()
         }
-        _state.update { it.copy(isPlaying = false) }
+        _state.update { it.copy(isPlaying = false, currentPosition = 0) }
         _player = null
     }
 
