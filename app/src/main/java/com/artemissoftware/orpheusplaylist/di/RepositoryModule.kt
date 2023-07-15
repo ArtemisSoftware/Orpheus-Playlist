@@ -1,7 +1,9 @@
 package com.artemissoftware.orpheusplaylist.di
 
 import com.artemissoftware.orpheusplaylist.data.repositories.AlbumRepositoryImpl
+import com.artemissoftware.orpheusplaylist.data.repositories.PlaylistRepositoryImpl
 import com.artemissoftware.orpheusplaylist.domain.repositories.AlbumRepository
+import com.artemissoftware.orpheusplaylist.domain.repositories.PlaylistRepository
 import com.artemissoftware.orpheusplaylist.headphone.data.repository.AudioPlayerRepositoryImpl
 import com.artemissoftware.orpheusplaylist.headphone.domain.repository.AudioPlayerRepository
 import dagger.Binds
@@ -21,4 +23,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAlbumRepository(repository: AlbumRepositoryImpl): AlbumRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindPlaylistRepository(repository: PlaylistRepositoryImpl): PlaylistRepository
 }
