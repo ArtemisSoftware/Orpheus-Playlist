@@ -25,4 +25,6 @@
     <!-- Error messages -->
     <string name="error_media_not_found">Could not locate requested media.</string>
     <string name="generic_error">The application has encountered an unexpected error.</string>
+
+    <string name="album_not_found">Album not found</string>
 </resources>

@@ -7,4 +7,5 @@ data class AlbumMetadata(
     val name: String,
     val uri: Bitmap? = null,
     val artist: ArtistMetadata,
+    val tracks: List<AudioMetadata> = emptyList(),
 )
