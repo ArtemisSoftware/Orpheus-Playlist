@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -47,9 +46,7 @@ fun AlbumBanner(
             .build(),
     )
 
-    Surface(
-        modifier = modifier,
-    ) {
+    Surface(modifier = modifier) {
         AsyncImage(
             model = painter.request,
             contentScale = ContentScale.Crop,
@@ -93,34 +90,6 @@ fun AlbumBanner(
         }
     }
 }
-
-//    Surface(
-//        color = Color.Green,
-//        modifier = modifier,
-//    ) {
-//        AsyncImage(
-//            model = painter.request,
-//            contentScale = ContentScale.Crop,
-//            contentDescription = null,
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .alpha(0.5F),
-//        )
-//
-//        Box(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .statusBarsPadding()
-//                .padding(16.dp),
-//        ) {
-//            Text(
-//                text = "playlist.nameText",
-//                textAlign = TextAlign.End,
-//                style = MaterialTheme.typography.body2,
-//                modifier = Modifier.align(Alignment.BottomEnd),
-//            )
-//        }
-//    }
 
 @Composable
 private fun AlbumDescription(
