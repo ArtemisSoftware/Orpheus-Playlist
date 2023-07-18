@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artemissoftware.orpheusplaylist.domain.usecases.GetAlbumUseCase
@@ -14,14 +15,16 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
     private val getAlbumUseCase: GetAlbumUseCase,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(PlaylistState())
     val state: StateFlow<PlaylistState> = _state.asStateFlow()
 
     init {
-        //getAlbum(albumId = 1000000965L)
-        getAlbum(albumId = 7089781950825107897L)
+        val albumId = savedStateHandle.get<Long>("albumId")
+        albumId?.let { getAlbum(albumId = it) }
+//    getAlbum(albumId = 7089781950825107897L)
         //getAlbum(albumId = 7L)
     }
 

@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.presentation.composables
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -24,6 +25,7 @@ import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
 @Composable
 fun MediaCard(
     album: AlbumMetadata,
+    onPlaylistClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val painter = rememberAsyncImagePainter(
@@ -38,7 +40,8 @@ fun MediaCard(
 
     Card(
         modifier = modifier
-            .clip(RoundedCornerShape(4.dp)),
+            .clip(RoundedCornerShape(4.dp))
+            .clickable { onPlaylistClick(album.id) },
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -74,5 +77,6 @@ private fun MediaCardPreview() {
         album = DummyData.albumMetadata,
         modifier = Modifier
             .fillMaxWidth(),
+        onPlaylistClick = {},
     )
 }

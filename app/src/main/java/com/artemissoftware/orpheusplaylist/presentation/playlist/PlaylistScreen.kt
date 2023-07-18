@@ -24,7 +24,9 @@ import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Alb
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Track
 
 @Composable
-fun PlaylistScreen(viewModel: PlaylistViewModel = hiltViewModel()) {
+fun PlaylistScreen(
+    viewModel: PlaylistViewModel = hiltViewModel(),
+) {
     val state = viewModel.state.collectAsState().value
 
     PlaylistContent(

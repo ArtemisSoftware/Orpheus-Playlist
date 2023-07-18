@@ -17,9 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.headphone.presentation.playlist.composables.showPermissionsRationalDialog
-import com.artemissoftware.orpheusplaylist.presentation.AlbumScreen
+import com.artemissoftware.orpheusplaylist.navigation.NavigationGraph
 import com.artemissoftware.orpheusplaylist.ui.theme.OrpheusPlaylistTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,7 +76,12 @@ class MainActivity : ComponentActivity() {
 //                        requestPermissionLauncher = requestPermissionLauncher,
 //                    )
 
-                    AlbumScreen()
+                    // AlbumScreen()
+                    // PlaylistScreen()
+                    // PlayerPage()
+
+                    val navController = rememberNavController()
+                    NavigationGraph(navController = navController)
                 }
             }
         }

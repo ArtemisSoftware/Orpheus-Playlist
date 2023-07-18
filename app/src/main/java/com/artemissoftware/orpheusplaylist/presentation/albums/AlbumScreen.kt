@@ -17,17 +17,22 @@ import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.presentation.composables.MediaCard
 
 @Composable
-fun AlbumScreen(viewModel: AlbumViewModel = hiltViewModel()) {
+fun AlbumScreen(
+    viewModel: AlbumViewModel = hiltViewModel(),
+    onPlaylistClick: (Long) -> Unit,
+) {
     val state = viewModel.state.collectAsState().value
 
     AlbumScreenContent(
         state = state,
+        onPlaylistClick = onPlaylistClick,
     )
 }
 
 @Composable
 private fun AlbumScreenContent(
     state: AlbumState,
+    onPlaylistClick: (Long) -> Unit,
 ) {
     val stateLazyVerticalGrid = rememberLazyGridState()
     LazyVerticalGrid(
@@ -47,6 +52,7 @@ private fun AlbumScreenContent(
                     album = album,
                     modifier = Modifier
                         .fillMaxWidth(),
+                    onPlaylistClick = onPlaylistClick,
                 )
             }
         },
@@ -56,5 +62,5 @@ private fun AlbumScreenContent(
 @Preview(showBackground = true)
 @Composable
 private fun AlbumScreenContentPreview() {
-    AlbumScreenContent(state = AlbumState(albums = DummyData.listAlbumMetadata))
+    AlbumScreenContent(state = AlbumState(albums = DummyData.listAlbumMetadata), onPlaylistClick = {})
 }
