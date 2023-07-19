@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.headphone.presentation.playlist.composables.showPermissionsRationalDialog
 import com.artemissoftware.orpheusplaylist.navigation.NavigationGraph
+import com.artemissoftware.orpheusplaylist.navigation.SharedViewModelSample
 import com.artemissoftware.orpheusplaylist.ui.theme.OrpheusPlaylistTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -82,6 +83,7 @@ class MainActivity : ComponentActivity() {
 
                     val navController = rememberNavController()
                     NavigationGraph(navController = navController)
+
                 }
             }
         }

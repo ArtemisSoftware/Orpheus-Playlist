@@ -45,11 +45,11 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                 val name: String = cursor.getStringOrNull(nameIndex) ?: continue
                 val duration: Long = cursor.getLongOrNull(durationIndex) ?: continue
 
-                val trackPosition: Int = cursor.getIntOrNull(trackPositionIndex) ?: continue
+                val trackPosition: Int? = cursor.getIntOrNull(trackPositionIndex)
                 val discPosition: Int =
                     cursor.getIntOrNull(discPositionIndex) ?: TrackPositionMetadata.defaultDisc
                 val position = TrackPositionMetadata(
-                    track = trackPosition,
+                    track = trackPosition ?: discPosition,
                     disc = discPosition,
                 )
 
@@ -64,10 +64,10 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
 
                 val albumId: Long = cursor.getLongOrNull(albumIdIndex) ?: continue
                 val albumName: String = cursor.getStringOrNull(albumNameIndex) ?: continue
-                val albumArtistName: String = cursor.getStringOrNull(albumArtistNameIndex) ?: continue
+                val albumArtistName: String? = cursor.getStringOrNull(albumArtistNameIndex)
 
                 val albumArtist = ArtistMetadata(
-                    name = albumArtistName,
+                    name = albumArtistName ?: artistName,
                 )
 
                 tracks += AudioMetadata(

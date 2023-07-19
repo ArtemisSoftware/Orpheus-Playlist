@@ -24,8 +24,6 @@ class PlaylistViewModel @Inject constructor(
     init {
         val albumId = savedStateHandle.get<Long>("albumId")
         albumId?.let { getAlbum(albumId = it) }
-//    getAlbum(albumId = 7089781950825107897L)
-        //getAlbum(albumId = 7L)
     }
 
     private fun getAlbum(albumId: Long) {

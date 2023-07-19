@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,14 +21,20 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
+import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.AlbumBanner
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Track
 
 @Composable
 fun PlaylistScreen(
     viewModel: PlaylistViewModel = hiltViewModel(),
+    addPlaylist: (List<AudioMetadata>) -> Unit,
 ) {
     val state = viewModel.state.collectAsState().value
+
+    LaunchedEffect(key1 = state.album){
+        state.album?.let { album -> addPlaylist(album.tracks) }
+    }
 
     PlaylistContent(
         state = state,
@@ -46,34 +53,54 @@ private fun PlaylistContent(
 
         state.album?.let { album ->
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(2f)
-                    .padding(horizontal = 16.dp),
-            ) {
-                items(album.tracks) { track ->
-                    Track(
-                        audio = track,
-                        onClick = {
-                        },
-                        modifier = Modifier.fillMaxWidth().height(68.dp),
-                    )
+            if (album.tracks.isEmpty()) {
+                WarningMessage(
+                    message = stringResource(id = R.string.tracks_not_found),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(2f),
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(2f)
+                        .padding(horizontal = 16.dp),
+                ) {
+                    items(album.tracks) { track ->
+                        Track(
+                            audio = track,
+                            onClick = {
+                            },
+                            modifier = Modifier.fillMaxWidth().height(68.dp),
+                        )
+                    }
                 }
             }
         } ?: run {
-            Box(
+            WarningMessage(
+                message = stringResource(id = R.string.album_not_found),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(2f),
-            ) {
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = stringResource(id = R.string.album_not_found),
-                    style = MaterialTheme.typography.h5,
-                )
-            }
+            )
         }
+    }
+}
+
+@Composable private
+fun WarningMessage(
+    message: String,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = message,
+            style = MaterialTheme.typography.h5,
+        )
     }
 }
 
