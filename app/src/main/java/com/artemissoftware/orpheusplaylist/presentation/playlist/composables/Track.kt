@@ -35,7 +35,8 @@ fun Track(
     ) {
         Text(
             text = audio.position.track.toString(),
-            modifier = Modifier.weight(0.1F),
+            modifier = Modifier.weight(0.15F),
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.body2,
             fontWeight = FontWeight.Light,
         )
@@ -43,16 +44,16 @@ fun Track(
         Text(
             text = audio.name,
             modifier = Modifier.weight(0.7F),
-            style = MaterialTheme.typography.body1,
-            fontWeight = if (isPlaying) FontWeight.ExtraBold else FontWeight.SemiBold,
+            style = if (isPlaying) MaterialTheme.typography.h4 else MaterialTheme.typography.body1,
+            fontWeight = if (isPlaying) FontWeight.ExtraBold else FontWeight.Light,
             overflow = TextOverflow.Ellipsis,
         )
 
         Text(
             text = audio.duration.toString(),
             modifier = Modifier.weight(0.2F),
+            textAlign = TextAlign.Center,
             style = MaterialTheme.typography.body2,
-            textAlign = TextAlign.End,
             fontWeight = FontWeight.Light,
         )
     }
