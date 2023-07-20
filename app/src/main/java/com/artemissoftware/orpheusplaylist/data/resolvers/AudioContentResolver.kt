@@ -87,11 +87,15 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
         return tracks
     }
 
-/*
-    private fun getTracksFromAlbumCursorData(albumId: Long): MutableList<AudioMetadata> {
+    @WorkerThread
+    fun getTracks(audioIds: List<Long>): List<AudioMetadata> {
+        return getTracksCursorData(audioIds = audioIds)
+    }
+
+    private fun getTracksCursorData(audioIds: List<Long>): List<AudioMetadata> {
         val tracks: MutableList<AudioMetadata> = mutableListOf()
 
-        getQueryCursor(AudioQuery.getQueryTracksFromAlbum(albumId = albumId))?.use { cursor ->
+        getQueryCursor(AudioQuery.getQueryTracks(audioIds = audioIds))?.use { cursor ->
 
             val idIndex: Int = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
             val nameIndex: Int = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE)
@@ -112,10 +116,11 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                 val name: String = cursor.getStringOrNull(nameIndex) ?: continue
                 val duration: Long = cursor.getLongOrNull(durationIndex) ?: continue
 
-                val trackPosition: Int = cursor.getIntOrNull(trackPositionIndex) ?: continue
-                val discPosition: Int = cursor.getIntOrNull(discPositionIndex) ?: TrackPositionMetadata.defaultDisc
+                val trackPosition: Int? = cursor.getIntOrNull(trackPositionIndex)
+                val discPosition: Int =
+                    cursor.getIntOrNull(discPositionIndex) ?: TrackPositionMetadata.defaultDisc
                 val position = TrackPositionMetadata(
-                    track = trackPosition,
+                    track = trackPosition ?: discPosition,
                     disc = discPosition,
                 )
 
@@ -130,16 +135,10 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
 
                 val albumId: Long = cursor.getLongOrNull(albumIdIndex) ?: continue
                 val albumName: String = cursor.getStringOrNull(albumNameIndex) ?: continue
-                val albumArtistName: String = cursor.getStringOrNull(albumArtistNameIndex) ?: continue
+                val albumArtistName: String? = cursor.getStringOrNull(albumArtistNameIndex)
 
                 val albumArtist = ArtistMetadata(
-                    name = albumArtistName,
-                )
-
-                val album = AlbumMetadata(
-                    id = albumId,
-                    name = albumName,
-                    artist = albumArtist,
+                    name = albumArtistName ?: artistName,
                 )
 
                 tracks += AudioMetadata(
@@ -147,13 +146,15 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                     name = name,
                     duration = duration,
                     position = position,
+                    albumMetadata = AlbumMetadata(
+                        id = albumId,
+                        name = albumName,
+                        artist = albumArtist,
+                    ),
                 )
             }
         }
 
-        // TODO: criar um objeto com o album e as musicas ou apenas adicionar as musicas ao album
-
         return tracks
     }
-*/
 }

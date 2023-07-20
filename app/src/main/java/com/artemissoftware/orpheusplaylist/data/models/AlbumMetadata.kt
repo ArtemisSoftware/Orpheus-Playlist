@@ -8,4 +8,18 @@ data class AlbumMetadata(
     val uri: Bitmap? = null,
     val artist: ArtistMetadata,
     val tracks: List<AudioMetadata> = emptyList(),
-)
+){
+
+    companion object{
+
+        fun getUserPlaylistAlbum(playlistName: String): AlbumMetadata{
+            return AlbumMetadata(
+                id = 0L,
+                name = playlistName,
+                artist = ArtistMetadata(
+                    name = ""
+                )
+            )
+        }
+    }
+}

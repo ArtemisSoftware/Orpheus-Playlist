@@ -1,6 +1,7 @@
 package com.artemissoftware.orpheusplaylist.data.repositories
 
 import com.artemissoftware.orpheusplaylist.data.models.Album
+import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
 import com.artemissoftware.orpheusplaylist.data.resolvers.AlbumContentResolver
 import com.artemissoftware.orpheusplaylist.data.resolvers.AudioContentResolver
 import com.artemissoftware.orpheusplaylist.domain.repositories.PlaylistRepository
@@ -22,6 +23,17 @@ class PlaylistRepositoryImpl @Inject constructor(
         } ?: run {
             null
         }
+
+        album
+    }
+
+    override suspend fun getUserPlaylist(playlistName: String, audioIds: List<Long>): Album = withContext(Dispatchers.IO) {
+        val tracks = audioContentResolver.getTracks(audioIds = audioIds)
+
+        val album = Album(
+            albumMetadata = AlbumMetadata.getUserPlaylistAlbum(playlistName = playlistName),
+            tracks = tracks,
+        )
 
         album
     }

@@ -4,13 +4,20 @@ import android.content.Context
 import com.artemissoftware.orpheusplaylist.data.local.models.UserPlaylists
 import com.artemissoftware.orpheusplaylist.domain.repositories.UserPlaylistDataStoreRepository
 import com.artemissoftware.orpheusplaylist.utils.extensions.playlistsStore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import javax.inject.Inject
 
-class UserPlaylistDataStoreRepositoryImpl(private val context: Context) : UserPlaylistDataStoreRepository {
+class UserPlaylistDataStoreRepositoryImpl @Inject constructor(@ApplicationContext private val context: Context) : UserPlaylistDataStoreRepository {
 
     override fun getPlaylists(): Flow<UserPlaylists> {
         return context.playlistsStore.data
+    }
+
+    override suspend fun getPlaylistsTracks(playlistName: String): List<Long> {
+        val playlists = context.playlistsStore.data.first()
+        return playlists.lists[playlistName] ?: emptyList()
     }
 
     override suspend fun createPlaylist(name: String): Boolean {

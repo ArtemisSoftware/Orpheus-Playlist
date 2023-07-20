@@ -76,6 +76,26 @@ data class AudioQuery(
             )
         }
 
+        fun getQueryTracks(audioIds: List<Long>): AudioQuery {
+            return AudioQuery(
+                projection = arrayOf(
+                    MediaStore.Audio.Media._ID,
+                    MediaStore.Audio.Media.TITLE,
+                    MediaStore.Audio.Media.CD_TRACK_NUMBER,
+                    MediaStore.Audio.Media.DISC_NUMBER,
+                    MediaStore.Audio.Media.DURATION,
+                    MediaStore.Audio.Media.RELATIVE_PATH,
+                    MediaStore.Audio.Media.ARTIST,
+                    MediaStore.Audio.Media.ARTIST_ID,
+                    MediaStore.Audio.Media.ALBUM_ID,
+                    MediaStore.Audio.Media.ALBUM,
+                    MediaStore.Audio.Media.ALBUM_ARTIST,
+                ),
+                selectionClause = "${MediaStore.Audio.Media._ID} IN (${audioIds.joinToString()})",
+                sortOrder = "${MediaStore.Audio.AudioColumns.CD_TRACK_NUMBER} ASC",
+            )
+        }
+
 //        fun getQueryTracksFromAlbum(albumId: Long): AudioQuery {
 //            return AudioQuery(
 //                projection = arrayOf(
