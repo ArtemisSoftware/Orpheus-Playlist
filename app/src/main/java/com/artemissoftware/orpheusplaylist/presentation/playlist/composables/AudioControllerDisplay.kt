@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -22,6 +23,7 @@ fun AudioControllerDisplay(
     isPlaying: Boolean,
     onStart: () -> Unit,
     onNext: () -> Unit,
+    buttonSize: Dp = 56.dp,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -33,13 +35,13 @@ fun AudioControllerDisplay(
             icon = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
             enabled = true,
             onClick = onStart,
-            size = 56.dp,
+            size = buttonSize,
         )
         PlayerButton(
             icon = Icons.Filled.SkipNext,
             enabled = true,
             onClick = onNext,
-            size = 56.dp,
+            size = buttonSize,
         )
     }
 }

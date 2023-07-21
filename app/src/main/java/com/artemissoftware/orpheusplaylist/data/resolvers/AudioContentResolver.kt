@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.data.resolvers
 
+import android.content.ContentUris
 import android.content.Context
 import android.provider.MediaStore
 import androidx.annotation.WorkerThread
@@ -66,6 +67,11 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                 val albumName: String = cursor.getStringOrNull(albumNameIndex) ?: continue
                 val albumArtistName: String? = cursor.getStringOrNull(albumArtistNameIndex)
 
+                val uri = ContentUris.withAppendedId(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    id,
+                )
+
                 val albumArtist = ArtistMetadata(
                     name = albumArtistName ?: artistName,
                 )
@@ -79,6 +85,7 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                         id = albumId,
                         name = albumName,
                         artist = albumArtist,
+                        uri = getAlbumArt(context = context, uri = uri),
                     ),
                 )
             }
@@ -137,6 +144,11 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                 val albumName: String = cursor.getStringOrNull(albumNameIndex) ?: continue
                 val albumArtistName: String? = cursor.getStringOrNull(albumArtistNameIndex)
 
+                val uri = ContentUris.withAppendedId(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    id,
+                )
+
                 val albumArtist = ArtistMetadata(
                     name = albumArtistName ?: artistName,
                 )
@@ -150,6 +162,7 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                         id = albumId,
                         name = albumName,
                         artist = albumArtist,
+                        uri = getAlbumArt(context = context, uri = uri),
                     ),
                 )
             }

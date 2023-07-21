@@ -1,6 +1,7 @@
 package com.artemissoftware.orpheusplaylist.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -60,10 +61,18 @@ fun NavigationGraph(navController: NavHostController) {
             ) { entry ->
 
                 val viewModel = entry.sharedViewModel<OrpheusPlaylistViewModel>(navController)
+                val state = viewModel.state.collectAsState().value
 
                 PlaylistScreen(
+                    playerState = state,
+                    isAudioPlaying = viewModel.isAudioPlaying,
                     addPlaylist = { tracks ->
                         viewModel.onTriggerEvent(OrpheusPlaylistEvents.AddPlaylist(tracks = tracks))
+                    },
+                    playAudio = { track ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.PlayAudio(track = track))
+                    },
+                    onProgressChange = { progress ->
                     },
                 )
             }

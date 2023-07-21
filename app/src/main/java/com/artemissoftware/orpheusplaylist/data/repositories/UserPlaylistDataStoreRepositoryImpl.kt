@@ -29,11 +29,11 @@ class UserPlaylistDataStoreRepositoryImpl @Inject constructor(@ApplicationContex
         } else {
             context.playlistsStore.updateData { playlists ->
 
-                val data = playlists.lists
+                val data = playlists.lists.toMutableMap()
                 data[name] = emptyList()
 
                 playlists.copy(
-                    lists = data,
+                    lists = data as HashMap<String, List<Long>>,
                 )
             }
         }

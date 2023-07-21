@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Card
 import androidx.compose.material.Slider
 import androidx.compose.runtime.Composable
@@ -23,16 +24,25 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
+import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.composables.MediaDescription
 
 @Composable
 fun MediaControllerDisplay(
+    track: AudioMetadata,
+    progress: Float,
+    onStart: () -> Unit,
+    onNext: () -> Unit,
+    onProgressChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
+    isAudioPlaying: Boolean,
+    textColor: Color = Color.White,
 ) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(null)
+            .data(track.albumMetadata.uri)
             .size(Size.ORIGINAL)
             .error(R.drawable.musical_note_music_svgrepo_com)
             .placeholder(R.drawable.musical_note_music_svgrepo_com)
@@ -41,7 +51,7 @@ fun MediaControllerDisplay(
 
     Card(
         elevation = 0.dp,
-        modifier = Modifier.fillMaxWidth().height(128.dp),
+        modifier = modifier.fillMaxWidth().height(140.dp),
     ) {
         AsyncImage(
             model = painter.request,
@@ -54,15 +64,15 @@ fun MediaControllerDisplay(
         )
 
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+            verticalArrangement = Arrangement.spacedBy(0.dp),
         ) {
             Row(
-                modifier = modifier.padding(4.dp),
+                modifier = modifier.padding(0.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Card(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(horizontal = 8.dp),
                     elevation = 4.dp,
                 ) {
                     AsyncImage(
@@ -76,25 +86,29 @@ fun MediaControllerDisplay(
                 }
 
                 MediaDescription(
-                    title = "title",
-                    name = "name",
-                    textColor = Color.Black,
+                    title = track.name,
+                    name = track.albumMetadata.artist.name,
+                    textColor = textColor,
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .weight(5F),
                 )
 
                 AudioControllerDisplay(
+                    buttonSize = 40.dp,
                     modifier = Modifier.weight(3F),
-                    isPlaying = false,
+                    isPlaying = isAudioPlaying,
                     onStart = {},
                     onNext = {},
                 )
             }
 
             Slider(
-                value = 30F,
-                onValueChange = { },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp),
+                value = progress,
+                onValueChange = { onProgressChange.invoke(it) },
                 valueRange = 0f..100f,
             )
         }
@@ -105,8 +119,12 @@ fun MediaControllerDisplay(
 @Composable
 private fun MediaControllerDisplayPreview() {
     MediaControllerDisplay(
-//        isAudioPlaying = true,
-//        onStart = {},
-//        onNext = {},
+        track = DummyData.audioMetadata,
+        textColor = Color.Black,
+        isAudioPlaying = true,
+        onStart = {},
+        onNext = {},
+        progress = 50F,
+        onProgressChange = {},
     )
 }

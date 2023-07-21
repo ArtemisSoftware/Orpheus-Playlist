@@ -3,7 +3,9 @@ package com.artemissoftware.orpheusplaylist.presentation.playlist
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.domain.usecases.GetAlbumUseCase
+import com.artemissoftware.orpheusplaylist.domain.usecases.GetAlbumUserPlaylistUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
     private val getAlbumUseCase: GetAlbumUseCase,
+    private val getAlbumUserPlaylistUseCase: GetAlbumUserPlaylistUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -26,6 +29,14 @@ class PlaylistViewModel @Inject constructor(
         albumId?.let { getAlbum(albumId = it) }
     }
 
+    fun onTriggerEvent(event: PlayListEvents) {
+        when (event) {
+            is PlayListEvents.SelectTrack -> {
+                selectTrack(track = event.track)
+            }
+        }
+    }
+
     private fun getAlbum(albumId: Long) {
         viewModelScope.launch {
             val result = getAlbumUseCase(albumId = albumId)
@@ -33,6 +44,22 @@ class PlaylistViewModel @Inject constructor(
             _state.update {
                 it.copy(album = result)
             }
+        }
+    }
+
+    private fun getAlbumUserPlaylist(playlistName: String) {
+        viewModelScope.launch {
+            val result = getAlbumUserPlaylistUseCase(playlistName = playlistName)
+
+            _state.update {
+                it.copy(album = result)
+            }
+        }
+    }
+
+    private fun selectTrack(track: AudioMetadata) {
+        _state.update {
+            it.copy(selectedTrack = track)
         }
     }
 }
