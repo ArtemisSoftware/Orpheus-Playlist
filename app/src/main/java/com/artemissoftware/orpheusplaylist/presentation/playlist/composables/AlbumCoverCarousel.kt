@@ -25,7 +25,9 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
+import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.playlist.lolo
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -49,7 +51,7 @@ fun Modifier.carouselTransition(page: Int, pagerState: PagerState) =
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlbumCoverCarousel(
-    mediaList: List<String>,
+    tracks: List<AudioMetadata>,
 ) {
     val ddd = remember {
         mutableStateOf(0)
@@ -68,7 +70,7 @@ fun AlbumCoverCarousel(
 
     HorizontalPager(
         state = pagerState,
-        pageCount = mediaList.size,
+        pageCount = tracks.size,
         contentPadding = PaddingValues(
             horizontal = 60.dp,
         ),
@@ -83,16 +85,16 @@ fun AlbumCoverCarousel(
             Text(
                 text = page.toString() + ddd.value,
             )
-            AlbumCover(item = mediaList[page])
+            AlbumCover(track = tracks[page])
         }
     }
 }
 
 @Composable
-private fun AlbumCover(item: String) {
+private fun AlbumCover(track: AudioMetadata) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(null)
+            .data(track.albumMetadata.uri)
             .size(Size.ORIGINAL)
             .error(R.drawable.musical_note_music_svgrepo_com)
             .placeholder(R.drawable.musical_note_music_svgrepo_com)
@@ -112,18 +114,7 @@ private fun AlbumCover(item: String) {
 private fun AlbumCoverPreview() {
     Column(Modifier.fillMaxWidth()) {
         AlbumCoverCarousel(
-            listOf(
-                "AAAA",
-                "BBBB",
-                "CCCCC",
-                "DDDDD",
-                "EEEEE",
-                "FFFFF",
-                "GGGGG",
-                "DDDDD",
-                "BBBBB",
-                "VVVV",
-            ),
+            DummyData.listAudioMetadata,
         )
     }
 }

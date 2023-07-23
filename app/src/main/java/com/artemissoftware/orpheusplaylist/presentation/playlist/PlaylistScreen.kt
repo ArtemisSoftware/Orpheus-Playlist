@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,10 +31,14 @@ import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
-import com.artemissoftware.orpheusplaylist.playaudio.presentation.AudioPlaylistEvents
+import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollapsed
+import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
+import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.AlbumBanner
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.MediaControllerDisplay
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Track
+import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
+import kotlinx.coroutines.launch
 
 @Composable
 fun PlaylistScreen(
@@ -69,15 +75,47 @@ private fun PlaylistContent(
     onProgressChange: (Float) -> Unit,
     playAudio: (AudioMetadata) -> Unit,
 ) {
-//    val coroutineScope = rememberCoroutineScope()
+    val coroutineScope = rememberCoroutineScope()
 
-    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Expanded)
-    val scaffoldState = rememberBottomSheetScaffoldState()
+    val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
+    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
-//        sheetPeekHeight = 140.dp,
+        sheetPeekHeight = 140.dp,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        sheetContent = {
+            SheetContent {
+                SheetExpanded {
+                    PlayerPage(
+                        tracks = state.album?.tracks ?: emptyList(),
+                        selectedTrack = state.selectedTrack,
+                        playerState = playerState,
+                        onProgressChange = onProgressChange,
+                        onCollapse = {
+                            coroutineScope.launch {
+                                scaffoldState.bottomSheetState.animateTo(
+                                    targetValue = BottomSheetValue.Collapsed,
+                                    tween(500),
+                                )
+                            }
+                        },
+                    )
+                }
+                SheetCollapsed(
+                    isCollapsed = scaffoldState.bottomSheetState.isCollapsed,
+                    currentFraction = scaffoldState.currentFraction,
+                    height = 140.dp,
+                ) {
+                    PlayerBar(
+                        playerState = playerState,
+                        state = state,
+                        isAudioPlaying = isAudioPlaying,
+                        onProgressChange = onProgressChange,
+                    )
+                }
+            }
+        },
         content = {
             Column(modifier = Modifier.fillMaxSize()) {
                 AlbumBanner(
@@ -125,24 +163,32 @@ private fun PlaylistContent(
                 }
             }
         },
-        sheetContent = {
-            state.selectedTrack?.let { track ->
-                MediaControllerDisplay(
-                    isAudioPlaying = isAudioPlaying,
-                    progress = playerState.currentAudioProgress,
-                    onProgressChange = {
-                        onProgressChange.invoke(it)
-                    },
-                    track = track,
-                    onStart = {},
-                    onNext = {},
-                    modifier = Modifier
-                        .padding(horizontal = 0.dp)
-                        .padding(top = 0.dp, bottom = 0.dp),
-                )
-            }
-        },
+
     )
+}
+
+@Composable
+fun PlayerBar(
+    playerState: OrpheusPlaylistState,
+    state: PlaylistState,
+    isAudioPlaying: Boolean,
+    onProgressChange: (Float) -> Unit,
+) {
+    state.selectedTrack?.let { track ->
+        MediaControllerDisplay(
+            isAudioPlaying = isAudioPlaying,
+            progress = playerState.currentAudioProgress,
+            onProgressChange = {
+                onProgressChange.invoke(it)
+            },
+            track = track,
+            onStart = {},
+            onNext = {},
+            modifier = Modifier
+                .padding(horizontal = 0.dp)
+                .padding(top = 0.dp, bottom = 0.dp),
+        )
+    }
 }
 
 @Composable private

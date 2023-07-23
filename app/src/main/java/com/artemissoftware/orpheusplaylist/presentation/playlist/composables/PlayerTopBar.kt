@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PlayerTopBar(
     title: String? = null,
+    onCollapse: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
@@ -33,7 +34,7 @@ fun PlayerTopBar(
         },
         backgroundColor = Color.Transparent,
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onCollapse.invoke() }) {
                 Icon(
                     imageVector = Icons.Default.ExpandMore,
                     contentDescription = "Back Arrow",
@@ -63,5 +64,7 @@ fun PlayerTopBar(
 @Preview(showBackground = true)
 @Composable
 private fun PlayerTopBarPreview() {
-    PlayerTopBar()
+    PlayerTopBar(
+        onCollapse = {},
+    )
 }
