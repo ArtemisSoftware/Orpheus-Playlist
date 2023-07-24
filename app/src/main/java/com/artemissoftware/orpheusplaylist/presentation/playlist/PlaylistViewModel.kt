@@ -34,6 +34,10 @@ class PlaylistViewModel @Inject constructor(
             is PlayListEvents.SelectTrack -> {
                 selectTrack(track = event.track)
             }
+
+            PlayListEvents.SkipToNextTrack -> {
+                skipToNext()
+            }
         }
     }
 
@@ -42,7 +46,11 @@ class PlaylistViewModel @Inject constructor(
             val result = getAlbumUseCase(albumId = albumId)
 
             _state.update {
-                it.copy(album = result)
+                it.copy(
+                    album = result,
+                    albumCover = result?.albumMetadata?.uri,
+                    type = AlbumType.ALBUM,
+                )
             }
         }
     }
@@ -57,9 +65,34 @@ class PlaylistViewModel @Inject constructor(
         }
     }
 
-    private fun selectTrack(track: AudioMetadata) {
-        _state.update {
+    private fun selectTrack(track: AudioMetadata) = with(_state) {
+        update {
             it.copy(selectedTrack = track)
         }
+    }
+
+    private fun skipToNext() = with(_state) {
+        val trackListSize = value.album?.tracks?.size ?: 0
+
+        val index = if (trackListSize == (getCurrentTrackIndex() + 1)) 0 else (getCurrentTrackIndex() + 1)
+
+        if (trackListSize != 0) {
+            value.album?.tracks?.let { list ->
+                update { playState ->
+                    playState.copy(selectedTrack = list[index])
+                }
+            }
+        }
+    }
+
+    private fun getCurrentTrackIndex(): Int {
+        var index = 0
+
+        with(_state.value) {
+            val currentIndex = album?.tracks?.indexOf(selectedTrack) ?: 0
+            index = if (currentIndex == -1) 0 else currentIndex
+        }
+
+        return index
     }
 }

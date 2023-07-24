@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun AudioControllerDisplay(
     isPlaying: Boolean,
-    onStart: () -> Unit,
+    onPlay: () -> Unit,
     onNext: () -> Unit,
-    buttonSize: Dp = 56.dp,
     modifier: Modifier = Modifier,
+    buttonSize: Dp = 56.dp,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -34,7 +34,7 @@ fun AudioControllerDisplay(
         PlayerButton(
             icon = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
             enabled = true,
-            onClick = onStart,
+            onClick = onPlay,
             size = buttonSize,
         )
         PlayerButton(
@@ -51,7 +51,7 @@ fun AudioControllerDisplay(
     isPlaying: Boolean,
     onBack: () -> Unit,
     onFastBackward: () -> Unit,
-    onStart: () -> Unit,
+    onPlay: () -> Unit,
     onFastForward: () -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
@@ -79,7 +79,7 @@ fun AudioControllerDisplay(
         PlayerButton(
             icon = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
             enabled = true,
-            onClick = onStart,
+            onClick = onPlay,
             size = 84.dp,
         )
         PlayerButton(
@@ -104,7 +104,7 @@ fun AudioControllerDisplay(
 private fun AudioControllerDisplayPreview() {
     AudioControllerDisplay(
         isPlaying = true,
-        onStart = {},
+        onPlay = {},
         onNext = {},
     )
 }
@@ -116,7 +116,7 @@ private fun AudioControllerDisplay_full_Preview() {
         isPlaying = true,
         onBack = {},
         onFastBackward = {},
-        onStart = {},
+        onPlay = {},
         onFastForward = {},
         onNext = {},
     )

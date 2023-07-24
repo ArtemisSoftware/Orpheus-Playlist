@@ -18,7 +18,12 @@ import java.time.Duration
 
 @Composable
 fun PlayerControllerDisplay(
+    progress: Float,
+    isAudioPlaying: Boolean,
     ofHours: Duration?,
+    onPlay: () -> Unit,
+    onNext: () -> Unit,
+    onProgressChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     if (ofHours != null) {
@@ -28,12 +33,13 @@ fun PlayerControllerDisplay(
         ) {
             Slider(
                 modifier = Modifier.fillMaxWidth(),
-                value = 0f,
-                onValueChange = {},
+                value = progress,
+                onValueChange = { onProgressChange.invoke(it) },
                 colors = SliderDefaults.colors(
                     thumbColor = Color.Green,
                     activeTrackColor = Color.Red,
                 ),
+                valueRange = 0f..100f,
             )
 
             Row(
@@ -41,18 +47,18 @@ fun PlayerControllerDisplay(
             ) {
                 Text(text = "0s", color = Color.Blue)
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = "${ofHours.seconds}s", color = Color.Blue)
+                Text(text = "$progress ${ofHours.seconds}s", color = Color.Blue)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
 
             AudioControllerDisplay(
-                isPlaying = true,
+                isPlaying = isAudioPlaying,
                 onBack = {},
                 onFastBackward = {},
-                onStart = {},
+                onPlay = onPlay,
                 onFastForward = {},
-                onNext = {},
+                onNext = onNext,
             )
         }
     }
@@ -62,9 +68,12 @@ fun PlayerControllerDisplay(
 @Composable
 private fun PlayerControllerDisplayPreview() {
     PlayerControllerDisplay(
-        Duration.ofHours(2),
+        progress = 30F,
+        onPlay = {},
+        onProgressChange = {},
 //        isAudioPlaying = true,
-//        onStart = {},
-//        onNext = {},
+        ofHours = Duration.ofHours(2),
+        isAudioPlaying = true,
+        onNext = {},
     )
 }

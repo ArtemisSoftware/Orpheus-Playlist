@@ -69,8 +69,11 @@ fun NavigationGraph(navController: NavHostController) {
                     addPlaylist = { tracks ->
                         viewModel.onTriggerEvent(OrpheusPlaylistEvents.AddPlaylist(tracks = tracks))
                     },
-                    playAudio = { track ->
+                    onPlayAudio = { track ->
                         viewModel.onTriggerEvent(OrpheusPlaylistEvents.PlayAudio(track = track))
+                    },
+                    onSkipToNext = {
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.SkipToNext)
                     },
                     onProgressChange = { progress ->
                     },

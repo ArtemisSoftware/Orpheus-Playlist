@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist.composables
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,16 +33,18 @@ import com.artemissoftware.orpheusplaylist.presentation.composables.MediaDescrip
 fun MediaControllerDisplay(
     track: AudioMetadata,
     progress: Float,
-    onStart: () -> Unit,
+    cover: Bitmap? = null,
+    onPlay: (AudioMetadata) -> Unit,
     onNext: () -> Unit,
     onProgressChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
     isAudioPlaying: Boolean,
     textColor: Color = Color.White,
+
 ) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(track.albumMetadata.uri)
+            .data(cover ?: track.albumMetadata.uri)
             .size(Size.ORIGINAL)
             .error(R.drawable.musical_note_music_svgrepo_com)
             .placeholder(R.drawable.musical_note_music_svgrepo_com)
@@ -99,8 +102,10 @@ fun MediaControllerDisplay(
                     buttonSize = 40.dp,
                     modifier = Modifier.weight(3F),
                     isPlaying = isAudioPlaying,
-                    onStart = {},
-                    onNext = {},
+                    onPlay = {
+                        onPlay.invoke(track)
+                    },
+                    onNext = onNext,
                 )
             }
 
@@ -121,11 +126,12 @@ fun MediaControllerDisplay(
 private fun MediaControllerDisplayPreview() {
     MediaControllerDisplay(
         track = DummyData.audioMetadata,
-        textColor = Color.Black,
-        isAudioPlaying = true,
-        onStart = {},
-        onNext = {},
         progress = 50F,
+        onPlay = {},
+        onNext = {},
         onProgressChange = {},
+        isAudioPlaying = true,
+        textColor = Color.Black,
+        cover = DummyData.audioMetadata.albumMetadata.uri,
     )
 }

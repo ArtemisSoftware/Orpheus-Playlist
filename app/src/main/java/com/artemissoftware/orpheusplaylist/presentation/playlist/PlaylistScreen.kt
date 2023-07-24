@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,7 +34,6 @@ import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollaps
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.AlbumBanner
-import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.MediaControllerDisplay
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Track
 import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
 import kotlinx.coroutines.launch
@@ -44,7 +42,8 @@ import kotlinx.coroutines.launch
 fun PlaylistScreen(
     viewModel: PlaylistViewModel = hiltViewModel(),
     addPlaylist: (List<AudioMetadata>) -> Unit,
-    playAudio: (AudioMetadata) -> Unit,
+    onPlayAudio: (AudioMetadata) -> Unit,
+    onSkipToNext: () -> Unit,
     onProgressChange: (Float) -> Unit,
     playerState: OrpheusPlaylistState,
     isAudioPlaying: Boolean,
@@ -55,25 +54,27 @@ fun PlaylistScreen(
         state.album?.let { album -> addPlaylist(album.tracks) }
     }
 
-    PlaylistContent(
+    PlaylistScreenContent(
         playerState = playerState,
         state = state,
         events = viewModel::onTriggerEvent,
-        playAudio = playAudio,
+        onPlayAudio = onPlayAudio,
         onProgressChange = onProgressChange,
         isAudioPlaying = isAudioPlaying,
+        onSkipToNext = onSkipToNext,
     )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun PlaylistContent(
+private fun PlaylistScreenContent(
     playerState: OrpheusPlaylistState,
     isAudioPlaying: Boolean,
     state: PlaylistState,
     events: (PlayListEvents) -> Unit,
     onProgressChange: (Float) -> Unit,
-    playAudio: (AudioMetadata) -> Unit,
+    onPlayAudio: (AudioMetadata) -> Unit,
+    onSkipToNext: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -91,7 +92,10 @@ private fun PlaylistContent(
                         tracks = state.album?.tracks ?: emptyList(),
                         selectedTrack = state.selectedTrack,
                         playerState = playerState,
+                        isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
+                        onPlay = onPlayAudio,
+                        onSkipToNext = onSkipToNext,
                         onCollapse = {
                             coroutineScope.launch {
                                 scaffoldState.bottomSheetState.animateTo(
@@ -112,6 +116,11 @@ private fun PlaylistContent(
                         state = state,
                         isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
+                        onPlay = onPlayAudio,
+                        onSkipToNext = {
+                            events.invoke(PlayListEvents.SkipToNextTrack)
+                            onSkipToNext.invoke()
+                        },
                     )
                 }
             }
@@ -144,7 +153,7 @@ private fun PlaylistContent(
                                     isPlaying = track.id == state.selectedTrack?.id,
                                     onClick = {
                                         events.invoke(PlayListEvents.SelectTrack(track = track))
-                                        playAudio.invoke(it)
+                                        onPlayAudio.invoke(it)
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
@@ -167,30 +176,6 @@ private fun PlaylistContent(
     )
 }
 
-@Composable
-fun PlayerBar(
-    playerState: OrpheusPlaylistState,
-    state: PlaylistState,
-    isAudioPlaying: Boolean,
-    onProgressChange: (Float) -> Unit,
-) {
-    state.selectedTrack?.let { track ->
-        MediaControllerDisplay(
-            isAudioPlaying = isAudioPlaying,
-            progress = playerState.currentAudioProgress,
-            onProgressChange = {
-                onProgressChange.invoke(it)
-            },
-            track = track,
-            onStart = {},
-            onNext = {},
-            modifier = Modifier
-                .padding(horizontal = 0.dp)
-                .padding(top = 0.dp, bottom = 0.dp),
-        )
-    }
-}
-
 @Composable private
 fun WarningMessage(
     message: String,
@@ -209,26 +194,28 @@ fun WarningMessage(
 
 @Preview(showBackground = true)
 @Composable
-private fun PlaylistContentPreview() {
-    PlaylistContent(
+private fun PlaylistScreenContentPreview() {
+    PlaylistScreenContent(
         state = PlaylistState(album = DummyData.album, selectedTrack = DummyData.audioMetadata),
         playerState = OrpheusPlaylistState(),
         isAudioPlaying = true,
         events = {},
-        playAudio = {},
+        onPlayAudio = {},
         onProgressChange = {},
+        onSkipToNext = {},
     )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun PlaylistContent_no_album_Preview() {
-    PlaylistContent(
+private fun PlaylistScreenContent_no_album_Preview() {
+    PlaylistScreenContent(
         state = PlaylistState(album = null),
         playerState = OrpheusPlaylistState(),
         isAudioPlaying = false,
         events = {},
-        playAudio = {},
+        onPlayAudio = {},
         onProgressChange = {},
+        onSkipToNext = {},
     )
 }
