@@ -9,18 +9,15 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.Card
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -29,29 +26,15 @@ import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.playlist.lolo
+import com.artemissoftware.orpheusplaylist.utils.extensions.carouselTransition
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.math.absoluteValue
-
-@OptIn(ExperimentalFoundationApi::class)
-fun Modifier.carouselTransition(page: Int, pagerState: PagerState) =
-    graphicsLayer {
-        val pageOffset =
-            ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
-
-        val transformation = lerp(
-            start = 0.8f,
-            stop = 1f,
-            fraction = 1f - pageOffset.coerceIn(0f, 1f),
-        )
-        alpha = transformation
-        scaleY = transformation
-    }
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlbumCoverCarousel(
     tracks: List<AudioMetadata>,
+    onSwipePlay: (Int) -> Unit,
+    index: Int,
 ) {
     val ddd = remember {
         mutableStateOf(0)
@@ -59,12 +42,16 @@ fun AlbumCoverCarousel(
 
     val pagerState: PagerState = rememberPagerState()
 
+    LaunchedEffect(key1 = index) {
+        pagerState.animateScrollToPage(index)
+    }
+
     LaunchedEffect(key1 = pagerState.currentPage) {
         ddd.value = pagerState.currentPage
         delay(1000L)
 
-        if(ddd.value == pagerState.currentPage){
-            ddd.value = 1000
+        if (ddd.value == pagerState.currentPage) {
+            onSwipePlay.invoke(pagerState.currentPage)
         }
     }
 
@@ -82,9 +69,6 @@ fun AlbumCoverCarousel(
             modifier = Modifier
                 .carouselTransition(page, pagerState),
         ) {
-            Text(
-                text = page.toString() + ddd.value,
-            )
             AlbumCover(track = tracks[page])
         }
     }
@@ -115,6 +99,8 @@ private fun AlbumCoverPreview() {
     Column(Modifier.fillMaxWidth()) {
         AlbumCoverCarousel(
             DummyData.listAudioMetadata,
+            onSwipePlay = {},
+            index = 0,
         )
     }
 }

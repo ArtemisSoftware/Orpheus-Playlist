@@ -49,6 +49,7 @@ fun AudioControllerDisplay(
 @Composable
 fun AudioControllerDisplay(
     isPlaying: Boolean,
+    displayColor: Color = Color.Yellow,
     onBack: () -> Unit,
     onFastBackward: () -> Unit,
     onPlay: () -> Unit,
@@ -80,6 +81,7 @@ fun AudioControllerDisplay(
             icon = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
             enabled = true,
             onClick = onPlay,
+            tint = displayColor,
             size = 84.dp,
         )
         PlayerButton(

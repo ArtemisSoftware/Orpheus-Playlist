@@ -29,6 +29,7 @@ fun PlayerButton(
     enabled: Boolean = true,
     size: Dp = 72.dp,
     elevation: Dp = 8.dp,
+    tint: Color = Color.Green,
     color: Color = Color.Black,
 ) {
     Button(
@@ -45,7 +46,7 @@ fun PlayerButton(
             modifier = Modifier.fillMaxSize()
                 .background(color = color)
                 .padding(all = 8.dp),
-            tint = if (enabled) onSurface else Gray400,
+            tint = if (enabled) tint else onSurface,
         )
     }
 }
@@ -56,6 +57,16 @@ private fun PlayerButtonPreview() {
     PlayerButton(
         icon = Icons.Filled.PlayArrow,
         enabled = true,
+        onClick = {},
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PlayerButton_not_enabled_Preview() {
+    PlayerButton(
+        icon = Icons.Filled.PlayArrow,
+        enabled = false,
         onClick = {},
     )
 }

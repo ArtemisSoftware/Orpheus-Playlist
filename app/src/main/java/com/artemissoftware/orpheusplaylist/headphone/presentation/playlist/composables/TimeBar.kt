@@ -43,7 +43,7 @@ fun TimeBar(
     }
 }
 
-private fun milliSecondsToTimeString(milliseconds: Int): String {
+fun milliSecondsToTimeString(milliseconds: Int): String {
     var result = ""
     var secondsString = ""
     val hours = (milliseconds / (1000 * 60 * 60))

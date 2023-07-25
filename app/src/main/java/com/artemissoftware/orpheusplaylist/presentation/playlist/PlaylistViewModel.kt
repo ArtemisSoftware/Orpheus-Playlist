@@ -38,6 +38,10 @@ class PlaylistViewModel @Inject constructor(
             PlayListEvents.SkipToNextTrack -> {
                 skipToNext()
             }
+
+            PlayListEvents.SkipToPreviousTrack -> {
+                skipToPrevious()
+            }
         }
     }
 
@@ -79,7 +83,21 @@ class PlaylistViewModel @Inject constructor(
         if (trackListSize != 0) {
             value.album?.tracks?.let { list ->
                 update { playState ->
-                    playState.copy(selectedTrack = list[index])
+                    playState.copy(selectedTrack = list[index], selectedTrackIndex = index)
+                }
+            }
+        }
+    }
+
+    private fun skipToPrevious() = with(_state) {
+        val trackListSize = value.album?.tracks?.size ?: 0
+
+        val index = if ((getCurrentTrackIndex() - 1) < 0) 0 else (getCurrentTrackIndex() - 1)
+
+        if (trackListSize != 0) {
+            value.album?.tracks?.let { list ->
+                update { playState ->
+                    playState.copy(selectedTrack = list[index], selectedTrackIndex = index)
                 }
             }
         }

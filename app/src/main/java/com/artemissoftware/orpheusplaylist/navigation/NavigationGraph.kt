@@ -75,7 +75,11 @@ fun NavigationGraph(navController: NavHostController) {
                     onSkipToNext = {
                         viewModel.onTriggerEvent(OrpheusPlaylistEvents.SkipToNext)
                     },
+                    onSkipToPrevious = {
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.SkipToPrevious)
+                    },
                     onProgressChange = { progress ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.SeekTo(progress))
                     },
                 )
             }

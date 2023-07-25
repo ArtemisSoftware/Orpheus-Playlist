@@ -50,7 +50,7 @@ fun Track(
         )
 
         Text(
-            text = audio.duration.toString(),
+            text = audio.timeStampToDuration(),
             modifier = Modifier.weight(0.2F),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.body2,

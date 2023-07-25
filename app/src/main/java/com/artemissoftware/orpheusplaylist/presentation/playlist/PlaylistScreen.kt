@@ -44,6 +44,7 @@ fun PlaylistScreen(
     addPlaylist: (List<AudioMetadata>) -> Unit,
     onPlayAudio: (AudioMetadata) -> Unit,
     onSkipToNext: () -> Unit,
+    onSkipToPrevious: () -> Unit,
     onProgressChange: (Float) -> Unit,
     playerState: OrpheusPlaylistState,
     isAudioPlaying: Boolean,
@@ -62,6 +63,7 @@ fun PlaylistScreen(
         onProgressChange = onProgressChange,
         isAudioPlaying = isAudioPlaying,
         onSkipToNext = onSkipToNext,
+        onSkipToPrevious = onSkipToPrevious,
     )
 }
 
@@ -75,6 +77,7 @@ private fun PlaylistScreenContent(
     onProgressChange: (Float) -> Unit,
     onPlayAudio: (AudioMetadata) -> Unit,
     onSkipToNext: () -> Unit,
+    onSkipToPrevious: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -89,13 +92,23 @@ private fun PlaylistScreenContent(
             SheetContent {
                 SheetExpanded {
                     PlayerPage(
-                        tracks = state.album?.tracks ?: emptyList(),
-                        selectedTrack = state.selectedTrack,
+                        state = state,
                         playerState = playerState,
                         isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
                         onPlay = onPlayAudio,
-                        onSkipToNext = onSkipToNext,
+                        onSwipePlay = { track ->
+                            events.invoke(PlayListEvents.SelectTrack(track = track))
+                            onPlayAudio.invoke(track)
+                        },
+                        onSkipToPrevious = {
+                            events.invoke(PlayListEvents.SkipToPreviousTrack)
+                            onSkipToPrevious.invoke()
+                        },
+                        onSkipToNext = {
+                            events.invoke(PlayListEvents.SkipToNextTrack)
+                            onSkipToNext.invoke()
+                        },
                         onCollapse = {
                             coroutineScope.launch {
                                 scaffoldState.bottomSheetState.animateTo(
@@ -203,6 +216,7 @@ private fun PlaylistScreenContentPreview() {
         onPlayAudio = {},
         onProgressChange = {},
         onSkipToNext = {},
+        onSkipToPrevious = {},
     )
 }
 
@@ -217,5 +231,6 @@ private fun PlaylistScreenContent_no_album_Preview() {
         onPlayAudio = {},
         onProgressChange = {},
         onSkipToNext = {},
+        onSkipToPrevious = {},
     )
 }
