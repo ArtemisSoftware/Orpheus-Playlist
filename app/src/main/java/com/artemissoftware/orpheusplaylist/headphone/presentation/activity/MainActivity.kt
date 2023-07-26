@@ -1,5 +1,9 @@
 package com.artemissoftware.orpheusplaylist.headphone.presentation.activity
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -21,7 +25,6 @@ import androidx.navigation.compose.rememberNavController
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.headphone.presentation.playlist.composables.showPermissionsRationalDialog
 import com.artemissoftware.orpheusplaylist.navigation.NavigationGraph
-import com.artemissoftware.orpheusplaylist.navigation.SharedViewModelSample
 import com.artemissoftware.orpheusplaylist.ui.theme.OrpheusPlaylistTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,8 +34,12 @@ class MainActivity : ComponentActivity() {
     private lateinit var requestPermissionLauncher: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>>
     private val mainViewModel by viewModels<MainViewModel>()
 
+    lateinit var receiver: WifiLevelReceiver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        receiver = WifiLevelReceiver()
+        registerReceiver(receiver, IntentFilter("GET_SIGNAL_STRENGTH"))
 
         setContent {
             val isLoading = mainViewModel.state.collectAsState().value.isLoading
@@ -83,8 +90,17 @@ class MainActivity : ComponentActivity() {
 
                     val navController = rememberNavController()
                     NavigationGraph(navController = navController)
-
                 }
+            }
+        }
+    }
+
+    class WifiLevelReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            if (intent.action == "GET_SIGNAL_STRENGTH") {
+                val level = intent.getIntExtra("LEVEL_DATA", 0)
+
+                // Show it in GraphView
             }
         }
     }

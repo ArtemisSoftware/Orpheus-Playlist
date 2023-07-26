@@ -95,6 +95,8 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
         }
 
         mediaPlayerNotificationManager.showNotification(exoPlayer)
+
+        sendDataToActivity()
     }
 
     override fun onGetRoot(
@@ -288,4 +290,12 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
         var currentDuration: Long = 0L
             private set
     }
+
+    private fun sendDataToActivity() {
+        val sendLevel = Intent()
+        sendLevel.action = "GET_SIGNAL_STRENGTH"
+        sendLevel.putExtra("LEVEL_DATA", exoPlayer.audioSessionId)
+        sendBroadcast(sendLevel)
+    }
+
 }

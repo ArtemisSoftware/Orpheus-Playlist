@@ -106,6 +106,7 @@ fun MediaControllerDisplay(
                         onPlay.invoke(track)
                     },
                     onNext = onNext,
+                    displayColor = Color.White,
                 )
             }
 

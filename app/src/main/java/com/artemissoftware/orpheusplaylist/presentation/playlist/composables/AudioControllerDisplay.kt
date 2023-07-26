@@ -25,6 +25,7 @@ fun AudioControllerDisplay(
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
     buttonSize: Dp = 56.dp,
+    displayColor: Color = Color.Yellow,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -36,12 +37,14 @@ fun AudioControllerDisplay(
             enabled = true,
             onClick = onPlay,
             size = buttonSize,
+            tint = displayColor,
         )
         PlayerButton(
             icon = Icons.Filled.SkipNext,
             enabled = true,
             onClick = onNext,
             size = buttonSize,
+            tint = displayColor,
         )
     }
 }
@@ -49,13 +52,13 @@ fun AudioControllerDisplay(
 @Composable
 fun AudioControllerDisplay(
     isPlaying: Boolean,
-    displayColor: Color = Color.Yellow,
     onBack: () -> Unit,
     onFastBackward: () -> Unit,
     onPlay: () -> Unit,
     onFastForward: () -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
+    displayColor: Color = Color.Yellow,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -68,6 +71,7 @@ fun AudioControllerDisplay(
             size = 56.dp,
             elevation = 0.dp,
             color = Color.Transparent,
+            tint = displayColor,
         )
         PlayerButton(
             icon = Icons.Filled.Replay10,
@@ -97,6 +101,7 @@ fun AudioControllerDisplay(
             size = 56.dp,
             elevation = 0.dp,
             color = Color.Transparent,
+            tint = displayColor,
         )
     }
 }

@@ -19,7 +19,11 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -84,9 +88,13 @@ private fun PlaylistScreenContent(
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
+    val seekHeight by remember(state.selectedTrack) {
+        mutableStateOf(if(state.selectedTrack == null) 0.dp else 140.dp)
+    }
+
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
-        sheetPeekHeight = 140.dp,
+        sheetPeekHeight = seekHeight,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
             SheetContent {
