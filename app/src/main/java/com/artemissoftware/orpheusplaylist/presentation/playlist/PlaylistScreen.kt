@@ -1,44 +1,35 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist
 
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
-import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
+import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerData
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollapsed
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.AlbumBanner
-import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Track
 import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
 import kotlinx.coroutines.launch
 
@@ -52,8 +43,10 @@ fun PlaylistScreen(
     onProgressChange: (Float) -> Unit,
     playerState: OrpheusPlaylistState,
     isAudioPlaying: Boolean,
+    visualizer: State<VisualizerData>,
 ) {
     val state = viewModel.state.collectAsState().value
+    val visualizerData = visualizer.value
 
     LaunchedEffect(key1 = state.album) {
         state.album?.let { album -> addPlaylist(album.tracks) }
@@ -68,6 +61,7 @@ fun PlaylistScreen(
         isAudioPlaying = isAudioPlaying,
         onSkipToNext = onSkipToNext,
         onSkipToPrevious = onSkipToPrevious,
+        visualizerData = visualizerData,
     )
 }
 
@@ -82,6 +76,7 @@ private fun PlaylistScreenContent(
     onPlayAudio: (AudioMetadata) -> Unit,
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
+    visualizerData: VisualizerData,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -89,7 +84,7 @@ private fun PlaylistScreenContent(
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
     val seekHeight by remember(state.selectedTrack) {
-        mutableStateOf(if(state.selectedTrack == null) 0.dp else 140.dp)
+        mutableStateOf(if (state.selectedTrack == null) 0.dp else 140.dp)
     }
 
     BottomSheetScaffold(
@@ -104,18 +99,21 @@ private fun PlaylistScreenContent(
                         playerState = playerState,
                         isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
-                        onPlay = onPlayAudio,
+                        visualizerData = visualizerData,
+                        onPlay = {
+//                            onPlayAudio.invoke(it)
+                        },
                         onSwipePlay = { track ->
-                            events.invoke(PlayListEvents.SelectTrack(track = track))
-                            onPlayAudio.invoke(track)
+//                            events.invoke(PlayListEvents.SelectTrack(track = track))
+//                            onPlayAudio.invoke(track)
                         },
                         onSkipToPrevious = {
-                            events.invoke(PlayListEvents.SkipToPreviousTrack)
-                            onSkipToPrevious.invoke()
+//                            events.invoke(PlayListEvents.SkipToPreviousTrack)
+//                            onSkipToPrevious.invoke()
                         },
                         onSkipToNext = {
-                            events.invoke(PlayListEvents.SkipToNextTrack)
-                            onSkipToNext.invoke()
+//                            events.invoke(PlayListEvents.SkipToNextTrack)
+//                            onSkipToNext.invoke()
                         },
                         onCollapse = {
                             coroutineScope.launch {
@@ -137,10 +135,12 @@ private fun PlaylistScreenContent(
                         state = state,
                         isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
-                        onPlay = onPlayAudio,
+                        onPlay = {
+//                            onPlayAudio.invoke(it)
+                        },
                         onSkipToNext = {
-                            events.invoke(PlayListEvents.SkipToNextTrack)
-                            onSkipToNext.invoke()
+//                            events.invoke(PlayListEvents.SkipToNextTrack)
+//                            onSkipToNext.invoke()
                         },
                     )
                 }
@@ -154,38 +154,13 @@ private fun PlaylistScreenContent(
                 )
 
                 state.album?.let { album ->
-
-                    if (album.tracks.isEmpty()) {
-                        WarningMessage(
-                            message = stringResource(id = R.string.tracks_not_found),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(2f),
-                        )
-                    } else {
-                        LazyColumn(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(2f),
-                        ) {
-                            items(album.tracks) { track ->
-                                Track(
-                                    audio = track,
-                                    isPlaying = track.id == state.selectedTrack?.id,
-                                    onClick = {
-                                        events.invoke(PlayListEvents.SelectTrack(track = track))
-                                        onPlayAudio.invoke(it)
-                                    },
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(68.dp),
-                                )
-                            }
-                        }
-                    }
-                } ?: run {
-                    WarningMessage(
-                        message = stringResource(id = R.string.album_not_found),
+                    TrackList(
+                        album = album,
+                        onTrackClick = {
+                            events.invoke(PlayListEvents.SelectTrack(track = it))
+                            onPlayAudio.invoke(it)
+                        },
+                        selectedTrack = state.selectedTrack,
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(2f),
@@ -193,38 +168,22 @@ private fun PlaylistScreenContent(
                 }
             }
         },
-
     )
-}
-
-@Composable private
-fun WarningMessage(
-    message: String,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier,
-    ) {
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = message,
-            style = MaterialTheme.typography.h5,
-        )
-    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PlaylistScreenContentPreview() {
     PlaylistScreenContent(
-        state = PlaylistState(album = DummyData.album, selectedTrack = DummyData.audioMetadata),
         playerState = OrpheusPlaylistState(),
         isAudioPlaying = true,
+        state = PlaylistState(album = DummyData.album, selectedTrack = DummyData.audioMetadata),
         events = {},
-        onPlayAudio = {},
         onProgressChange = {},
+        onPlayAudio = {},
         onSkipToNext = {},
         onSkipToPrevious = {},
+        visualizerData = VisualizerData(),
     )
 }
 
@@ -232,13 +191,14 @@ private fun PlaylistScreenContentPreview() {
 @Composable
 private fun PlaylistScreenContent_no_album_Preview() {
     PlaylistScreenContent(
-        state = PlaylistState(album = null),
         playerState = OrpheusPlaylistState(),
         isAudioPlaying = false,
+        state = PlaylistState(album = null),
         events = {},
-        onPlayAudio = {},
         onProgressChange = {},
+        onPlayAudio = {},
         onSkipToNext = {},
         onSkipToPrevious = {},
+        visualizerData = VisualizerData(),
     )
 }

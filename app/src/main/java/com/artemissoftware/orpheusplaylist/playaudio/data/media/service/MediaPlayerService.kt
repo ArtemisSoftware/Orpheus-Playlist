@@ -33,6 +33,8 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+var aId: Int = 0
+
 @AndroidEntryPoint
 class MediaPlayerService : MediaBrowserServiceCompat() {
 
@@ -96,7 +98,8 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
 
         mediaPlayerNotificationManager.showNotification(exoPlayer)
 
-        sendDataToActivity()
+        aId = exoPlayer.audioSessionId
+        //sendDataToActivity()
     }
 
     override fun onGetRoot(

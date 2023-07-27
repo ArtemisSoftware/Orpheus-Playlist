@@ -31,4 +31,6 @@ object DummyData {
     val listAudioMetadata = listOf(audioMetadata, audioMetadata, audioMetadata)
 
     val album = Album(albumMetadata, listOf(audioMetadata, audioMetadata, audioMetadata))
+
+    val albumNoTracks = Album(albumMetadata, listOf())
 }
