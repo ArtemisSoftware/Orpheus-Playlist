@@ -21,31 +21,34 @@ import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Tra
 
 @Composable
 fun TrackList(
-    album: Album,
+    album: Album? = null,
     onTrackClick: (AudioMetadata) -> Unit,
     modifier: Modifier = Modifier,
     selectedTrack: AudioMetadata? = null,
 ) {
-    if (album.tracks.isNotEmpty()) {
-        LazyColumn(modifier = modifier) {
-            items(album.tracks) { track ->
-                Track(
-                    audio = track,
-                    isPlaying = track.id == selectedTrack?.id,
-                    onClick = {
-                        onTrackClick.invoke(it)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(68.dp),
-                )
+    album?.let { currentAlbum ->
+
+        if (currentAlbum.tracks.isNotEmpty()) {
+            LazyColumn(modifier = modifier) {
+                items(currentAlbum.tracks) { track ->
+                    Track(
+                        audio = track,
+                        isPlaying = track.id == selectedTrack?.id,
+                        onClick = {
+                            onTrackClick.invoke(it)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(68.dp),
+                    )
+                }
             }
+        } else {
+            WarningMessage(
+                message = stringResource(id = R.string.tracks_not_found),
+                modifier = modifier,
+            )
         }
-    } else {
-        WarningMessage(
-            message = stringResource(id = R.string.tracks_not_found),
-            modifier = modifier,
-        )
     }
 }
 

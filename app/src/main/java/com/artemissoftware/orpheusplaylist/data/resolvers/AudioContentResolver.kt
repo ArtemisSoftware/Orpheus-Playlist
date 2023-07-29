@@ -91,6 +91,7 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
             }
         }
 
+        tracks.sortBy { it.position.track }
         return tracks
     }
 
