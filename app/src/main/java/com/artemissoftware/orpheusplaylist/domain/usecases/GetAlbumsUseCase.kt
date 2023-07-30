@@ -14,8 +14,8 @@ class GetAlbumsUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(): List<AlbumMetadata> {
-        val audioIds = userPlaylistDataStoreRepository.getPlaylistsTracks(playlistName = OrpheusConstants.USER_PLAYLIST_NAME)
-        val userAlbum = playlistRepository.getUserPlaylist(playlistName = OrpheusConstants.USER_PLAYLIST_NAME, audioIds = audioIds)
+        val audioIds = userPlaylistDataStoreRepository.getPlaylistsTracks(playlistName = OrpheusConstants.USER_PLAYLIST_ALBUM_NAME)
+        val userAlbum = playlistRepository.getUserPlaylist(playlistName = OrpheusConstants.USER_PLAYLIST_ALBUM_NAME, audioIds = audioIds)
         val result = albumRepository.getAlbums().toMutableList()
         result.add(userAlbum.albumMetadata)
         return result.toList()

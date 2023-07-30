@@ -2,6 +2,7 @@ package com.artemissoftware.orpheusplaylist.presentation.playlist
 
 import android.graphics.Bitmap
 import com.artemissoftware.orpheusplaylist.data.models.Album
+import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 
 data class PlaylistState(

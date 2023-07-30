@@ -38,14 +38,9 @@ private fun AlbumScreenContent(
     LazyVerticalGrid(
         state = stateLazyVerticalGrid,
         columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(space = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(space = 12.dp),
-        contentPadding = PaddingValues(
-//            start = 12.dp,
-//            top = 16.dp,
-//            end = 12.dp,
-//            bottom = 16.dp,
-        ),
+        verticalArrangement = Arrangement.spacedBy(space = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(space = 16.dp),
+        contentPadding = PaddingValues(16.dp),
         content = {
             items(state.albums) { album ->
                 MediaCard(

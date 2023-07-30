@@ -21,6 +21,7 @@ import coil.size.Size
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
+import com.artemissoftware.orpheusplaylist.utils.OrpheusConstants
 
 @Composable
 fun MediaCard(
@@ -41,7 +42,9 @@ fun MediaCard(
     Card(
         modifier = modifier
             .clip(RoundedCornerShape(4.dp))
-            .clickable { onPlaylistClick(album.id) },
+            .clickable {
+                onPlaylistClick(album.id)
+            },
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),

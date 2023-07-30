@@ -27,5 +27,5 @@
     <string name="generic_error">The application has encountered an unexpected error.</string>
 
     <string name="album_not_found">Album not found</string>
-    <string name="tracks_not_found">Tracks not found</string>
+    <string name="tracks_not_found">No tracks available for this album</string>
 </resources>

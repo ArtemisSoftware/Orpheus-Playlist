@@ -35,8 +35,9 @@ fun AlbumCoverCarousel(
     tracks: List<AudioMetadata>,
     onSwipePlay: (Int) -> Unit,
     index: Int,
+    modifier: Modifier = Modifier,
 ) {
-    val ddd = remember {
+    val currentPage = remember {
         mutableStateOf(0)
     }
 
@@ -47,10 +48,10 @@ fun AlbumCoverCarousel(
     }
 
     LaunchedEffect(key1 = pagerState.currentPage) {
-        ddd.value = pagerState.currentPage
+        currentPage.value = pagerState.currentPage
         delay(1000L)
 
-        if (ddd.value == pagerState.currentPage) {
+        if (currentPage.value == pagerState.currentPage) {
             onSwipePlay.invoke(pagerState.currentPage)
         }
     }
@@ -62,7 +63,7 @@ fun AlbumCoverCarousel(
             horizontal = 60.dp,
         ),
         pageSpacing = 12.dp,
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
     ) { page: Int ->
 
         Card(
@@ -98,7 +99,8 @@ private fun AlbumCover(track: AudioMetadata) {
 private fun AlbumCoverPreview() {
     Column(Modifier.fillMaxWidth()) {
         AlbumCoverCarousel(
-            DummyData.listAudioMetadata,
+            modifier = Modifier.fillMaxWidth(),
+            tracks = DummyData.listAudioMetadata,
             onSwipePlay = {},
             index = 0,
         )

@@ -10,7 +10,10 @@ sealed class Screens(
 ) {
 
     object Albums : Screens(route = "Albums")
-    object Playlist : Screens("Playlist", arguments = listOf(navArgument("albumId") { type = NavType.LongType })) {
+    object Playlist : Screens(
+        route = "Playlist",
+        arguments = listOf(navArgument("albumId") { type = NavType.LongType }),
+    ) {
         const val albumId = "albumId"
     }
 

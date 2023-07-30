@@ -4,6 +4,7 @@ data class AudioMetadata(
     val id: Long,
     val name: String,
     val duration: Long,
+    val isOnPlaylist: Boolean = false,
     val position: TrackPositionMetadata,
     val albumMetadata: AlbumMetadata,
 ) {

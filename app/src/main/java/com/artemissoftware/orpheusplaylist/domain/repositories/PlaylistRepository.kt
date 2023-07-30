@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.domain.repositories // ktlint-disable filename
+package com.artemissoftware.orpheusplaylist.domain.repositories
 
 import com.artemissoftware.orpheusplaylist.data.models.Album
 

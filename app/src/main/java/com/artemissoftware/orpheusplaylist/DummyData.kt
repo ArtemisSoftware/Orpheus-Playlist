@@ -25,12 +25,13 @@ object DummyData {
         name = "The artist",
         duration = 100L,
         position = audioPositionMetadata,
+        isOnPlaylist = false,
         albumMetadata = albumMetadata,
     )
 
     val listAudioMetadata = listOf(audioMetadata, audioMetadata, audioMetadata)
 
-    val album = Album(albumMetadata, listOf(audioMetadata, audioMetadata, audioMetadata))
+    val album = Album(albumMetadata = albumMetadata, tracks = listOf(audioMetadata, audioMetadata, audioMetadata))
 
-    val albumNoTracks = Album(albumMetadata, listOf())
+    val albumNoTracks = Album(albumMetadata = albumMetadata, tracks = listOf())
 }
