@@ -65,6 +65,7 @@ fun NavigationGraph(navController: NavHostController) {
 
                 PlaylistScreen(
                     playerState = state,
+                    currentPlaying = viewModel.currentPlaying,
                     isAudioPlaying = viewModel.isAudioPlaying,
                     visualizer = viewModel.visualizerData,
                     addPlaylist = { tracks ->

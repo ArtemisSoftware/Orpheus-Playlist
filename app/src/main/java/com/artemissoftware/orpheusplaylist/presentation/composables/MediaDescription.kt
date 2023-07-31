@@ -22,7 +22,7 @@ fun MediaDescription(
     title: String,
     name: String,
     modifier: Modifier = Modifier,
-    textColor: Color = Color.White,
+    textColor: Color = Color.Black,
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
 ) {
     Column(

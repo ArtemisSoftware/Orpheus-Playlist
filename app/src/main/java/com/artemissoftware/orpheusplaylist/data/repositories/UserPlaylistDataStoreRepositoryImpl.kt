@@ -43,7 +43,7 @@ class UserPlaylistDataStoreRepositoryImpl @Inject constructor(@ApplicationContex
     override suspend fun updatePlaylist(name: String, audioId: Long) {
         context.playlistsStore.updateData { playlists ->
 
-            val userPlaylists = playlists.lists
+            val userPlaylists = playlists.lists.toMutableMap()
             val trackLists = playlists.lists[name]?.toMutableList()
 
             trackLists?.let {
@@ -55,7 +55,7 @@ class UserPlaylistDataStoreRepositoryImpl @Inject constructor(@ApplicationContex
             }
             userPlaylists[name] = trackLists ?: emptyList()
             playlists.copy(
-                lists = userPlaylists,
+                lists = userPlaylists as HashMap<String, List<Long>>,
             )
         }
     }

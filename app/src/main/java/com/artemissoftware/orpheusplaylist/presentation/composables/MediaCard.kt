@@ -10,6 +10,7 @@ import androidx.compose.material.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,19 +22,19 @@ import coil.size.Size
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
-import com.artemissoftware.orpheusplaylist.utils.OrpheusConstants
 
 @Composable
 fun MediaCard(
     album: AlbumMetadata,
     onPlaylistClick: (Long) -> Unit,
     modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
 ) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(album.uri)
             .size(Size.ORIGINAL)
-            .crossfade(800)
+            .crossfade(400)
             .error(R.drawable.musical_note_music_svgrepo_com)
             .placeholder(R.drawable.musical_note_music_svgrepo_com)
             .build(),
@@ -68,6 +69,7 @@ fun MediaCard(
                 title = album.name,
                 name = album.artist.name,
                 modifier = Modifier.fillMaxWidth(),
+                textColor = textColor,
             )
         }
     }

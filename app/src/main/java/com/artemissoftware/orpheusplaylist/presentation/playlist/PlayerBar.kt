@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -8,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
+import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.MediaControllerDisplay
 
@@ -20,6 +22,8 @@ fun PlayerBar(
     onPlay: (AudioMetadata) -> Unit,
     onProgressChange: (Float) -> Unit,
     onSkipToNext: () -> Unit,
+    currentPlaying: AudioMetadata? = null,
+    cover: Bitmap? = null,
 ) {
 //    val pagerState: PagerState = rememberPagerState()
 //
@@ -45,14 +49,14 @@ fun PlayerBar(
 //        }
 //    }
 
-    state.selectedTrack?.let { track ->
+    currentPlaying?.let { track ->
         MediaControllerDisplay(
             isAudioPlaying = isAudioPlaying,
             progress = playerState.currentAudioProgress,
             onProgressChange = {
                 onProgressChange.invoke(it)
             },
-            cover = state.albumCover,
+            cover = cover,
             track = track,
             onPlay = onPlay,
             onNext = onSkipToNext,
@@ -67,11 +71,13 @@ fun PlayerBar(
 @Composable
 private fun PlayerBarPreview() {
     PlayerBar(
-        state = PlaylistState(album = DummyData.album, selectedTrack = DummyData.audioMetadata),
         playerState = OrpheusPlaylistState(),
+        state = PlaylistState(album = DummyData.album, selectedTrack = DummyData.audioMetadata),
         isAudioPlaying = true,
         onPlay = {},
-        onSkipToNext = {},
         onProgressChange = {},
+        onSkipToNext = {},
+        currentPlaying = null,
+        cover = null,
     )
 }
