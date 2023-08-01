@@ -24,6 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
+import com.artemissoftware.orpheusplaylist.data.models.Album
+import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerData
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollapsed
@@ -36,7 +38,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PlaylistScreen(
     viewModel: PlaylistViewModel = hiltViewModel(),
-    addPlaylist: (List<AudioMetadata>) -> Unit,
+    preLoadAlbum: (Album) -> Unit,
     onPlayAudio: (AudioMetadata) -> Unit,
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
@@ -44,12 +46,13 @@ fun PlaylistScreen(
     playerState: OrpheusPlaylistState,
     isAudioPlaying: Boolean,
     visualizer: State<VisualizerData>,
+    currentPlaying: AudioMetadata?,
 ) {
     val state = viewModel.state.collectAsState().value
     val visualizerData = visualizer.value
 
-    LaunchedEffect(key1 = state.album) {
-        state.album?.let { album -> addPlaylist(album.tracks) }
+    LaunchedEffect(key1 = state.album?.albumMetadata?.id) {
+        state.album?.let { album -> preLoadAlbum(album) }
     }
 
     PlaylistScreenContent(
@@ -58,6 +61,7 @@ fun PlaylistScreen(
         events = viewModel::onTriggerEvent,
         onPlayAudio = onPlayAudio,
         onProgressChange = onProgressChange,
+        currentPlaying = currentPlaying,
         isAudioPlaying = isAudioPlaying,
         onSkipToNext = onSkipToNext,
         onSkipToPrevious = onSkipToPrevious,
@@ -69,6 +73,7 @@ fun PlaylistScreen(
 @Composable
 private fun PlaylistScreenContent(
     playerState: OrpheusPlaylistState,
+    currentPlaying: AudioMetadata?,
     isAudioPlaying: Boolean,
     state: PlaylistState,
     events: (PlayListEvents) -> Unit,
@@ -83,12 +88,35 @@ private fun PlaylistScreenContent(
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
-    val seekHeight by remember(state.selectedTrack) {
-        mutableStateOf(if (state.selectedTrack == null) 0.dp else 140.dp)
+    val seekHeight by remember(currentPlaying) {
+        mutableStateOf(if (currentPlaying == null) 0.dp else 140.dp)
     }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
+        content = {
+            Column(modifier = Modifier.fillMaxSize()) {
+                AlbumBanner(
+                    album = /*state.album?.albumMetadata*/playerState.preLoadedAlbum?.albumMetadata ?: playerState.loadedAlbum?.albumMetadata,
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                )
+
+                TrackList(
+                    album = state.album,
+                    onTrackClick = {
+                        events.invoke(PlayListEvents.SelectTrack(track = it))
+                        onPlayAudio.invoke(it)
+                    },
+                    onUpdateUserPlaylist = { audioId ->
+                        events.invoke(PlayListEvents.UpdateUserPlaylist(audioId = audioId))
+                    },
+                    selectedTrack = currentPlaying,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(2f),
+                )
+            }
+        },
         sheetPeekHeight = seekHeight,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
@@ -100,7 +128,7 @@ private fun PlaylistScreenContent(
                         isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
                         visualizerData = visualizerData,
-                        onPlay = {
+                        onPlay = { audio ->
 //                            onPlayAudio.invoke(it)
                         },
                         onSwipePlay = { track ->
@@ -114,6 +142,9 @@ private fun PlaylistScreenContent(
                         onSkipToNext = {
 //                            events.invoke(PlayListEvents.SkipToNextTrack)
 //                            onSkipToNext.invoke()
+                        },
+                        onUpdateUserPlaylist = { audioId ->
+                            events.invoke(PlayListEvents.UpdateUserPlaylist(audioId = audioId))
                         },
                         onCollapse = {
                             coroutineScope.launch {
@@ -133,6 +164,8 @@ private fun PlaylistScreenContent(
                     PlayerBar(
                         playerState = playerState,
                         state = state,
+                        cover = if (state.type == AlbumType.ALBUM) playerState.loadedAlbum?.albumMetadata?.uri else currentPlaying?.albumMetadata?.uri,
+                        currentPlaying = currentPlaying,
                         isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
                         onPlay = {
@@ -146,28 +179,7 @@ private fun PlaylistScreenContent(
                 }
             }
         },
-        content = {
-            Column(modifier = Modifier.fillMaxSize()) {
-                AlbumBanner(
-                    album = state.album?.albumMetadata,
-                    modifier = Modifier.fillMaxWidth().weight(1f),
-                )
 
-                state.album?.let { album ->
-                    TrackList(
-                        album = album,
-                        onTrackClick = {
-                            events.invoke(PlayListEvents.SelectTrack(track = it))
-                            onPlayAudio.invoke(it)
-                        },
-                        selectedTrack = state.selectedTrack,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(2f),
-                    )
-                }
-            }
-        },
     )
 }
 
@@ -184,6 +196,7 @@ private fun PlaylistScreenContentPreview() {
         onSkipToNext = {},
         onSkipToPrevious = {},
         visualizerData = VisualizerData(),
+        currentPlaying = DummyData.audioMetadata,
     )
 }
 
@@ -200,5 +213,6 @@ private fun PlaylistScreenContent_no_album_Preview() {
         onSkipToNext = {},
         onSkipToPrevious = {},
         visualizerData = VisualizerData(),
+        currentPlaying = DummyData.audioMetadata,
     )
 }
