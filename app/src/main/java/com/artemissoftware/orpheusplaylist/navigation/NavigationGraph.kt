@@ -68,8 +68,8 @@ fun NavigationGraph(navController: NavHostController) {
                     currentPlaying = viewModel.currentPlaying,
                     isAudioPlaying = viewModel.isAudioPlaying,
                     visualizer = viewModel.visualizerData,
-                    addPlaylist = { tracks ->
-                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.AddPlaylist(tracks = tracks))
+                    preLoadAlbum = { album ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.PreLoadAlbum(album = album))
                     },
                     onPlayAudio = { track ->
                         viewModel.onTriggerEvent(OrpheusPlaylistEvents.PlayAudio(track = track))

@@ -15,11 +15,11 @@ class PlaylistRepositoryImpl @Inject constructor(
     private val albumContentResolver: AlbumContentResolver,
 ) : PlaylistRepository {
 
-    override suspend fun getAlbum(albumId: Long): Album? = withContext(Dispatchers.IO) {
+    override suspend fun getAlbum(albumId: Long, userSelectedAudioIds: List<Long>): Album? = withContext(Dispatchers.IO) {
         val albumMetadata = albumContentResolver.getAlbum(albumId = albumId)
 
         val album = albumMetadata?.let {
-            val tracks = audioContentResolver.getTracksFromAlbum(albumId = albumId)
+            val tracks = audioContentResolver.getTracksFromAlbum(albumId = albumId, userSelectedAudioIds = userSelectedAudioIds)
             Album(albumMetadata = it, tracks = tracks)
         } ?: run {
             null

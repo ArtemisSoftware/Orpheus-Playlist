@@ -18,11 +18,11 @@ import javax.inject.Inject
 class AudioContentResolver @Inject constructor(@ApplicationContext context: Context) : MetadataContentResolver(context = context) {
 
     @WorkerThread
-    fun getTracksFromAlbum(albumId: Long): List<AudioMetadata> {
-        return getTracksFromAlbumCursorData(albumId = albumId)
+    fun getTracksFromAlbum(albumId: Long, userSelectedAudioIds: List<Long> = emptyList()): List<AudioMetadata> {
+        return getTracksFromAlbumCursorData(albumId = albumId, userSelectedAudioIds = userSelectedAudioIds)
     }
 
-    private fun getTracksFromAlbumCursorData(albumId: Long): MutableList<AudioMetadata> {
+    private fun getTracksFromAlbumCursorData(albumId: Long, userSelectedAudioIds: List<Long> = emptyList()): MutableList<AudioMetadata> {
         val tracks: MutableList<AudioMetadata> = mutableListOf()
 
         getQueryCursor(AudioQuery.getQueryTracksFromAlbum(albumId = albumId))?.use { cursor ->
@@ -81,6 +81,7 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                     name = name,
                     duration = duration,
                     position = position,
+                    isOnPlaylist = userSelectedAudioIds.contains(id),
                     albumMetadata = AlbumMetadata(
                         id = albumId,
                         name = albumName,

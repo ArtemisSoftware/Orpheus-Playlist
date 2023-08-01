@@ -45,6 +45,7 @@ fun MediaControllerDisplay(
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
             .data(cover ?: track.albumMetadata.uri)
+            .crossfade(100)
             .size(Size.ORIGINAL)
             .error(R.drawable.musical_note_music_svgrepo_com)
             .placeholder(R.drawable.musical_note_music_svgrepo_com)

@@ -77,7 +77,7 @@ private fun PlayerBarPreview() {
         onPlay = {},
         onProgressChange = {},
         onSkipToNext = {},
-        currentPlaying = null,
+        currentPlaying = DummyData.audioMetadata,
         cover = null,
     )
 }

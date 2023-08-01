@@ -5,11 +5,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlaylistAdd
+import androidx.compose.material.icons.filled.RemoveDone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,6 +28,7 @@ import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 fun Track(
     audio: AudioMetadata,
     onClick: (AudioMetadata) -> Unit,
+    onUpdateUserPlaylist: (Long) -> Unit,
     modifier: Modifier = Modifier,
     isPlaying: Boolean = false,
 ) {
@@ -49,6 +56,14 @@ fun Track(
             overflow = TextOverflow.Ellipsis,
         )
 
+        IconButton(onClick = { onUpdateUserPlaylist.invoke(audio.id) }) {
+            Icon(
+                imageVector = if(audio.isOnPlaylist) Icons.Default.RemoveDone else Icons.Default.PlaylistAdd,
+                contentDescription = "Add list",
+                tint = Color.White,
+            )
+        }
+
         Text(
             text = audio.timeStampToDuration(),
             modifier = Modifier.weight(0.2F),
@@ -66,6 +81,7 @@ private fun Track_is_playing_Preview() {
         modifier = Modifier.fillMaxWidth().height(60.dp),
         audio = DummyData.audioMetadata,
         onClick = {},
+        onUpdateUserPlaylist = {},
         isPlaying = true,
     )
 }
@@ -76,6 +92,7 @@ private fun Track_not_playing_Preview() {
     Track(
         modifier = Modifier.fillMaxWidth().height(60.dp),
         audio = DummyData.audioMetadata,
+        onUpdateUserPlaylist = {},
         onClick = {},
     )
 }

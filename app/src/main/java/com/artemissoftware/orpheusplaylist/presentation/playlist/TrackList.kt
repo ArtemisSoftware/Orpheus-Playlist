@@ -23,6 +23,7 @@ import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Tra
 fun TrackList(
     album: Album? = null,
     onTrackClick: (AudioMetadata) -> Unit,
+    onUpdateUserPlaylist: (Long) -> Unit,
     modifier: Modifier = Modifier,
     selectedTrack: AudioMetadata? = null,
 ) {
@@ -37,6 +38,7 @@ fun TrackList(
                         onClick = {
                             onTrackClick.invoke(it)
                         },
+                        onUpdateUserPlaylist = onUpdateUserPlaylist,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(68.dp),
@@ -73,10 +75,11 @@ private fun WarningMessage(
 private fun TrackListPreview() {
     TrackList(
         album = DummyData.album,
-        selectedTrack = DummyData.audioMetadata,
         onTrackClick = {},
         modifier = Modifier
             .fillMaxWidth(),
+        selectedTrack = DummyData.audioMetadata,
+        onUpdateUserPlaylist = { audioId -> },
     )
 }
 
@@ -88,6 +91,7 @@ private fun TrackList_no_track_selected_Preview() {
         onTrackClick = {},
         modifier = Modifier
             .fillMaxWidth(),
+        onUpdateUserPlaylist = { audioId ->},
     )
 }
 
@@ -99,5 +103,6 @@ private fun TrackList_no_tracks_Preview() {
         onTrackClick = {},
         modifier = Modifier
             .fillMaxWidth(),
+        onUpdateUserPlaylist = { audioId -> },
     )
 }
