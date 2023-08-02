@@ -40,6 +40,8 @@ fun PlaylistScreen(
     viewModel: PlaylistViewModel = hiltViewModel(),
     preLoadAlbum: (Album) -> Unit,
     onPlayAudio: (AudioMetadata) -> Unit,
+    onPlayTrack: () -> Unit,
+    onSwipePlayTrack: (AudioMetadata) -> Unit,
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
     onProgressChange: (Float) -> Unit,
@@ -60,6 +62,8 @@ fun PlaylistScreen(
         state = state,
         events = viewModel::onTriggerEvent,
         onPlayAudio = onPlayAudio,
+        onPlayTrack = onPlayTrack,
+        onSwipePlayTrack = onSwipePlayTrack,
         onProgressChange = onProgressChange,
         currentPlaying = currentPlaying,
         isAudioPlaying = isAudioPlaying,
@@ -79,6 +83,8 @@ private fun PlaylistScreenContent(
     events: (PlayListEvents) -> Unit,
     onProgressChange: (Float) -> Unit,
     onPlayAudio: (AudioMetadata) -> Unit,
+    onPlayTrack: () -> Unit,
+    onSwipePlayTrack: (AudioMetadata) -> Unit,
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
     visualizerData: VisualizerData,
@@ -123,17 +129,23 @@ private fun PlaylistScreenContent(
             SheetContent {
                 SheetExpanded {
                     PlayerPage(
+                        modifier = Modifier
+                            .fillMaxSize(),
                         state = state,
                         playerState = playerState,
+                        currentPlaying = currentPlaying,
                         isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
                         visualizerData = visualizerData,
                         onPlay = { audio ->
 //                            onPlayAudio.invoke(it)
                         },
+                        onPlayTrack = {
+                            onPlayTrack.invoke()
+                        },
                         onSwipePlay = { track ->
 //                            events.invoke(PlayListEvents.SelectTrack(track = track))
-//                            onPlayAudio.invoke(track)
+                            onSwipePlayTrack.invoke(track)
                         },
                         onSkipToPrevious = {
 //                            events.invoke(PlayListEvents.SkipToPreviousTrack)
@@ -141,7 +153,7 @@ private fun PlaylistScreenContent(
                         },
                         onSkipToNext = {
 //                            events.invoke(PlayListEvents.SkipToNextTrack)
-//                            onSkipToNext.invoke()
+                            onSkipToNext.invoke()
                         },
                         onUpdateUserPlaylist = { audioId ->
                             events.invoke(PlayListEvents.UpdateUserPlaylist(audioId = audioId))
@@ -169,11 +181,11 @@ private fun PlaylistScreenContent(
                         isAudioPlaying = isAudioPlaying,
                         onProgressChange = onProgressChange,
                         onPlay = {
-//                            onPlayAudio.invoke(it)
+                            onPlayTrack.invoke()
                         },
                         onSkipToNext = {
 //                            events.invoke(PlayListEvents.SkipToNextTrack)
-//                            onSkipToNext.invoke()
+                            onSkipToNext.invoke()
                         },
                     )
                 }
@@ -193,6 +205,8 @@ private fun PlaylistScreenContentPreview() {
         events = {},
         onProgressChange = {},
         onPlayAudio = {},
+        onPlayTrack = {},
+        onSwipePlayTrack = {},
         onSkipToNext = {},
         onSkipToPrevious = {},
         visualizerData = VisualizerData(),
@@ -210,6 +224,8 @@ private fun PlaylistScreenContent_no_album_Preview() {
         events = {},
         onProgressChange = {},
         onPlayAudio = {},
+        onPlayTrack = {},
+        onSwipePlayTrack = {},
         onSkipToNext = {},
         onSkipToPrevious = {},
         visualizerData = VisualizerData(),

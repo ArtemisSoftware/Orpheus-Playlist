@@ -99,7 +99,6 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
         mediaPlayerNotificationManager.showNotification(exoPlayer)
 
         aId = exoPlayer.audioSessionId
-        //sendDataToActivity()
     }
 
     override fun onGetRoot(

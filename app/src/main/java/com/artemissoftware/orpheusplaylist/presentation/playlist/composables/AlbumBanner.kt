@@ -40,7 +40,7 @@ fun AlbumBanner(
         model = ImageRequest.Builder(LocalContext.current)
             .data(album?.uri)
             .size(Size.ORIGINAL)
-            .crossfade(800)
+            .crossfade(500)
             .error(R.drawable.musical_note_music_svgrepo_com)
             .placeholder(R.drawable.musical_note_music_svgrepo_com)
             .build(),

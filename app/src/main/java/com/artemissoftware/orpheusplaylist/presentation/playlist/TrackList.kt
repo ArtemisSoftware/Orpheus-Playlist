@@ -1,6 +1,7 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,35 +22,43 @@ import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Tra
 
 @Composable
 fun TrackList(
-    album: Album? = null,
     onTrackClick: (AudioMetadata) -> Unit,
     onUpdateUserPlaylist: (Long) -> Unit,
     modifier: Modifier = Modifier,
     selectedTrack: AudioMetadata? = null,
+    album: Album? = null,
 ) {
-    album?.let { currentAlbum ->
+    Box(modifier = modifier) {
+        album?.let { currentAlbum ->
 
-        if (currentAlbum.tracks.isNotEmpty()) {
-            LazyColumn(modifier = modifier) {
-                items(currentAlbum.tracks) { track ->
-                    Track(
-                        audio = track,
-                        isPlaying = track.id == selectedTrack?.id,
-                        onClick = {
-                            onTrackClick.invoke(it)
-                        },
-                        onUpdateUserPlaylist = onUpdateUserPlaylist,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(68.dp),
-                    )
+            if (currentAlbum.tracks.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                ) {
+                    items(currentAlbum.tracks) { track ->
+                        Track(
+                            audio = track,
+                            isPlaying = track.id == selectedTrack?.id,
+                            onClick = {
+                                onTrackClick.invoke(it)
+                            },
+                            onUpdateUserPlaylist = onUpdateUserPlaylist,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(68.dp),
+                        )
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(140.dp))
+                    }
                 }
+            } else {
+                WarningMessage(
+                    message = stringResource(id = R.string.tracks_not_found),
+                    modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+                )
             }
-        } else {
-            WarningMessage(
-                message = stringResource(id = R.string.tracks_not_found),
-                modifier = modifier,
-            )
         }
     }
 }
@@ -91,7 +100,7 @@ private fun TrackList_no_track_selected_Preview() {
         onTrackClick = {},
         modifier = Modifier
             .fillMaxWidth(),
-        onUpdateUserPlaylist = { audioId ->},
+        onUpdateUserPlaylist = { audioId -> },
     )
 }
 

@@ -85,8 +85,9 @@ fun AudioControllerDisplay(
             icon = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
             enabled = true,
             onClick = onPlay,
-            tint = displayColor,
-            size = 84.dp,
+            tint = Color.Black,
+            color = displayColor,
+            size = 68.dp,
         )
         PlayerButton(
             icon = Icons.Filled.Forward10,

@@ -49,7 +49,7 @@ fun AlbumCoverCarousel(
 
     LaunchedEffect(key1 = pagerState.currentPage) {
         currentPage.value = pagerState.currentPage
-        delay(1000L)
+        delay(700L)
 
         if (currentPage.value == pagerState.currentPage) {
             onSwipePlay.invoke(pagerState.currentPage)
