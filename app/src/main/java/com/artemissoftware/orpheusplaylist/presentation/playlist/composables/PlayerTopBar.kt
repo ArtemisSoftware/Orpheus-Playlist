@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.FeaturedPlayList
 import androidx.compose.material.icons.filled.PlaylistAdd
+import androidx.compose.material.icons.filled.RemoveDone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,7 +24,9 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PlayerTopBar(
+    isOnUserPlayList: Boolean,
     onCollapse: () -> Unit,
+    onUpdateUserPlaylist: () -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
     tint: Color = Color.Black,
@@ -57,18 +60,11 @@ fun PlayerTopBar(
         },
         backgroundColor = Color.Transparent,
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onUpdateUserPlaylist.invoke() }) {
                 Icon(
-                    imageVector = Icons.Default.FeaturedPlayList,
+                    imageVector = if(isOnUserPlayList) Icons.Default.RemoveDone else Icons.Default.PlaylistAdd,
                     contentDescription = "Add list",
-                    tint = Color.Green,
-                )
-            }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Default.PlaylistAdd,
-                    contentDescription = "Add list",
-                    tint = Color.Green,
+                    tint = tint,
                 )
             }
         },
@@ -79,6 +75,8 @@ fun PlayerTopBar(
 @Composable
 private fun PlayerTopBarPreview() {
     PlayerTopBar(
+        isOnUserPlayList = true,
         onCollapse = {},
+        onUpdateUserPlaylist = {},
     )
 }

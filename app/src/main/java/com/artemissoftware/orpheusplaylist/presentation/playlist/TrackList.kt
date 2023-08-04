@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +24,7 @@ import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Tra
 
 @Composable
 fun TrackList(
+    lazyListState: LazyListState = rememberLazyListState(),
     onTrackClick: (AudioMetadata) -> Unit,
     onUpdateUserPlaylist: (Long) -> Unit,
     modifier: Modifier = Modifier,
@@ -33,6 +36,7 @@ fun TrackList(
 
             if (currentAlbum.tracks.isNotEmpty()) {
                 LazyColumn(
+                    state = lazyListState,
                     modifier = Modifier
                         .fillMaxWidth(),
                 ) {
@@ -83,12 +87,12 @@ private fun WarningMessage(
 @Composable
 private fun TrackListPreview() {
     TrackList(
-        album = DummyData.album,
         onTrackClick = {},
+        onUpdateUserPlaylist = { audioId -> },
         modifier = Modifier
             .fillMaxWidth(),
         selectedTrack = DummyData.audioMetadata,
-        onUpdateUserPlaylist = { audioId -> },
+        album = DummyData.album,
     )
 }
 
@@ -96,11 +100,11 @@ private fun TrackListPreview() {
 @Composable
 private fun TrackList_no_track_selected_Preview() {
     TrackList(
-        album = DummyData.album,
         onTrackClick = {},
+        onUpdateUserPlaylist = { audioId -> },
         modifier = Modifier
             .fillMaxWidth(),
-        onUpdateUserPlaylist = { audioId -> },
+        album = DummyData.album,
     )
 }
 
@@ -108,10 +112,10 @@ private fun TrackList_no_track_selected_Preview() {
 @Composable
 private fun TrackList_no_tracks_Preview() {
     TrackList(
-        album = DummyData.albumNoTracks,
         onTrackClick = {},
+        onUpdateUserPlaylist = { audioId -> },
         modifier = Modifier
             .fillMaxWidth(),
-        onUpdateUserPlaylist = { audioId -> },
+        album = DummyData.albumNoTracks,
     )
 }

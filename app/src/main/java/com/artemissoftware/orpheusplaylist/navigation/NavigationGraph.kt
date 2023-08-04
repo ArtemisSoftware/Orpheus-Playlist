@@ -86,6 +86,9 @@ fun NavigationGraph(navController: NavHostController) {
                     onSkipToPrevious = {
                         //viewModel.onTriggerEvent(OrpheusPlaylistEvents.SkipToPrevious)
                     },
+                    togglePlayerDisplay = { isFullDisplay ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.TogglePlayerDisplay(isFullDisplay))
+                    },
                     onProgressChange = { progress ->
                         viewModel.onTriggerEvent(OrpheusPlaylistEvents.SeekTo(progress))
                     },

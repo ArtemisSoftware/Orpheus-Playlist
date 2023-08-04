@@ -4,6 +4,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
@@ -44,6 +45,7 @@ fun PlaylistScreen(
     onSwipePlayTrack: (AudioMetadata) -> Unit,
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
+    togglePlayerDisplay: (Boolean) -> Unit,
     onProgressChange: (Float) -> Unit,
     playerState: OrpheusPlaylistState,
     isAudioPlaying: Boolean,
@@ -69,6 +71,7 @@ fun PlaylistScreen(
         isAudioPlaying = isAudioPlaying,
         onSkipToNext = onSkipToNext,
         onSkipToPrevious = onSkipToPrevious,
+        togglePlayerDisplay = togglePlayerDisplay,
         visualizerData = visualizerData,
     )
 }
@@ -87,15 +90,21 @@ private fun PlaylistScreenContent(
     onSwipePlayTrack: (AudioMetadata) -> Unit,
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
+    togglePlayerDisplay: (Boolean) -> Unit,
     visualizerData: VisualizerData,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val lazyListState = rememberLazyListState()
 
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
 
     val seekHeight by remember(currentPlaying) {
         mutableStateOf(if (currentPlaying == null) 0.dp else 140.dp)
+    }
+
+    LaunchedEffect(key1 = scaffoldState.bottomSheetState.currentValue) {
+        togglePlayerDisplay.invoke(scaffoldState.bottomSheetState.isExpanded)
     }
 
     BottomSheetScaffold(
@@ -108,6 +117,7 @@ private fun PlaylistScreenContent(
                 )
 
                 TrackList(
+                    lazyListState = lazyListState,
                     album = state.album,
                     onTrackClick = {
                         events.invoke(PlayListEvents.SelectTrack(track = it))
@@ -144,8 +154,14 @@ private fun PlaylistScreenContent(
                             onPlayTrack.invoke()
                         },
                         onSwipePlay = { track ->
-//                            events.invoke(PlayListEvents.SelectTrack(track = track))
-                            onSwipePlayTrack.invoke(track)
+                            coroutineScope.launch {
+                                val currentIndex = playerState.loadedAlbum?.tracks?.indexOf(track) ?: 0
+                                val index = if (currentIndex == -1) 0 else currentIndex
+                                lazyListState.scrollToItem(index = index)
+                            }
+                            if (playerState.fullPlayer) {
+                                onSwipePlayTrack.invoke(track)
+                            }
                         },
                         onSkipToPrevious = {
 //                            events.invoke(PlayListEvents.SkipToPreviousTrack)
@@ -209,6 +225,7 @@ private fun PlaylistScreenContentPreview() {
         onSwipePlayTrack = {},
         onSkipToNext = {},
         onSkipToPrevious = {},
+        togglePlayerDisplay = {},
         visualizerData = VisualizerData(),
         currentPlaying = DummyData.audioMetadata,
     )
@@ -228,6 +245,7 @@ private fun PlaylistScreenContent_no_album_Preview() {
         onSwipePlayTrack = {},
         onSkipToNext = {},
         onSkipToPrevious = {},
+        togglePlayerDisplay = {},
         visualizerData = VisualizerData(),
         currentPlaying = DummyData.audioMetadata,
     )
