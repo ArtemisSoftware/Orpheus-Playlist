@@ -10,6 +10,8 @@ import com.artemissoftware.orpheusplaylist.OrpheusPlaylistEvents
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistViewModel
 import com.artemissoftware.orpheusplaylist.presentation.albums.AlbumScreen
 import com.artemissoftware.orpheusplaylist.presentation.playlist.PlaylistScreen
+import com.artemissoftware.orpheusplaylist.presentation.userplaylist.UserPlaylistScreen
+import com.artemissoftware.orpheusplaylist.utils.OrpheusConstants
 
 /*
 @Composable
@@ -50,7 +52,12 @@ fun NavigationGraph(navController: NavHostController) {
             composable(route = Screens.Albums.fullRoute()) {
                 AlbumScreen(
                     onPlaylistClick = { albumId ->
-                        navController.navigate(route = Screens.Playlist.withArgs(albumId.toString()))
+                        if(albumId == OrpheusConstants.USER_PLAYLIST_ALBUM_ID){
+                            navController.navigate(route = Screens.UserPlaylist.withArgs(albumId.toString()))
+                        }
+                        else {
+                            navController.navigate(route = Screens.Playlist.withArgs(albumId.toString()))
+                        }
                     },
                 )
             }
@@ -64,6 +71,46 @@ fun NavigationGraph(navController: NavHostController) {
                 val state = viewModel.state.collectAsState().value
 
                 PlaylistScreen(
+                    playerState = state,
+                    currentPlaying = viewModel.currentPlaying,
+                    isAudioPlaying = viewModel.isAudioPlaying,
+                    visualizer = viewModel.visualizerData,
+                    preLoadAlbum = { album ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.PreLoadAlbum(album = album))
+                    },
+                    onPlayAudio = { track ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.PlayAudio(track = track))
+                    },
+                    onPlayTrack = {
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.PlayTrack)
+                    },
+                    onSwipePlayTrack = { track ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.SwipePlayTrack(track))
+                    },
+                    onSkipToNext = {
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.SkipToNext)
+                    },
+                    onSkipToPrevious = {
+                        //viewModel.onTriggerEvent(OrpheusPlaylistEvents.SkipToPrevious)
+                    },
+                    togglePlayerDisplay = { isFullDisplay ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.TogglePlayerDisplay(isFullDisplay))
+                    },
+                    onProgressChange = { progress ->
+                        viewModel.onTriggerEvent(OrpheusPlaylistEvents.SeekTo(progress))
+                    },
+                )
+            }
+
+            composable(
+                route = Screens.UserPlaylist.fullRoute(Screens.UserPlaylist.albumId),
+                arguments = Screens.UserPlaylist.arguments,
+            ) { entry ->
+
+                val viewModel = entry.sharedViewModel<OrpheusPlaylistViewModel>(navController)
+                val state = viewModel.state.collectAsState().value
+
+                UserPlaylistScreen(
                     playerState = state,
                     currentPlaying = viewModel.currentPlaying,
                     isAudioPlaying = viewModel.isAudioPlaying,

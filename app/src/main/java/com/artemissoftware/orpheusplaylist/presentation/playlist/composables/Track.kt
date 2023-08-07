@@ -31,6 +31,7 @@ fun Track(
     onUpdateUserPlaylist: (Long) -> Unit,
     modifier: Modifier = Modifier,
     isPlaying: Boolean = false,
+    showAddToPlaylist: Boolean = true,
 ) {
     Row(
         modifier = modifier
@@ -56,12 +57,23 @@ fun Track(
             overflow = TextOverflow.Ellipsis,
         )
 
-        IconButton(onClick = { onUpdateUserPlaylist.invoke(audio.id) }) {
-            Icon(
-                imageVector = if(audio.isOnPlaylist) Icons.Default.RemoveDone else Icons.Default.PlaylistAdd,
-                contentDescription = "Add list",
-                tint = Color.White,
-            )
+        if (showAddToPlaylist) {
+            IconButton(onClick = { onUpdateUserPlaylist.invoke(audio.id) }) {
+                Icon(
+                    imageVector = if (audio.isOnPlaylist) Icons.Default.RemoveDone else Icons.Default.PlaylistAdd,
+                    contentDescription = "Add list",
+                    tint = Color.White,
+                )
+            }
+        }
+        else {
+            IconButton(onClick = { onUpdateUserPlaylist.invoke(audio.id) }) {
+                Icon(
+                    imageVector = Icons.Default.RemoveDone,
+                    contentDescription = "Add list",
+                    tint = Color.White,
+                )
+            }
         }
 
         Text(
@@ -78,11 +90,12 @@ fun Track(
 @Composable
 private fun Track_is_playing_Preview() {
     Track(
-        modifier = Modifier.fillMaxWidth().height(60.dp),
         audio = DummyData.audioMetadata,
         onClick = {},
         onUpdateUserPlaylist = {},
+        modifier = Modifier.fillMaxWidth().height(60.dp),
         isPlaying = true,
+        showAddToPlaylist = true,
     )
 }
 
@@ -90,9 +103,10 @@ private fun Track_is_playing_Preview() {
 @Composable
 private fun Track_not_playing_Preview() {
     Track(
-        modifier = Modifier.fillMaxWidth().height(60.dp),
         audio = DummyData.audioMetadata,
-        onUpdateUserPlaylist = {},
         onClick = {},
+        onUpdateUserPlaylist = {},
+        modifier = Modifier.fillMaxWidth().height(60.dp),
+        showAddToPlaylist = false,
     )
 }

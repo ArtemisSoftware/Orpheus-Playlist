@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.presentation.playlist
+package com.artemissoftware.orpheusplaylist.presentation.userplaylist
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
@@ -32,12 +32,18 @@ import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerData
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollapsed
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
+import com.artemissoftware.orpheusplaylist.presentation.playlist.PlayListEvents
+import com.artemissoftware.orpheusplaylist.presentation.playlist.PlayerBar
+import com.artemissoftware.orpheusplaylist.presentation.playlist.PlayerPage
+import com.artemissoftware.orpheusplaylist.presentation.playlist.PlaylistState
+import com.artemissoftware.orpheusplaylist.presentation.playlist.PlaylistViewModel
+import com.artemissoftware.orpheusplaylist.presentation.playlist.TrackList
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.AlbumBanner
 import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
 import kotlinx.coroutines.launch
 
 @Composable
-fun PlaylistScreen(
+fun UserPlaylistScreen(
     viewModel: PlaylistViewModel = hiltViewModel(),
     preLoadAlbum: (Album) -> Unit,
     onPlayAudio: (AudioMetadata) -> Unit,
@@ -59,7 +65,7 @@ fun PlaylistScreen(
         state.album?.let { album -> preLoadAlbum(album) }
     }
 
-    PlaylistScreenContent(
+    UserPlaylistScreenContent(
         playerState = playerState,
         state = state,
         events = viewModel::onTriggerEvent,
@@ -78,7 +84,7 @@ fun PlaylistScreen(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun PlaylistScreenContent(
+private fun UserPlaylistScreenContent(
     playerState: OrpheusPlaylistState,
     currentPlaying: AudioMetadata?,
     isAudioPlaying: Boolean,
@@ -117,6 +123,7 @@ private fun PlaylistScreenContent(
                 )
 
                 TrackList(
+                    showAddToPlaylist = false,
                     lazyListState = lazyListState,
                     album = state.album,
                     onTrackClick = {
@@ -125,6 +132,7 @@ private fun PlaylistScreenContent(
                     },
                     onUpdateUserPlaylist = { audioId ->
                         events.invoke(PlayListEvents.UpdateUserPlaylist(audioId = audioId))
+                        events.invoke(PlayListEvents.UpdateTracks)
                     },
                     selectedTrack = currentPlaying,
                     modifier = Modifier
@@ -215,8 +223,8 @@ private fun PlaylistScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun PlaylistScreenContentPreview() {
-    PlaylistScreenContent(
+private fun UserPlaylistScreenContentPreview() {
+    UserPlaylistScreenContent(
         playerState = OrpheusPlaylistState(),
         isAudioPlaying = true,
         state = PlaylistState(album = DummyData.album, selectedTrack = DummyData.audioMetadata),
@@ -235,8 +243,8 @@ private fun PlaylistScreenContentPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun PlaylistScreenContent_no_album_Preview() {
-    PlaylistScreenContent(
+private fun UserPlaylistScreenContent_no_album_Preview() {
+    UserPlaylistScreenContent(
         playerState = OrpheusPlaylistState(),
         isAudioPlaying = false,
         state = PlaylistState(album = null),

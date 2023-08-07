@@ -17,6 +17,13 @@ sealed class Screens(
         const val albumId = "albumId"
     }
 
+    object UserPlaylist : Screens(
+        route = "UserPlaylist",
+        arguments = listOf(navArgument("albumId") { type = NavType.LongType }),
+    ) {
+        const val albumId = "albumId"
+    }
+
     fun withArgs(vararg args: String): String {
         return buildString {
             append(route)

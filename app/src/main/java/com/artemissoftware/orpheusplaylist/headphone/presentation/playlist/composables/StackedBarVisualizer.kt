@@ -6,6 +6,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,10 +26,13 @@ import androidx.compose.ui.graphics.vector.PathNode
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerData
 import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerHelper
+import java.lang.Math.PI
+import java.lang.Math.sin
 import kotlin.math.roundToInt
 
 @JvmInline
@@ -162,6 +167,7 @@ private fun calculateStackedBarPoints(
     return nodes
 }
 
+
 @Composable
 private fun StackedBarVisualizerBackground(
     barCount: Int,
@@ -207,4 +213,122 @@ private fun StackedBarVisualizerBackground(
             contentDescription = "",
         )
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun StackedBarVisualizerPreview() {
+    val sampleRate = 44100 // Sample rate in Hz
+    val duration = 2.0 // Duration of the waveform in seconds
+    val frequency = 440.0 // Frequency of the sine wave in Hz
+    val amplitude = 127.0 // Amplitude of the waveform (from -128 to 127)
+
+    val rawWaveform = generateSineWaveSample(frequency, amplitude, sampleRate, duration)
+
+    StackedBarVisualizer(
+        stackBarBackgroundColor = Color.Green,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(height = 100.dp),
+        data = VisualizerData(
+            rawWaveform = rawWaveform,
+            captureSize = rawWaveform.size,
+        ),
+        barCount = 32,
+
+    )
+}
+
+fun generateSineWaveSample(frequency: Double, amplitude: Double, sampleRate: Int, duration: Double): ByteArray {
+    val numSamples = (duration * sampleRate).toInt()
+    val samples = ByteArray(numSamples)
+
+    val angularFrequency = 2.0 * PI * frequency / sampleRate
+    for (i in 0 until numSamples) {
+        val sampleValue = (amplitude * sin(i * angularFrequency)).toInt().toByte()
+        samples[i] = sampleValue
+    }
+
+    return samples
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@Composable
+private fun StackedBarVisualizerBackground_(
+//    barCount: Int,
+//    maxStackCount: Int = 32,
+    stackBarBackgroundColor: Color = Color.Gray,
+    viewportWidth: Float,
+    viewportHeight: Float,
+//    horizontalPadding: Float,
+//    verticalPadding: Float,
+) {
+    Row(modifier = Modifier.fillMaxSize()) {
+        val nodes = listOf(Point(p = Pair(1F, 1F)), Point(p = Pair(2F, 2F)), Point(p = Pair(1F, 1F)), Point(p = Pair(4F, 4F))).mapIndexed { index, point ->
+            if (index % 4 == 0) {
+                PathNode.MoveTo(point.x(), point.y())
+            } else {
+                PathNode.LineTo(point.x(), point.y())
+            }
+        }
+
+//        val nodes = calculateStackedBarPoints(
+//            resampled = VisualizerData.getMaxProcessed(resolution = barCount),
+//            viewportWidth = viewportWidth,
+//            viewportHeight = viewportHeight,
+//            barCount = barCount,
+//            maxStackCount = maxStackCount,
+//            horizontalPadding = horizontalPadding,
+//            verticalPadding = verticalPadding,
+//        ).mapIndexed { index, point ->
+//            if (index % 4 == 0) {
+//                PathNode.MoveTo(point.x(), point.y())
+//            } else {
+//                PathNode.LineTo(point.x(), point.y())
+//            }
+//        }
+
+        val vectorPainter = rememberVectorPainter(
+            defaultHeight = viewportHeight.dp,
+            defaultWidth = viewportWidth.dp,
+            viewportHeight = viewportHeight,
+            viewportWidth = viewportWidth,
+            autoMirror = false,
+        ) { _, _ ->
+            Path(
+                fill = SolidColor(stackBarBackgroundColor),
+                pathData = nodes,
+            )
+        }
+
+        Image(
+            painter = vectorPainter,
+            contentDescription = "",
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun StackedBarVisualizerBackgroundPreview() {
+    StackedBarVisualizerBackground_(
+        stackBarBackgroundColor = Color.Green,
+        viewportWidth = 200F,
+        viewportHeight = 200F,
+    )
 }

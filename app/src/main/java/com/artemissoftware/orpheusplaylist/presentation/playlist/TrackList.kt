@@ -24,12 +24,13 @@ import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Tra
 
 @Composable
 fun TrackList(
-    lazyListState: LazyListState = rememberLazyListState(),
     onTrackClick: (AudioMetadata) -> Unit,
     onUpdateUserPlaylist: (Long) -> Unit,
     modifier: Modifier = Modifier,
+    showAddToPlaylist: Boolean = true,
     selectedTrack: AudioMetadata? = null,
     album: Album? = null,
+    lazyListState: LazyListState = rememberLazyListState(),
 ) {
     Box(modifier = modifier) {
         album?.let { currentAlbum ->
@@ -42,6 +43,7 @@ fun TrackList(
                 ) {
                     items(currentAlbum.tracks) { track ->
                         Track(
+                            showAddToPlaylist = showAddToPlaylist,
                             audio = track,
                             isPlaying = track.id == selectedTrack?.id,
                             onClick = {

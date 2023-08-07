@@ -57,6 +57,10 @@ class PlaylistViewModel @Inject constructor(
             is PlayListEvents.UpdateUserPlaylist -> {
                 updateUserPlaylist(audioId = event.audioId)
             }
+
+            PlayListEvents.UpdateTracks -> {
+                getAlbumUserPlaylist(OrpheusConstants.USER_PLAYLIST_ALBUM_NAME)
+            }
         }
     }
 

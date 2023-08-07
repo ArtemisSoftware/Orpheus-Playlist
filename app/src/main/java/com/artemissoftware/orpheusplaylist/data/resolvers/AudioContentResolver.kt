@@ -160,6 +160,7 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                     name = name,
                     duration = duration,
                     position = position,
+                    isOnPlaylist = audioIds.contains(id),
                     albumMetadata = AlbumMetadata(
                         id = albumId,
                         name = albumName,
