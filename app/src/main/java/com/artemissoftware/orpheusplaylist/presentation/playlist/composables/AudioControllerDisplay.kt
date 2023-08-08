@@ -62,7 +62,7 @@ fun AudioControllerDisplay(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         modifier = modifier,
     ) {
         PlayerButton(
@@ -73,13 +73,6 @@ fun AudioControllerDisplay(
             color = Color.Transparent,
             tint = displayColor,
         )
-        PlayerButton(
-            icon = Icons.Filled.Replay10,
-            onClick = onFastBackward,
-            size = 56.dp,
-            elevation = 0.dp,
-            color = Color.Transparent,
-        )
 
         PlayerButton(
             icon = if (isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
@@ -89,13 +82,7 @@ fun AudioControllerDisplay(
             color = displayColor,
             size = 68.dp,
         )
-        PlayerButton(
-            icon = Icons.Filled.Forward10,
-            onClick = onFastForward,
-            size = 56.dp,
-            elevation = 0.dp,
-            color = Color.Transparent,
-        )
+
         PlayerButton(
             icon = Icons.Filled.SkipNext,
             onClick = onNext,

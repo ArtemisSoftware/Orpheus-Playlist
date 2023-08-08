@@ -58,9 +58,19 @@ class PlaylistViewModel @Inject constructor(
                 updateUserPlaylist(audioId = event.audioId)
             }
 
-            PlayListEvents.UpdateTracks -> {
-                getAlbumUserPlaylist(OrpheusConstants.USER_PLAYLIST_ALBUM_NAME)
+            is PlayListEvents.RemoveTrackFromPlaylist -> {
+                removeTrack(audioId = event.audioId)
             }
+        }
+    }
+
+    private fun removeTrack(audioId: Long) = with(_state) {
+        val tracks = value.album?.tracks?.toMutableList() ?: mutableListOf()
+
+        tracks.removeIf { it.id == audioId }
+
+        update {
+            it.copy(album = it.album?.copy(tracks = tracks))
         }
     }
 

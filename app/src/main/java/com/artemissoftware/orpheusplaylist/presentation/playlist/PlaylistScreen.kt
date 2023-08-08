@@ -139,14 +139,19 @@ private fun PlaylistScreenContent(
             SheetContent {
                 SheetExpanded {
                     PlayerPage(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        state = state,
                         playerState = playerState,
-                        currentPlaying = currentPlaying,
+                        state = state,
                         isAudioPlaying = isAudioPlaying,
-                        onProgressChange = onProgressChange,
                         visualizerData = visualizerData,
+                        onProgressChange = onProgressChange,
+                        onCollapse = {
+                            coroutineScope.launch {
+                                scaffoldState.bottomSheetState.animateTo(
+                                    targetValue = BottomSheetValue.Collapsed,
+                                    tween(500),
+                                )
+                            }
+                        },
                         onPlay = { audio ->
 //                            onPlayAudio.invoke(it)
                         },
@@ -165,25 +170,20 @@ private fun PlaylistScreenContent(
                                 onSwipePlayTrack.invoke(track)
                             }
                         },
-                        onSkipToPrevious = {
-//                            events.invoke(PlayListEvents.SkipToPreviousTrack)
-//                            onSkipToPrevious.invoke()
-                        },
                         onSkipToNext = {
 //                            events.invoke(PlayListEvents.SkipToNextTrack)
                             onSkipToNext.invoke()
                         },
+                        onSkipToPrevious = {
+//                            events.invoke(PlayListEvents.SkipToPreviousTrack)
+//                            onSkipToPrevious.invoke()
+                        },
                         onUpdateUserPlaylist = { audioId ->
                             events.invoke(PlayListEvents.UpdateUserPlaylist(audioId = audioId))
                         },
-                        onCollapse = {
-                            coroutineScope.launch {
-                                scaffoldState.bottomSheetState.animateTo(
-                                    targetValue = BottomSheetValue.Collapsed,
-                                    tween(500),
-                                )
-                            }
-                        },
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        currentPlaying = currentPlaying,
                     )
                 }
                 SheetCollapsed(

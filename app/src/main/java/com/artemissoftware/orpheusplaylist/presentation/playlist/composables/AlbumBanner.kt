@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist.composables
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -90,6 +91,69 @@ fun AlbumBanner(
         }
     }
 }
+
+
+@Composable
+fun AlbumBanner(
+    albumName: String,
+    artistName: String,
+    modifier: Modifier = Modifier,
+    cover: Bitmap? = null,
+) {
+    val painter = rememberAsyncImagePainter(
+        model = ImageRequest.Builder(LocalContext.current)
+            .data(cover)
+            .size(Size.ORIGINAL)
+            .crossfade(500)
+            .error(R.drawable.musical_note_music_svgrepo_com)
+            .placeholder(R.drawable.musical_note_music_svgrepo_com)
+            .build(),
+    )
+
+    Surface(modifier = modifier) {
+        AsyncImage(
+            model = painter.request,
+            contentScale = ContentScale.Crop,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxSize()
+                .alpha(0.4F)
+                .blur(2.dp),
+        )
+
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(
+                space = 16.dp,
+                alignment = Alignment.Start,
+            ),
+            verticalAlignment = Alignment.Bottom,
+            modifier = modifier.padding(12.dp),
+        ) {
+            Card(
+                modifier = Modifier
+                    .weight(1f)
+                    .aspectRatio(1f),
+                elevation = 8.dp,
+            ) {
+                AsyncImage(
+                    model = painter.request,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize(),
+                )
+            }
+
+            AlbumDescription(
+                albumName = albumName,
+                artist = artistName,
+                modifier = Modifier.weight(1f),
+            )
+
+        }
+    }
+}
+
 
 @Composable
 private fun AlbumDescription(

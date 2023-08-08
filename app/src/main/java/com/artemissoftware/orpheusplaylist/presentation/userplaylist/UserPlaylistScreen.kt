@@ -113,13 +113,17 @@ private fun UserPlaylistScreenContent(
         togglePlayerDisplay.invoke(scaffoldState.bottomSheetState.isExpanded)
     }
 
+    val album = (playerState.preLoadedAlbum?.albumMetadata ?: playerState.loadedAlbum?.albumMetadata)
+
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         content = {
             Column(modifier = Modifier.fillMaxSize()) {
                 AlbumBanner(
-                    album = playerState.preLoadedAlbum?.albumMetadata ?: playerState.loadedAlbum?.albumMetadata,
+                    albumName = album?.name ?: "",
+                    artistName = "${(playerState.preLoadedAlbum?.tracks?.size ?: 0)} tracks",
                     modifier = Modifier.fillMaxWidth().weight(1f),
+                    cover = album?.uri,
                 )
 
                 TrackList(
@@ -132,7 +136,7 @@ private fun UserPlaylistScreenContent(
                     },
                     onUpdateUserPlaylist = { audioId ->
                         events.invoke(PlayListEvents.UpdateUserPlaylist(audioId = audioId))
-                        events.invoke(PlayListEvents.UpdateTracks)
+                        events.invoke(PlayListEvents.RemoveTrackFromPlaylist(audioId = audioId))
                     },
                     selectedTrack = currentPlaying,
                     modifier = Modifier
