@@ -193,7 +193,6 @@ private fun PlaylistScreenContent(
                 ) {
                     PlayerBar(
                         playerState = playerState,
-                        state = state,
                         cover = if (state.type == AlbumType.ALBUM) playerState.loadedAlbum?.albumMetadata?.uri else currentPlaying?.albumMetadata?.uri,
                         currentPlaying = currentPlaying,
                         isAudioPlaying = isAudioPlaying,

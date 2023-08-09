@@ -25,7 +25,7 @@ import coil.size.Size
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
-import com.artemissoftware.orpheusplaylist.presentation.playlist.lolo
+import com.artemissoftware.orpheusplaylist.navigation.albumCoverSize
 import com.artemissoftware.orpheusplaylist.utils.extensions.carouselTransition
 import kotlinx.coroutines.delay
 
@@ -90,7 +90,7 @@ private fun AlbumCover(track: AudioMetadata) {
         model = painter.request,
         contentScale = ContentScale.FillBounds,
         contentDescription = null,
-        modifier = Modifier.size(lolo),
+        modifier = Modifier.size(albumCoverSize),
     )
 }
 

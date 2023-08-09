@@ -1,5 +1,7 @@
 package com.artemissoftware.orpheusplaylist.data.models
 
+import kotlin.math.floor
+
 data class AudioMetadata(
     val id: Long,
     val name: String,
@@ -9,11 +11,11 @@ data class AudioMetadata(
     val albumMetadata: AlbumMetadata,
 ) {
     fun timeStampToDuration(): String {
-        val totalSeconds = Math.floor(duration.toLong() / 1E3).toInt()
+        val totalSeconds = floor(duration / 1E3).toInt()
         val minutes = totalSeconds / 60
         val remainingSeconds = totalSeconds - (minutes * 60)
 
-        return if (duration.toLong() < 0) {
+        return if (duration < 0) {
             "--:--"
         } else {
             "%d:%02d".format(minutes, remainingSeconds)

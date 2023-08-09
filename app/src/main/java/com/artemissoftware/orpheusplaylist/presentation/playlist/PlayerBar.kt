@@ -9,7 +9,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
-import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.MediaControllerDisplay
 
@@ -17,7 +16,6 @@ import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Med
 @Composable
 fun PlayerBar(
     playerState: OrpheusPlaylistState,
-    state: PlaylistState,
     isAudioPlaying: Boolean,
     onPlay: (AudioMetadata) -> Unit,
     onProgressChange: (Float) -> Unit,
@@ -72,7 +70,6 @@ fun PlayerBar(
 private fun PlayerBarPreview() {
     PlayerBar(
         playerState = OrpheusPlaylistState(),
-        state = PlaylistState(album = DummyData.album, selectedTrack = DummyData.audioMetadata),
         isAudioPlaying = true,
         onPlay = {},
         onProgressChange = {},

@@ -8,6 +8,7 @@ sealed class Screens(
     private val route: String,
     val arguments: List<NamedNavArgument> = emptyList(),
 ) {
+    object Player : Screens(route = "Player")
 
     object Albums : Screens(route = "Albums")
     object Playlist : Screens(
