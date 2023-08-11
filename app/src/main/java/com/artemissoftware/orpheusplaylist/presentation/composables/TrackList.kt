@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.presentation.playlist
+package com.artemissoftware.orpheusplaylist.presentation.composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer

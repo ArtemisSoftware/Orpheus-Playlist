@@ -31,8 +31,8 @@ import com.artemissoftware.orpheusplaylist.navigation.bottomPlayerHeight
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollapsed
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
-import com.artemissoftware.orpheusplaylist.presentation.playlist.PlayerBar
-import com.artemissoftware.orpheusplaylist.presentation.playlist.PlayerPage
+import com.artemissoftware.orpheusplaylist.presentation.composables.PlayerBar
+import com.artemissoftware.orpheusplaylist.presentation.composables.PlayerPage
 import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
 import kotlinx.coroutines.launch
 
@@ -128,16 +128,10 @@ private fun MusicPlayerContent(
                                 )
                             }
                         },
-                        onPlay = { audio ->
- //                            onPlayAudio.invoke(it)
-                        },
                         onPlayTrack = onPlayTrack,
                         onSwipePlay = onSwipePlayTrack,
                         onSkipToNext = onSkipToNext,
-                        onSkipToPrevious = {
- //                            events.invoke(PlayListEvents.SkipToPreviousTrack)
- //                            onSkipToPrevious.invoke()
-                        },
+                        onSkipToPrevious = onSkipToPrevious,
                         onUpdateUserPlaylist = onUpdatePlaylist,
                         modifier = Modifier
                             .fillMaxSize(),

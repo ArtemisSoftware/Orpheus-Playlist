@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.presentation.playlist
+package com.artemissoftware.orpheusplaylist.presentation.composables
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.ExperimentalFoundationApi

@@ -21,7 +21,6 @@ import javax.inject.Inject
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(
     private val getAlbumUseCase: GetAlbumUseCase,
-    private val getAlbumUserPlaylistUseCase: GetAlbumUserPlaylistUseCase,
     private val updateUserPlaylistUseCase: UpdateUserPlaylistUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -31,13 +30,7 @@ class PlaylistViewModel @Inject constructor(
 
     init {
         val albumId = savedStateHandle.get<Long>("albumId")
-        albumId?.let {
-            if (it == OrpheusConstants.USER_PLAYLIST_ALBUM_ID) {
-                getAlbumUserPlaylist(OrpheusConstants.USER_PLAYLIST_ALBUM_NAME)
-            } else {
-                getAlbum(albumId = it)
-            }
-        }
+        albumId?.let { getAlbum(albumId = it) }
     }
 
     fun onTriggerEvent(event: PlayListEvents) {
@@ -94,15 +87,7 @@ class PlaylistViewModel @Inject constructor(
         }
     }
 
-    private fun getAlbumUserPlaylist(playlistName: String) {
-        viewModelScope.launch {
-            getAlbumUserPlaylistUseCase(playlistName = playlistName).collectLatest { album ->
-                _state.update {
-                    it.copy(album = album)
-                }
-            }
-        }
-    }
+
 
     private fun selectTrack(track: AudioMetadata) = with(_state) {
         if (track.id != value.selectedTrack?.id) {
