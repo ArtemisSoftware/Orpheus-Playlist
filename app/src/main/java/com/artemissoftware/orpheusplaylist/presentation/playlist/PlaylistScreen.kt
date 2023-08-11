@@ -1,12 +1,9 @@
 package com.artemissoftware.orpheusplaylist.presentation.playlist
 
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
@@ -26,15 +23,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.data.models.Album
-import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerData
-import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollapsed
-import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
-import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
 import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.AlbumBanner
-import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
-import kotlinx.coroutines.launch
 
 @Composable
 fun PlaylistScreen(
@@ -93,8 +84,32 @@ private fun PlaylistScreenContent(
     togglePlayerDisplay: (Boolean) -> Unit,
     visualizerData: VisualizerData,
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val lazyListState = rememberLazyListState()
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        AlbumBanner(
+            album = playerState.preLoadedAlbum?.albumMetadata ?: playerState.loadedAlbum?.albumMetadata,
+            modifier = Modifier.fillMaxWidth().weight(1f),
+        )
+
+        TrackList(
+            lazyListState = lazyListState,
+            album = state.album,
+            onTrackClick = {
+                events.invoke(PlayListEvents.SelectTrack(track = it))
+                onPlayAudio.invoke(it)
+            },
+            onUpdateUserPlaylist = { audioId ->
+                events.invoke(PlayListEvents.UpdateUserPlaylist(audioId = audioId))
+            },
+            selectedTrack = currentPlaying,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(2f),
+        )
+    }
+
+    val coroutineScope = rememberCoroutineScope()
 
     val bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
@@ -107,6 +122,7 @@ private fun PlaylistScreenContent(
         togglePlayerDisplay.invoke(scaffoldState.bottomSheetState.isExpanded)
     }
 
+    /*
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         content = {
@@ -210,6 +226,7 @@ private fun PlaylistScreenContent(
         },
 
     )
+    */
 }
 
 @Preview(showBackground = true)

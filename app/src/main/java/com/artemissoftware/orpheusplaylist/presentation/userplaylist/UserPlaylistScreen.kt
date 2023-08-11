@@ -153,7 +153,6 @@ private fun UserPlaylistScreenContent(
                     PlayerPage(
                         modifier = Modifier
                             .fillMaxSize(),
-                        state = state,
                         playerState = playerState,
                         currentPlaying = currentPlaying,
                         isAudioPlaying = isAudioPlaying,

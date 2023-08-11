@@ -7,12 +7,17 @@ import com.artemissoftware.orpheusplaylist.utils.extensions.playlistsStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class UserPlaylistDataStoreRepositoryImpl @Inject constructor(@ApplicationContext private val context: Context) : UserPlaylistDataStoreRepository {
 
     override fun getPlaylists(): Flow<UserPlaylists> {
         return context.playlistsStore.data
+    }
+
+    override fun getFavorites(playlistName: String): Flow<List<Long>> {
+        return context.playlistsStore.data.map { it.lists[playlistName] ?: emptyList() }
     }
 
     override suspend fun getPlaylistsTracks(playlistName: String): List<Long> {

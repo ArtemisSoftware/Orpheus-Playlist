@@ -1,15 +1,21 @@
 package com.artemissoftware.orpheusplaylist.presentation.player
 
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -26,7 +32,9 @@ import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollaps
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
 import com.artemissoftware.orpheusplaylist.presentation.playlist.PlayerBar
+import com.artemissoftware.orpheusplaylist.presentation.playlist.PlayerPage
 import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
+import kotlinx.coroutines.launch
 
 @Composable
 fun MusicPlayer(
@@ -64,6 +72,9 @@ fun MusicPlayer(
             onProgressChange = { progress ->
                 onTriggerEvent(OrpheusPlaylistEvents.SeekTo(progress))
             },
+            onUpdatePlaylist = { audioId ->
+                onTriggerEvent(OrpheusPlaylistEvents.UpdateUserPlaylist(audioId))
+            },
         )
     }
 }
@@ -83,12 +94,18 @@ private fun MusicPlayerContent(
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
     togglePlayerDisplay: (Boolean) -> Unit,
+    onUpdatePlaylist: (Long) -> Unit,
     onProgressChange: (Float) -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
 
     val seekHeight by remember(currentPlaying) {
         mutableStateOf(if (currentPlaying == null) 0.dp else 140.dp)
+    }
+
+    LaunchedEffect(key1 = scaffoldState.bottomSheetState.currentValue) {
+        togglePlayerDisplay.invoke(scaffoldState.bottomSheetState.isExpanded)
     }
 
     BottomSheetScaffold(
@@ -98,53 +115,34 @@ private fun MusicPlayerContent(
         sheetContent = {
             SheetContent {
                 SheetExpanded {
-//                    PlayerPage(
-//                        playerState = playerState,
-//                        state = state,
-//                        isAudioPlaying = isAudioPlaying,
-//                        visualizerData = visualizerData,
-//                        onProgressChange = onProgressChange,
-//                        onCollapse = {
-//                            coroutineScope.launch {
-//                                scaffoldState.bottomSheetState.animateTo(
-//                                    targetValue = BottomSheetValue.Collapsed,
-//                                    tween(500),
-//                                )
-//                            }
-//                        },
-//                        onPlay = { audio ->
-// //                            onPlayAudio.invoke(it)
-//                        },
-//                        onPlayTrack = {
-//                            onPlayTrack.invoke()
-//                        },
-//                        onSwipePlay = { track ->
-//                            if (playerState.fullPlayer) {
-//                                coroutineScope.launch {
-//                                    val currentIndex =
-//                                        playerState.loadedAlbum?.tracks?.indexOf(track) ?: 0
-//                                    val index = if (currentIndex == -1) 0 else currentIndex
-//                                    lazyListState.scrollToItem(index = index)
-//                                }
-//
-//                                onSwipePlayTrack.invoke(track)
-//                            }
-//                        },
-//                        onSkipToNext = {
-// //                            events.invoke(PlayListEvents.SkipToNextTrack)
-//                            onSkipToNext.invoke()
-//                        },
-//                        onSkipToPrevious = {
-// //                            events.invoke(PlayListEvents.SkipToPreviousTrack)
-// //                            onSkipToPrevious.invoke()
-//                        },
-//                        onUpdateUserPlaylist = { audioId ->
-//                            events.invoke(PlayListEvents.UpdateUserPlaylist(audioId = audioId))
-//                        },
-//                        modifier = Modifier
-//                            .fillMaxSize(),
-//                        currentPlaying = currentPlaying,
-//                    )
+                    PlayerPage(
+                        playerState = playerState,
+                        isAudioPlaying = isAudioPlaying,
+                        visualizerData = visualizerData.value,
+                        onProgressChange = onProgressChange,
+                        onCollapse = {
+                            coroutineScope.launch {
+                                scaffoldState.bottomSheetState.animateTo(
+                                    targetValue = BottomSheetValue.Collapsed,
+                                    tween(500),
+                                )
+                            }
+                        },
+                        onPlay = { audio ->
+ //                            onPlayAudio.invoke(it)
+                        },
+                        onPlayTrack = onPlayTrack,
+                        onSwipePlay = onSwipePlayTrack,
+                        onSkipToNext = onSkipToNext,
+                        onSkipToPrevious = {
+ //                            events.invoke(PlayListEvents.SkipToPreviousTrack)
+ //                            onSkipToPrevious.invoke()
+                        },
+                        onUpdateUserPlaylist = onUpdatePlaylist,
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        currentPlaying = currentPlaying,
+                    )
                 }
                 SheetCollapsed(
                     isCollapsed = scaffoldState.bottomSheetState.isCollapsed,

@@ -7,6 +7,8 @@ interface UserPlaylistDataStoreRepository {
 
     fun getPlaylists(): Flow<UserPlaylists>
 
+    fun getFavorites(playlistName: String): Flow<List<Long>>
+
     suspend fun getPlaylistsTracks(playlistName: String): List<Long>
 
     suspend fun createPlaylist(name: String): Boolean
