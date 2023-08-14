@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.presentation.playlist.composables
+package com.artemissoftware.orpheusplaylist.presentation.composables.player
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.artemissoftware.orpheusplaylist.ui.theme.Gray400
 import com.artemissoftware.orpheusplaylist.ui.theme.onSurface
 
 @Composable

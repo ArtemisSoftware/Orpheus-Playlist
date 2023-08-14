@@ -31,8 +31,8 @@ import com.artemissoftware.orpheusplaylist.navigation.bottomPlayerHeight
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollapsed
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
 import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
-import com.artemissoftware.orpheusplaylist.presentation.composables.PlayerBar
-import com.artemissoftware.orpheusplaylist.presentation.composables.PlayerPage
+import com.artemissoftware.orpheusplaylist.presentation.composables.player.PlayerBar
+import com.artemissoftware.orpheusplaylist.presentation.composables.player.PlayerPage
 import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
 import kotlinx.coroutines.launch
 
@@ -162,15 +162,8 @@ private fun MusicPlayerContent(
             navController = navController,
             playerState = playerState,
             currentPlaying = currentPlaying,
-            isAudioPlaying = isAudioPlaying,
-            visualizerData = visualizerData,
             preLoadAlbum = preLoadAlbum,
             onPlayAudio = onPlayAudio,
-            onSwipePlayTrack = onSwipePlayTrack,
-            onSkipToNext = onSkipToNext,
-            onSkipToPrevious = onSkipToPrevious,
-            togglePlayerDisplay = togglePlayerDisplay,
-            onProgressChange = onProgressChange,
         )
     }
 }

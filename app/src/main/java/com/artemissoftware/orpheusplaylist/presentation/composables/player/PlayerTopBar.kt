@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.presentation.playlist.composables
+package com.artemissoftware.orpheusplaylist.presentation.composables.player
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,10 +18,8 @@ import androidx.compose.material.icons.filled.RemoveDone
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 
 @Composable
 fun PlayerTopBar(

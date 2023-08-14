@@ -20,7 +20,7 @@ import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.data.models.Album
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
-import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.Track
+import com.artemissoftware.orpheusplaylist.presentation.composables.player.Track
 
 @Composable
 fun TrackList(
@@ -90,7 +90,7 @@ private fun WarningMessage(
 private fun TrackListPreview() {
     TrackList(
         onTrackClick = {},
-        onUpdateUserPlaylist = { audioId -> },
+        onUpdateUserPlaylist = { },
         modifier = Modifier
             .fillMaxWidth(),
         selectedTrack = DummyData.audioMetadata,

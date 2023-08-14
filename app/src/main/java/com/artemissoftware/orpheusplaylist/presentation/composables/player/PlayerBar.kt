@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.presentation.composables
+package com.artemissoftware.orpheusplaylist.presentation.composables.player
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
-import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.MediaControllerDisplay
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

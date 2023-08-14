@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.presentation.playlist.composables
+package com.artemissoftware.orpheusplaylist.presentation.composables.player
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

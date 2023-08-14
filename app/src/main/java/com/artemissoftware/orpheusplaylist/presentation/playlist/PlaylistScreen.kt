@@ -16,7 +16,7 @@ import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.data.models.Album
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.composables.TrackList
-import com.artemissoftware.orpheusplaylist.presentation.playlist.composables.AlbumBanner
+import com.artemissoftware.orpheusplaylist.presentation.composables.player.AlbumBanner
 
 @Composable
 fun PlaylistScreen(
