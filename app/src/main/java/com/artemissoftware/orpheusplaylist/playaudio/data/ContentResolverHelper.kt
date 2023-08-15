@@ -16,7 +16,6 @@ import com.artemissoftware.orpheusplaylist.playaudio.data.models.AudioQuery
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-// TODO: mudar nome para ContentResolverHandler
 class ContentResolverHelper @Inject constructor(@ApplicationContext val context: Context) {
 
     private var mCursor: Cursor? = null
