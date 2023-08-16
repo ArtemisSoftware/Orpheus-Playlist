@@ -2,6 +2,7 @@ package com.artemissoftware.orpheusplaylist.data.service
 
 import android.content.ComponentName
 import android.content.Context
+import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -65,10 +66,14 @@ class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext conte
         transportControl.skipToPrevious()
     }
 
-    fun refreshMediaBrowserChildren() {
+    fun refreshMediaBrowserChildren(audios: List<AudioMetadata>) {
+        val bundle = Bundle().apply {
+            putLongArray("longList", audios.map { it.id }.toLongArray())
+        }
+
         mediaBrowser.sendCustomAction(
             MediaPlayerServiceConstants.REFRESH_MEDIA_PLAY_ACTION,
-            null,
+            bundle,
             null,
         )
     }

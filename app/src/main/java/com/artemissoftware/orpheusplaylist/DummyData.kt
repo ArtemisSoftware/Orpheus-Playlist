@@ -24,8 +24,8 @@ object DummyData {
         id = 10L,
         name = "The artist",
         duration = 100L,
-        position = audioPositionMetadata,
         isOnPlaylist = false,
+        position = audioPositionMetadata,
         albumMetadata = albumMetadata,
     )
 

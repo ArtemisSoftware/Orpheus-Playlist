@@ -79,6 +79,7 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                 tracks += AudioMetadata(
                     id = id,
                     name = name,
+                    uri = uri,
                     duration = duration,
                     position = position,
                     isOnPlaylist = userSelectedAudioIds.contains(id),
@@ -159,14 +160,15 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                     id = id,
                     name = name,
                     duration = duration,
-                    position = position,
                     isOnPlaylist = audioIds.contains(id),
+                    position = position,
                     albumMetadata = AlbumMetadata(
                         id = albumId,
                         name = albumName,
                         artist = albumArtist,
                         uri = getAlbumArt(context = context, uri = uri),
                     ),
+                    uri = uri,
                 )
             }
         }

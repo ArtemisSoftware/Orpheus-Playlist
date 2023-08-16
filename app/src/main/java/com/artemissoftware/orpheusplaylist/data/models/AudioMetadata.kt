@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.data.models
 
+import android.net.Uri
 import kotlin.math.floor
 
 data class AudioMetadata(
@@ -9,6 +10,7 @@ data class AudioMetadata(
     val isOnPlaylist: Boolean = false,
     val position: TrackPositionMetadata,
     val albumMetadata: AlbumMetadata,
+    val uri: Uri? = null,
 ) {
     fun timeStampToDuration(): String {
         val totalSeconds = floor(duration / 1E3).toInt()
