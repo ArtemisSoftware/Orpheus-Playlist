@@ -9,6 +9,7 @@ import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.compose.runtime.mutableStateOf
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
+import com.artemissoftware.orpheusplaylist.data.service.MediaPlayerService.Companion.PLAYLIST_IDS
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -68,7 +69,7 @@ class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext conte
 
     fun refreshMediaBrowserChildren(audios: List<AudioMetadata>) {
         val bundle = Bundle().apply {
-            putLongArray("longList", audios.map { it.id }.toLongArray())
+            putLongArray(PLAYLIST_IDS, audios.map { it.id }.toLongArray())
         }
 
         mediaBrowser.sendCustomAction(
