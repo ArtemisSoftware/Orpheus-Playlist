@@ -38,7 +38,6 @@ object DummyData {
         id = 10L,
         name = "The Album",
         artist = "The artist",
-        albumMetadata = albumMetadata,
         tracks = listOf(audioMetadata, audioMetadata, audioMetadata),
     )
 
@@ -46,7 +45,6 @@ object DummyData {
         id = 10L,
         name = "The Album",
         artist = "The artist",
-        albumMetadata = albumMetadata,
         tracks = listOf(),
     )
 }

@@ -78,7 +78,7 @@ private fun PlaylistScreenContent(
 private fun PlaylistScreenContentPreview() {
     PlaylistScreenContent(
         playerState = OrpheusPlaylistState(),
-        state = PlaylistState(album = DummyData.album, selectedTrack = DummyData.audioMetadata),
+        state = PlaylistState(album = DummyData.album),
         events = {},
         onPlayAudio = {},
         currentPlaying = DummyData.audioMetadata,

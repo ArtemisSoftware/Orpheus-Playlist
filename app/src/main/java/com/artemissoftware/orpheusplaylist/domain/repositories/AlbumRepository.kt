@@ -11,4 +11,5 @@ interface AlbumRepository {
 
     suspend fun getAlbum(albumId: Long, favoriteAudios: List<Long> = emptyList()): Album?
 
+    suspend fun getAlbum(playlistName: String, audioIds: List<Long>): Album
 }

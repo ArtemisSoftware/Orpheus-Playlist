@@ -35,12 +35,27 @@ class AlbumRepositoryImpl @Inject constructor(
                 name = it.name,
                 uri = it.uri,
                 artist = it.artist.name,
-                albumMetadata = it,
                 tracks = tracks,
             )
         } ?: run {
             null
         }
+
+        album
+    }
+
+    override suspend fun getAlbum(playlistName: String, audioIds: List<Long>): Album = withContext(Dispatchers.IO) {
+        val tracks = audioContentResolver.getTracks(audioIds = audioIds)
+        val albumMetadata = AlbumMetadata.getUserPlaylistAlbum(playlistName = playlistName)
+
+        val album = Album(
+            id = albumMetadata.id,
+            name = albumMetadata.name,
+            uri = albumMetadata.uri,
+            artist = albumMetadata.artist.name,
+            tracks = tracks,
+            type = AlbumType.USER_PLAYLIST_ALBUM,
+        )
 
         album
     }

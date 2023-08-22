@@ -11,6 +11,5 @@ data class Album(
     val name: String,
     val uri: Bitmap? = null,
     val artist: String,
-    val albumMetadata: AlbumMetadata,
     val tracks: List<AudioMetadata>,
 )
