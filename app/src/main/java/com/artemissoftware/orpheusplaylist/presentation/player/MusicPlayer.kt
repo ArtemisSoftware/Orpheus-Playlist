@@ -24,15 +24,15 @@ import com.artemissoftware.orpheusplaylist.OrpheusPlaylistEvents
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistViewModel
 import com.artemissoftware.orpheusplaylist.domain.models.Album
-import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
-import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerData
+import com.artemissoftware.orpheusplaylist.domain.models.Audio
+import com.artemissoftware.orpheusplaylist.domain.models.visualizer.VisualizerData
 import com.artemissoftware.orpheusplaylist.navigation.NavigationGraph
 import com.artemissoftware.orpheusplaylist.navigation.bottomPlayerHeight
-import com.artemissoftware.orpheusplaylist.presentation.composables.SheetCollapsed
-import com.artemissoftware.orpheusplaylist.presentation.composables.SheetContent
-import com.artemissoftware.orpheusplaylist.presentation.composables.SheetExpanded
 import com.artemissoftware.orpheusplaylist.presentation.composables.player.PlayerBar
 import com.artemissoftware.orpheusplaylist.presentation.composables.player.PlayerPage
+import com.artemissoftware.orpheusplaylist.presentation.composables.sheet.SheetCollapsed
+import com.artemissoftware.orpheusplaylist.presentation.composables.sheet.SheetContent
+import com.artemissoftware.orpheusplaylist.presentation.composables.sheet.SheetExpanded
 import com.artemissoftware.orpheusplaylist.utils.extensions.currentFraction
 import kotlinx.coroutines.launch
 
@@ -84,13 +84,13 @@ fun MusicPlayer(
 private fun MusicPlayerContent(
     navController: NavHostController = rememberNavController(),
     playerState: OrpheusPlaylistState,
-    currentPlaying: AudioMetadata?,
+    currentPlaying: Audio?,
     isAudioPlaying: Boolean,
     visualizerData: State<VisualizerData>,
     preLoadAlbum: (Album) -> Unit,
-    onPlayAudio: (AudioMetadata) -> Unit,
+    onPlayAudio: (Audio) -> Unit,
     onPlayTrack: () -> Unit,
-    onSwipePlayTrack: (AudioMetadata) -> Unit,
+    onSwipePlayTrack: (Audio) -> Unit,
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
     togglePlayerDisplay: (Boolean) -> Unit,

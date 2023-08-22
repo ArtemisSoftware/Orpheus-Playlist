@@ -1,6 +1,7 @@
 package com.artemissoftware.orpheusplaylist
 
 import com.artemissoftware.orpheusplaylist.data.mappers.toAlbumStandCover
+import com.artemissoftware.orpheusplaylist.data.mappers.toAudio
 import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
 import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.ArtistMetadata
@@ -32,13 +33,17 @@ object DummyData {
         albumMetadata = albumMetadata,
     )
 
+    val audio = audioMetadata.toAudio()
+
     val listAudioMetadata = listOf(audioMetadata, audioMetadata, audioMetadata)
+
+    val listAudio = listAudioMetadata.map { it.toAudio() }
 
     val album = Album(
         id = 10L,
         name = "The Album",
         artist = "The artist",
-        tracks = listOf(audioMetadata, audioMetadata, audioMetadata),
+        tracks = listOf(audioMetadata, audioMetadata, audioMetadata).map { it.toAudio() },
     )
 
     val albumNoTracks = Album(

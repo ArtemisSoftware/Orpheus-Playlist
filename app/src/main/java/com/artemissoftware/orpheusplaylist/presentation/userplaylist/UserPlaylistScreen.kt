@@ -14,18 +14,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.domain.models.Album
-import com.artemissoftware.orpheusplaylist.presentation.composables.TrackList
-import com.artemissoftware.orpheusplaylist.presentation.composables.player.AlbumBanner
+import com.artemissoftware.orpheusplaylist.domain.models.Audio
+import com.artemissoftware.orpheusplaylist.presentation.composables.album.AlbumBanner
+import com.artemissoftware.orpheusplaylist.presentation.composables.tracks.TrackList
 
 @Composable
 fun UserPlaylistScreen(
     viewModel: UserPlaylistViewModel = hiltViewModel(),
     preLoadAlbum: (Album) -> Unit,
-    onPlayAudio: (AudioMetadata) -> Unit,
+    onPlayAudio: (Audio) -> Unit,
     playerState: OrpheusPlaylistState,
-    currentPlaying: AudioMetadata?,
+    currentPlaying: Audio?,
 ) {
     val state = viewModel.state.collectAsState().value
 
@@ -45,10 +45,10 @@ fun UserPlaylistScreen(
 @Composable
 private fun UserPlaylistScreenContent(
     playerState: OrpheusPlaylistState,
-    currentPlaying: AudioMetadata?,
+    currentPlaying: Audio?,
     state: UserPlaylistState,
     events: (UserPlayListEvents) -> Unit,
-    onPlayAudio: (AudioMetadata) -> Unit,
+    onPlayAudio: (Audio) -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
 
@@ -86,7 +86,7 @@ private fun UserPlaylistScreenContentPreview() {
         state = UserPlaylistState(album = DummyData.album),
         events = {},
         onPlayAudio = {},
-        currentPlaying = DummyData.audioMetadata,
+        currentPlaying = DummyData.audio,
     )
 }
 
@@ -98,6 +98,6 @@ private fun UserPlaylistScreenContent_no_album_Preview() {
         state = UserPlaylistState(album = null),
         events = {},
         onPlayAudio = {},
-        currentPlaying = DummyData.audioMetadata,
+        currentPlaying = DummyData.audio,
     )
 }

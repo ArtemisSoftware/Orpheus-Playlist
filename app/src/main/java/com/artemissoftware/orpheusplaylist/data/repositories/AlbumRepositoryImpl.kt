@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist.data.repositories
 
+import com.artemissoftware.orpheusplaylist.data.mappers.toAlbum
 import com.artemissoftware.orpheusplaylist.data.mappers.toAlbumStandCover
 import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
 import com.artemissoftware.orpheusplaylist.data.models.AlbumType
@@ -27,36 +28,15 @@ class AlbumRepositoryImpl @Inject constructor(
 
     override suspend fun getAlbum(albumId: Long, favoriteAudios: List<Long>): Album? = withContext(Dispatchers.IO) {
         val albumMetadata = albumContentResolver.getAlbum(albumId = albumId)
+        val tracks = audioContentResolver.getTracksFromAlbum(albumId = albumId, userSelectedAudioIds = favoriteAudios)
 
-        val album = albumMetadata?.let {
-            val tracks = audioContentResolver.getTracksFromAlbum(albumId = albumId, userSelectedAudioIds = favoriteAudios)
-            Album(
-                id = it.id,
-                name = it.name,
-                uri = it.uri,
-                artist = it.artist.name,
-                tracks = tracks,
-            )
-        } ?: run {
-            null
-        }
-
-        album
+        albumMetadata?.toAlbum(tracks = tracks)
     }
 
     override suspend fun getAlbum(playlistName: String, audioIds: List<Long>): Album = withContext(Dispatchers.IO) {
         val tracks = audioContentResolver.getTracks(audioIds = audioIds)
         val albumMetadata = AlbumMetadata.getUserPlaylistAlbum(playlistName = playlistName)
 
-        val album = Album(
-            id = albumMetadata.id,
-            name = albumMetadata.name,
-            uri = albumMetadata.uri,
-            artist = albumMetadata.artist.name,
-            tracks = tracks,
-            type = AlbumType.USER_PLAYLIST_ALBUM,
-        )
-
-        album
+        albumMetadata.toAlbum(tracks = tracks, type = AlbumType.USER_PLAYLIST_ALBUM)
     }
 }

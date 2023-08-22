@@ -10,16 +10,17 @@ import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
+import com.artemissoftware.orpheusplaylist.domain.models.Audio
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PlayerBar(
     playerState: OrpheusPlaylistState,
     isAudioPlaying: Boolean,
-    onPlay: (AudioMetadata) -> Unit,
+    onPlay: (Audio) -> Unit,
     onProgressChange: (Float) -> Unit,
     onSkipToNext: () -> Unit,
-    currentPlaying: AudioMetadata? = null,
+    currentPlaying: Audio? = null,
     cover: Bitmap? = null,
 ) {
 //    val pagerState: PagerState = rememberPagerState()
@@ -73,7 +74,7 @@ private fun PlayerBarPreview() {
         onPlay = {},
         onProgressChange = {},
         onSkipToNext = {},
-        currentPlaying = DummyData.audioMetadata,
+        currentPlaying = DummyData.audio,
         cover = null,
     )
 }

@@ -8,7 +8,6 @@ import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
 import com.artemissoftware.orpheusplaylist.data.models.ArtistMetadata
-import com.artemissoftware.orpheusplaylist.playaudio.data.models.AudioQuery
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

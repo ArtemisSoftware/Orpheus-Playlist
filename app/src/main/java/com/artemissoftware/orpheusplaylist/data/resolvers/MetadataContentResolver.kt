@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.media.MediaMetadataRetriever
 import android.net.Uri
 import androidx.annotation.WorkerThread
-import com.artemissoftware.orpheusplaylist.playaudio.data.models.AudioQuery
 
 abstract class MetadataContentResolver constructor(val context: Context) {
 

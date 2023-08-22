@@ -27,24 +27,25 @@ import coil.size.Size
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
+import com.artemissoftware.orpheusplaylist.domain.models.Audio
 import com.artemissoftware.orpheusplaylist.presentation.composables.MediaDescription
 
 @Composable
 fun MediaControllerDisplay(
-    track: AudioMetadata,
+    track: Audio,
     progress: Float,
     cover: Bitmap? = null,
-    onPlay: (AudioMetadata) -> Unit,
+    onPlay: (Audio) -> Unit,
     onNext: () -> Unit,
     onProgressChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
     isAudioPlaying: Boolean,
     textColor: Color = Color.White,
 
-) {
+    ) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(cover ?: track.albumMetadata.uri)
+            .data(cover ?: track.albumCover)
             .crossfade(100)
             .size(Size.ORIGINAL)
             .error(R.drawable.musical_note_music_svgrepo_com)
@@ -91,8 +92,8 @@ fun MediaControllerDisplay(
                 }
 
                 MediaDescription(
-                    title = track.name,
-                    name = track.albumMetadata.artist.name,
+                    title = track.title,
+                    name = track.artist,
                     textColor = textColor,
                     modifier = Modifier
                         .padding(start = 8.dp)
@@ -127,7 +128,7 @@ fun MediaControllerDisplay(
 @Composable
 private fun MediaControllerDisplayPreview() {
     MediaControllerDisplay(
-        track = DummyData.audioMetadata,
+        track = DummyData.audio,
         progress = 50F,
         onPlay = {},
         onNext = {},

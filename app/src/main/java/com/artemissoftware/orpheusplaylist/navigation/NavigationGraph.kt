@@ -5,9 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
-import com.artemissoftware.orpheusplaylist.domain.models.Album
 import com.artemissoftware.orpheusplaylist.data.models.AlbumType
-import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
+import com.artemissoftware.orpheusplaylist.domain.models.Album
+import com.artemissoftware.orpheusplaylist.domain.models.Audio
 import com.artemissoftware.orpheusplaylist.presentation.albums.AlbumScreen
 import com.artemissoftware.orpheusplaylist.presentation.playlist.PlaylistScreen
 import com.artemissoftware.orpheusplaylist.presentation.userplaylist.UserPlaylistScreen
@@ -16,11 +16,10 @@ import com.artemissoftware.orpheusplaylist.presentation.userplaylist.UserPlaylis
 fun NavigationGraph(
     navController: NavHostController,
     playerState: OrpheusPlaylistState,
-    currentPlaying: AudioMetadata?,
+    currentPlaying: Audio?,
     preLoadAlbum: (Album) -> Unit,
-    onPlayAudio: (AudioMetadata) -> Unit,
-
-    ) {
+    onPlayAudio: (Audio) -> Unit,
+) {
     NavHost(
         navController = navController,
         route = "navigation_graph",

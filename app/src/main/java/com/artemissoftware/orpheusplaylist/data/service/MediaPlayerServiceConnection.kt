@@ -8,8 +8,8 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.compose.runtime.mutableStateOf
-import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.data.service.MediaPlayerService.Companion.PLAYLIST_IDS
+import com.artemissoftware.orpheusplaylist.domain.models.Audio
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext context: Context) {
 
-    private var audioList = listOf<AudioMetadata>()
+    private var audioList = listOf<Audio>()
 
     private val _isConnected: MutableStateFlow<MediaResource<Boolean>> = MutableStateFlow(MediaResource.Idle())
     val isConnected: StateFlow<MediaResource<Boolean>>
@@ -27,7 +27,7 @@ class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext conte
     val playBackState: StateFlow<PlaybackStateCompat?>
         get() = _playBackState
 
-    val currentPlayingAudio = mutableStateOf<AudioMetadata?>(null)
+    val currentPlayingAudio = mutableStateOf<Audio?>(null)
 
     lateinit var mediaControllerCompat: MediaControllerCompat
     private val mediaBrowserServiceCallback = MediaBrowserConnectionCallBack(context)
@@ -54,7 +54,7 @@ class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext conte
         mediaBrowser.unsubscribe(MediaPlayerServiceConstants.MEDIA_ROOT_ID, callBack)
     }
 
-    fun playAudio(audios: List<AudioMetadata>) {
+    fun playAudio(audios: List<Audio>) {
         audioList = audios
         mediaBrowser.sendCustomAction(MediaPlayerServiceConstants.START_MEDIA_PLAY_ACTION, null, null)
     }
@@ -67,7 +67,7 @@ class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext conte
         transportControl.skipToPrevious()
     }
 
-    fun refreshMediaBrowserChildren(audios: List<AudioMetadata>) {
+    fun refreshMediaBrowserChildren(audios: List<Audio>) {
         val bundle = Bundle().apply {
             putLongArray(PLAYLIST_IDS, audios.map { it.id }.toLongArray())
         }
