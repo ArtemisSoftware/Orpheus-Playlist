@@ -14,7 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.data.models.Album
+import com.artemissoftware.orpheusplaylist.domain.models.Album
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.composables.TrackList
 import com.artemissoftware.orpheusplaylist.presentation.composables.player.AlbumBanner

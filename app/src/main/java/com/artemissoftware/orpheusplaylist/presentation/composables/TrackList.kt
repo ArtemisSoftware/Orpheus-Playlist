@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.data.models.Album
+import com.artemissoftware.orpheusplaylist.domain.models.Album
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.composables.player.Track
 
@@ -65,6 +65,11 @@ fun TrackList(
                     modifier = Modifier.fillMaxWidth().align(Alignment.Center),
                 )
             }
+        } ?: run {
+            WarningMessage(
+                message = stringResource(id = R.string.tracks_not_found),
+                modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+            )
         }
     }
 }

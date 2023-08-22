@@ -23,7 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistEvents
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistViewModel
-import com.artemissoftware.orpheusplaylist.data.models.Album
+import com.artemissoftware.orpheusplaylist.domain.models.Album
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerData
 import com.artemissoftware.orpheusplaylist.navigation.NavigationGraph

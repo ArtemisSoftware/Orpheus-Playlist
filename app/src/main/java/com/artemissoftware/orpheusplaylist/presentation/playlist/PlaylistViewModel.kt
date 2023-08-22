@@ -3,12 +3,8 @@ package com.artemissoftware.orpheusplaylist.presentation.playlist
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.artemissoftware.orpheusplaylist.data.models.AlbumType
-import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.domain.usecases.GetAlbumUseCase
-import com.artemissoftware.orpheusplaylist.domain.usecases.GetAlbumUserPlaylistUseCase
 import com.artemissoftware.orpheusplaylist.domain.usecases.UpdateUserPlaylistUseCase
-import com.artemissoftware.orpheusplaylist.utils.OrpheusConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,35 +31,13 @@ class PlaylistViewModel @Inject constructor(
 
     fun onTriggerEvent(event: PlayListEvents) {
         when (event) {
-            is PlayListEvents.SelectTrack -> {
-                selectTrack(track = event.track)
+            is PlayListEvents.AddTrackToFavorites -> {
+                addTrackToFavorites(audioId = event.audioId)
             }
 
-            PlayListEvents.SkipToNextTrack -> {
-                skipToNext()
+            is PlayListEvents.RemoveTrackFromFavorites -> {
+                removeTrackFromFavorites(audioId = event.audioId)
             }
-
-            PlayListEvents.SkipToPreviousTrack -> {
-                skipToPrevious()
-            }
-
-            is PlayListEvents.UpdateUserPlaylist -> {
-                updateUserPlaylist(audioId = event.audioId)
-            }
-
-            is PlayListEvents.RemoveTrackFromPlaylist -> {
-                removeTrack(audioId = event.audioId)
-            }
-        }
-    }
-
-    private fun removeTrack(audioId: Long) = with(_state) {
-        val tracks = value.album?.tracks?.toMutableList() ?: mutableListOf()
-
-        tracks.removeIf { it.id == audioId }
-
-        update {
-            it.copy(album = it.album?.copy(tracks = tracks))
         }
     }
 
@@ -73,66 +47,25 @@ class PlaylistViewModel @Inject constructor(
                 _state.update {
                     it.copy(
                         album = album,
-                        albumCover = album?.albumMetadata?.uri,
-                        type = AlbumType.ALBUM,
                     )
                 }
             }
         }
     }
 
-    private fun updateUserPlaylist(audioId: Long) {
+    private fun removeTrackFromFavorites(audioId: Long) = with(_state) {
+        val tracks = value.album?.tracks?.toMutableList() ?: mutableListOf()
+
+        tracks.removeIf { it.id == audioId }
+
+        update {
+            it.copy(album = it.album?.copy(tracks = tracks))
+        }
+    }
+
+    private fun addTrackToFavorites(audioId: Long) {
         viewModelScope.launch {
             updateUserPlaylistUseCase(audioId = audioId)
         }
-    }
-
-
-
-    private fun selectTrack(track: AudioMetadata) = with(_state) {
-        if (track.id != value.selectedTrack?.id) {
-            update {
-                it.copy(selectedTrack = track)
-            }
-        }
-    }
-
-    private fun skipToNext() = with(_state) {
-        val trackListSize = value.album?.tracks?.size ?: 0
-
-        val index = if (trackListSize == (getCurrentTrackIndex() + 1)) 0 else (getCurrentTrackIndex() + 1)
-
-        if (trackListSize != 0) {
-            value.album?.tracks?.let { list ->
-                update { playState ->
-                    playState.copy(selectedTrack = list[index], selectedTrackIndex = index)
-                }
-            }
-        }
-    }
-
-    private fun skipToPrevious() = with(_state) {
-        val trackListSize = value.album?.tracks?.size ?: 0
-
-        val index = if ((getCurrentTrackIndex() - 1) < 0) 0 else (getCurrentTrackIndex() - 1)
-
-        if (trackListSize != 0) {
-            value.album?.tracks?.let { list ->
-                update { playState ->
-                    playState.copy(selectedTrack = list[index], selectedTrackIndex = index)
-                }
-            }
-        }
-    }
-
-    private fun getCurrentTrackIndex(): Int {
-        var index = 0
-
-        with(_state.value) {
-            val currentIndex = album?.tracks?.indexOf(selectedTrack) ?: 0
-            index = if (currentIndex == -1) 0 else currentIndex
-        }
-
-        return index
     }
 }

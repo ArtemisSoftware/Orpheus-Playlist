@@ -30,11 +30,11 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
+import com.artemissoftware.orpheusplaylist.domain.models.Album
 
 @Composable
 fun AlbumBanner(
-    album: AlbumMetadata?,
+    album: Album?,
     modifier: Modifier = Modifier,
 ) {
     val painter = rememberAsyncImagePainter(
@@ -84,7 +84,7 @@ fun AlbumBanner(
             album?.let {
                 AlbumDescription(
                     albumName = it.name,
-                    artist = it.artist.name,
+                    artist = it.artist,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -187,7 +187,7 @@ private fun AlbumDescription(
 @Preview(showBackground = true)
 @Composable
 fun AlbumBannerPreview() {
-    AlbumBanner(album = DummyData.albumMetadata)
+    AlbumBanner(album = DummyData.album)
 }
 
 @Preview(showBackground = true)

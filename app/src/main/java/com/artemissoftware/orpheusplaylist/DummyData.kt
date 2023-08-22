@@ -1,11 +1,12 @@
 package com.artemissoftware.orpheusplaylist
 
 import com.artemissoftware.orpheusplaylist.data.mappers.toAlbumStandCover
-import com.artemissoftware.orpheusplaylist.data.models.Album
 import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
+import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.ArtistMetadata
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.data.models.TrackPositionMetadata
+import com.artemissoftware.orpheusplaylist.domain.models.Album
 
 object DummyData {
 
@@ -17,8 +18,8 @@ object DummyData {
         artist = artistMetadata,
     )
 
-    val listAlbumMetadata = listOf(albumMetadata, albumMetadata, albumMetadata)
-    val listAlbumCovers = listAlbumMetadata.map { it.toAlbumStandCover() }
+    val listAlbumMetadata = listOf(albumMetadata, albumMetadata, albumMetadata, albumMetadata, albumMetadata, albumMetadata, albumMetadata, albumMetadata, albumMetadata)
+    val listAlbumCovers = listAlbumMetadata.map { it.toAlbumStandCover(AlbumType.ALBUM) }
 
     val audioPositionMetadata = TrackPositionMetadata(track = 1, disc = 10)
 
@@ -33,7 +34,19 @@ object DummyData {
 
     val listAudioMetadata = listOf(audioMetadata, audioMetadata, audioMetadata)
 
-    val album = Album(albumMetadata = albumMetadata, tracks = listOf(audioMetadata, audioMetadata, audioMetadata))
+    val album = Album(
+        id = 10L,
+        name = "The Album",
+        artist = "The artist",
+        albumMetadata = albumMetadata,
+        tracks = listOf(audioMetadata, audioMetadata, audioMetadata),
+    )
 
-    val albumNoTracks = Album(albumMetadata = albumMetadata, tracks = listOf())
+    val albumNoTracks = Album(
+        id = 10L,
+        name = "The Album",
+        artist = "The artist",
+        albumMetadata = albumMetadata,
+        tracks = listOf(),
+    )
 }

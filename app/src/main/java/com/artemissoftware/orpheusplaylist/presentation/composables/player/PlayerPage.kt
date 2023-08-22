@@ -29,7 +29,6 @@ import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
-import com.artemissoftware.orpheusplaylist.headphone.presentation.playlist.composables.StackedBarVisualizer
 import com.artemissoftware.orpheusplaylist.headphone.util.audio.VisualizerData
 import com.artemissoftware.orpheusplaylist.presentation.composables.MediaDescription
 import com.artemissoftware.orpheusplaylist.ui.theme.Black3
@@ -119,6 +118,7 @@ fun PlayerPage(
                     it / 2
                 }),
             ) {
+                /*
                 StackedBarVisualizer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -138,6 +138,7 @@ fun PlayerPage(
                     },
                     data = visualizerData,
                 )
+                */
             }
         }
     }

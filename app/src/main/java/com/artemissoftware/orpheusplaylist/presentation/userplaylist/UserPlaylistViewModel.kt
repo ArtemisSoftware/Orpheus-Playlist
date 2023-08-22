@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.artemissoftware.orpheusplaylist.domain.usecases.GetAlbumUserPlaylistUseCase
 import com.artemissoftware.orpheusplaylist.domain.usecases.UpdateUserPlaylistUseCase
-import com.artemissoftware.orpheusplaylist.presentation.playlist.PlayListEvents
 import com.artemissoftware.orpheusplaylist.utils.OrpheusConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

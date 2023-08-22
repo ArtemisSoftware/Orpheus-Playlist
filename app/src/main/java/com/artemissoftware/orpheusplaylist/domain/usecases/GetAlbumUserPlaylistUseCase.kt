@@ -1,6 +1,6 @@
 package com.artemissoftware.orpheusplaylist.domain.usecases
 
-import com.artemissoftware.orpheusplaylist.data.models.Album
+import com.artemissoftware.orpheusplaylist.domain.models.Album
 import com.artemissoftware.orpheusplaylist.domain.repositories.PlaylistRepository
 import com.artemissoftware.orpheusplaylist.domain.repositories.UserPlaylistDataStoreRepository
 import kotlinx.coroutines.flow.Flow
