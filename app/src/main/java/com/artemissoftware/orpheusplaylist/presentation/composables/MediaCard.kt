@@ -21,12 +21,12 @@ import coil.request.ImageRequest
 import coil.size.Size
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
+import com.artemissoftware.orpheusplaylist.domain.models.AlbumStandCover
 
 @Composable
 fun MediaCard(
-    album: AlbumMetadata,
-    onPlaylistClick: (Long) -> Unit,
+    album: AlbumStandCover,
+    onPlaylistClick: (AlbumStandCover) -> Unit,
     modifier: Modifier = Modifier,
     textColor: Color = Color.Black,
 ) {
@@ -34,7 +34,7 @@ fun MediaCard(
         model = ImageRequest.Builder(LocalContext.current)
             .data(album.uri)
             .size(Size.ORIGINAL)
-            .crossfade(400)
+            .crossfade(200)
             .error(R.drawable.musical_note_music_svgrepo_com)
             .placeholder(R.drawable.musical_note_music_svgrepo_com)
             .build(),
@@ -44,7 +44,7 @@ fun MediaCard(
         modifier = modifier
             .clip(RoundedCornerShape(4.dp))
             .clickable {
-                onPlaylistClick(album.id)
+                onPlaylistClick(album)
             },
     ) {
         Column(
@@ -67,7 +67,7 @@ fun MediaCard(
 
             MediaDescription(
                 title = album.name,
-                name = album.artist.name,
+                name = album.artist,
                 modifier = Modifier.fillMaxWidth(),
                 textColor = textColor,
             )
@@ -79,7 +79,7 @@ fun MediaCard(
 @Composable
 private fun MediaCardPreview() {
     MediaCard(
-        album = DummyData.albumMetadata,
+        album = DummyData.listAlbumCovers.first(),
         modifier = Modifier
             .fillMaxWidth(),
         onPlaylistClick = {},

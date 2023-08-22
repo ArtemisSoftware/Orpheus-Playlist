@@ -142,7 +142,7 @@ fun PlayerPage(
         }
     }
 }
-
+/*
 @Composable
 fun PlayerPage_(
     playerState: OrpheusPlaylistState,
@@ -256,7 +256,7 @@ fun PlayerPage_(
         }
     }
 }
-
+*/
 @Preview(showBackground = true)
 @Composable
 private fun PlayerPagePreview() {

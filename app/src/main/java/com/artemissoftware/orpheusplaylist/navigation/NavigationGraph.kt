@@ -6,11 +6,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.artemissoftware.orpheusplaylist.OrpheusPlaylistState
 import com.artemissoftware.orpheusplaylist.data.models.Album
+import com.artemissoftware.orpheusplaylist.data.models.AlbumType
 import com.artemissoftware.orpheusplaylist.data.models.AudioMetadata
 import com.artemissoftware.orpheusplaylist.presentation.albums.AlbumScreen
 import com.artemissoftware.orpheusplaylist.presentation.playlist.PlaylistScreen
 import com.artemissoftware.orpheusplaylist.presentation.userplaylist.UserPlaylistScreen
-import com.artemissoftware.orpheusplaylist.utils.OrpheusConstants
 
 @Composable
 fun NavigationGraph(
@@ -28,11 +28,11 @@ fun NavigationGraph(
     ) {
         composable(route = Screens.Albums.fullRoute()) {
             AlbumScreen(
-                onPlaylistClick = { albumId ->
-                    if (albumId == OrpheusConstants.USER_PLAYLIST_ALBUM_ID) {
-                        navController.navigate(route = Screens.UserPlaylist.withArgs(albumId.toString()))
+                onPlaylistClick = { album ->
+                    if (album.type == AlbumType.USER_PLAYLIST_ALBUM) {
+                        navController.navigate(route = Screens.UserPlaylist.withArgs(album.id.toString()))
                     } else {
-                        navController.navigate(route = Screens.Playlist.withArgs(albumId.toString()))
+                        navController.navigate(route = Screens.Playlist.withArgs(album.id.toString()))
                     }
                 },
             )

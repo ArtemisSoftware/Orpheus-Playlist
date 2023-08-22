@@ -23,12 +23,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.artemissoftware.orpheusplaylist.DummyData
 import com.artemissoftware.orpheusplaylist.R
+import com.artemissoftware.orpheusplaylist.domain.models.AlbumStandCover
 import com.artemissoftware.orpheusplaylist.presentation.composables.MediaCard
 
 @Composable
 fun AlbumScreen(
     viewModel: AlbumViewModel = hiltViewModel(),
-    onPlaylistClick: (Long) -> Unit,
+    onPlaylistClick: (AlbumStandCover) -> Unit,
 ) {
     val state = viewModel.state.collectAsState().value
 
@@ -41,7 +42,7 @@ fun AlbumScreen(
 @Composable
 private fun AlbumScreenContent(
     state: AlbumState,
-    onPlaylistClick: (Long) -> Unit,
+    onPlaylistClick: (AlbumStandCover) -> Unit,
 ) {
     val stateLazyVerticalGrid = rememberLazyGridState()
 
@@ -80,5 +81,5 @@ private fun AlbumScreenContent(
 @Preview(showBackground = true)
 @Composable
 private fun AlbumScreenContentPreview() {
-    AlbumScreenContent(state = AlbumState(albums = DummyData.listAlbumMetadata), onPlaylistClick = {})
+    AlbumScreenContent(state = AlbumState(albums = DummyData.listAlbumCovers), onPlaylistClick = {})
 }

@@ -2,7 +2,7 @@ package com.artemissoftware.orpheusplaylist.presentation.albums
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.artemissoftware.orpheusplaylist.domain.usecases.GetAlbumsUseCase
+import com.artemissoftware.orpheusplaylist.domain.usecases.GetAllAlbumsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AlbumViewModel @Inject constructor(
-    private val getAlbumsUseCase: GetAlbumsUseCase,
+    private val getAllAlbumsUseCase: GetAllAlbumsUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AlbumState())
@@ -25,7 +25,7 @@ class AlbumViewModel @Inject constructor(
 
     private fun getAlbums() {
         viewModelScope.launch {
-            val result = getAlbumsUseCase()
+            val result = getAllAlbumsUseCase()
 
             _state.update {
                 it.copy(albums = result)

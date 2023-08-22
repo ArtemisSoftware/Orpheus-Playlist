@@ -1,5 +1,6 @@
 package com.artemissoftware.orpheusplaylist
 
+import com.artemissoftware.orpheusplaylist.data.mappers.toAlbumStandCover
 import com.artemissoftware.orpheusplaylist.data.models.Album
 import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
 import com.artemissoftware.orpheusplaylist.data.models.ArtistMetadata
@@ -17,6 +18,7 @@ object DummyData {
     )
 
     val listAlbumMetadata = listOf(albumMetadata, albumMetadata, albumMetadata)
+    val listAlbumCovers = listAlbumMetadata.map { it.toAlbumStandCover() }
 
     val audioPositionMetadata = TrackPositionMetadata(track = 1, disc = 10)
 

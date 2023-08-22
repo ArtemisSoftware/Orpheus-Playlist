@@ -1,7 +1,7 @@
 package com.artemissoftware.orpheusplaylist.presentation.albums
 
-import com.artemissoftware.orpheusplaylist.data.models.AlbumMetadata
+import com.artemissoftware.orpheusplaylist.domain.models.AlbumStandCover
 
 data class AlbumState(
-    val albums: List<AlbumMetadata> = emptyList(),
+    val albums: List<AlbumStandCover> = emptyList(),
 )
