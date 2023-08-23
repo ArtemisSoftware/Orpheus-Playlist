@@ -12,6 +12,7 @@ It also allows the user to favorite songs in order to create a personal playlist
     - Kotlin Coroutines
     - DataStore Preferences
     - Exoplayer
+    - coil
 
 ## App preview:
 
