@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -43,11 +44,16 @@ fun PlayerPage(
     onSkipToNext: () -> Unit,
     onSkipToPrevious: () -> Unit,
     onUpdateUserPlaylist: (Long) -> Unit,
+    onUpdateAudioIndex: (Audio) -> Unit,
     modifier: Modifier = Modifier,
     currentPlaying: Audio? = null,
 ) {
     BackHandler(enabled = playerState.fullPlayer) {
         onCollapse.invoke()
+    }
+
+    LaunchedEffect(key1 = currentPlaying) {
+        if (currentPlaying != null) onUpdateAudioIndex.invoke(currentPlaying)
     }
 
     Column(modifier = modifier) {
@@ -164,6 +170,7 @@ private fun PlayerPagePreview() {
         onSkipToNext = {},
         onSkipToPrevious = {},
         onUpdateUserPlaylist = {},
+        onUpdateAudioIndex = {},
         modifier = Modifier
             .fillMaxSize(),
         currentPlaying = DummyData.audio,

@@ -17,4 +17,6 @@ sealed class OrpheusPlaylistEvents {
     data class TogglePlayerDisplay(val isFullDisplay: Boolean) : OrpheusPlaylistEvents()
 
     data class UpdateUserPlaylist(val audioId: Long) : OrpheusPlaylistEvents()
+
+    data class UpdateAudioIndex(val track: Audio) : OrpheusPlaylistEvents()
 }

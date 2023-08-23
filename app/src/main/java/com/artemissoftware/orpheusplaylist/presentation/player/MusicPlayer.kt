@@ -75,6 +75,9 @@ fun MusicPlayer(
             onUpdatePlaylist = { audioId ->
                 onTriggerEvent(OrpheusPlaylistEvents.UpdateUserPlaylist(audioId))
             },
+            onUpdateAudioIndex = { audio ->
+                onTriggerEvent(OrpheusPlaylistEvents.UpdateAudioIndex(audio))
+            },
         )
     }
 }
@@ -96,6 +99,7 @@ private fun MusicPlayerContent(
     togglePlayerDisplay: (Boolean) -> Unit,
     onUpdatePlaylist: (Long) -> Unit,
     onProgressChange: (Float) -> Unit,
+    onUpdateAudioIndex: (Audio) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
@@ -133,6 +137,7 @@ private fun MusicPlayerContent(
                         onSkipToNext = onSkipToNext,
                         onSkipToPrevious = onSkipToPrevious,
                         onUpdateUserPlaylist = onUpdatePlaylist,
+                        onUpdateAudioIndex = onUpdateAudioIndex,
                         modifier = Modifier
                             .fillMaxSize(),
                         currentPlaying = currentPlaying,
