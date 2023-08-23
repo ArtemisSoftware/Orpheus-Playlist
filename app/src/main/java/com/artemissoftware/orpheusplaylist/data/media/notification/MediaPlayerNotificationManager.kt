@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.playaudio.data.media
+package com.artemissoftware.orpheusplaylist.data.media.notification
 
 import android.app.PendingIntent
 import android.content.Context
@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.playaudio.data.media.constants.MediaConstants
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 
@@ -22,8 +21,8 @@ internal class MediaPlayerNotificationManager(context: Context, sessionToken: Me
 
         val builder = PlayerNotificationManager.Builder(
             context,
-            MediaConstants.PLAYBACK_NOTIFICATION_ID,
-            MediaConstants.PLAYBACK_NOTIFICATION_CHANNEL_ID,
+            MediaPlayerNotificationConstants.PLAYBACK_NOTIFICATION_ID,
+            MediaPlayerNotificationConstants.PLAYBACK_NOTIFICATION_CHANNEL_ID,
         )
 
         with(builder) {

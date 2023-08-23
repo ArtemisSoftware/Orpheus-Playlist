@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.data.service
+package com.artemissoftware.orpheusplaylist.data.media.service
 
 sealed class MediaResource<T>(val data: T? = null, val message: String? = null) {
 

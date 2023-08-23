@@ -1,5 +1,6 @@
-package com.artemissoftware.orpheusplaylist.data.service
+package com.artemissoftware.orpheusplaylist.data.media.service
 
+import android.app.Notification
 import android.app.PendingIntent
 import android.content.Intent
 import android.net.Uri
@@ -12,14 +13,17 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
 import com.artemissoftware.orpheusplaylist.R
-import com.artemissoftware.orpheusplaylist.playaudio.data.media.constants.MediaConstants
+import com.artemissoftware.orpheusplaylist.data.media.notification.MediaPlayerNotificationConstants
+import com.artemissoftware.orpheusplaylist.data.media.notification.MediaPlayerNotificationManager
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.cache.CacheDataSource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -56,6 +60,12 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
 
     private lateinit var mediaSessionConnector: MediaSessionConnector
 
+    /**
+     * For user to control music playback in the notification
+     */
+    private lateinit var mediaPlayerNotificationManager: MediaPlayerNotificationManager
+    var isForegroundService: Boolean = false
+
     override fun onCreate() {
         super.onCreate()
 
@@ -67,11 +77,11 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
         // To connect media session to the browser
         sessionToken = mediaSession.sessionToken
 
-//        mediaPlayerNotificationManager = MediaPlayerNotificationManager(
-//            this,
-//            mediaSession.sessionToken,
-//            PlayerNotificationListener(),
-//        )
+        mediaPlayerNotificationManager = MediaPlayerNotificationManager(
+            this,
+            mediaSession.sessionToken,
+            PlayerNotificationListener(),
+        )
 
         serviceScope.launch {
             mediaSource.load()
@@ -103,7 +113,7 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
     ) {
         Log.d("MediaPlayerService_", "onLoadChildren  parentId = $parentId")
         when (parentId) {
-            MediaConstants.MEDIA_ROOT_ID -> {
+            MediaPlayerServiceConstants.MEDIA_ROOT_ID -> {
                 val resultsSent = mediaSource.whenReady { isInitialized ->
                     Log.d("MediaPlayerService_", "onLoadChildren  isInitialized = $isInitialized")
                     if (isInitialized) {
@@ -148,6 +158,26 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
 
             // return empty item
             return MediaDescriptionCompat.Builder().build()
+        }
+    }
+
+    inner class PlayerNotificationListener : PlayerNotificationManager.NotificationListener {
+
+        override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+            isForegroundService = false
+            stopSelf()
+        }
+
+        override fun onNotificationPosted(notificationId: Int, notification: Notification, ongoing: Boolean) {
+            if (ongoing && !isForegroundService) {
+                ContextCompat.startForegroundService(
+                    applicationContext,
+                    Intent(applicationContext, this@MediaPlayerService.javaClass),
+                )
+                startForeground(notificationId, notification)
+                isForegroundService = true
+            }
         }
     }
 
@@ -223,10 +253,10 @@ class MediaPlayerService : MediaBrowserServiceCompat() {
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_BUFFERING, Player.STATE_READY -> {
-//                    mediaPlayerNotificationManager.showNotification(exoPlayer)
+                    mediaPlayerNotificationManager.showNotification(exoPlayer)
                 }
                 else -> {
-//                    mediaPlayerNotificationManager.hideNotification()
+                    mediaPlayerNotificationManager.hideNotification()
                 }
             }
         }

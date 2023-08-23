@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.data.service
+package com.artemissoftware.orpheusplaylist.data.media.service
 
 enum class AudioSourceState {
     STATE_CREATED,

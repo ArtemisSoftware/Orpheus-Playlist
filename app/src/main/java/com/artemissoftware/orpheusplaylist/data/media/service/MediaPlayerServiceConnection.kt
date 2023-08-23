@@ -1,4 +1,4 @@
-package com.artemissoftware.orpheusplaylist.data.service
+package com.artemissoftware.orpheusplaylist.data.media.service
 
 import android.content.ComponentName
 import android.content.Context
@@ -8,7 +8,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.compose.runtime.mutableStateOf
-import com.artemissoftware.orpheusplaylist.data.service.MediaPlayerService.Companion.PLAYLIST_IDS
+import com.artemissoftware.orpheusplaylist.data.media.service.MediaPlayerService.Companion.PLAYLIST_IDS
 import com.artemissoftware.orpheusplaylist.domain.models.Audio
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,9 @@ class MediaPlayerServiceConnection @Inject constructor(@ApplicationContext conte
 
     private var audioList = listOf<Audio>()
 
-    private val _isConnected: MutableStateFlow<MediaResource<Boolean>> = MutableStateFlow(MediaResource.Idle())
+    private val _isConnected: MutableStateFlow<MediaResource<Boolean>> = MutableStateFlow(
+        MediaResource.Idle()
+    )
     val isConnected: StateFlow<MediaResource<Boolean>>
         get() = _isConnected
 
