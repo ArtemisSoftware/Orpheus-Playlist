@@ -1,10 +1,22 @@
 # Orpheus-Playlist
-An mp3 player
+An audio player
+
+## The Brief
+
+The app allows the user to browse the albums contained in the device and while playing an audio it will capture waveform and represent it as composable.
+It also allows the user to favorite song in order to create a personal playlist
+
+## Architecture & Libraries
+    - MVI
+    - Dependency Injection - Dagger-Hilt
+    - Kotlin Coroutines
+    - DataStore Preferences
+
+## App preview:
 
 
-jetpack compose MVVM and Clean Architecture,  The objectives of this tutorial are:
 
-How to scan and play mp3 files using MediaPlayer
-How to capture waveform and represent it as composable
-How to read Metadata of an mp3 file
-How to read/write data using SharedPreferences
+
+Image #1            |  Image #2             |  Image #3           
+:-------------------------:|:----------------------------:|:----------------------------:
+<img src="images/Demeter_Recipes_1.jpg">    |  <img src="images/Demeter_Recipes_2.jpg">     |  <img src="images/Demeter_Recipes_3.jpg"> 
