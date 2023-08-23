@@ -64,11 +64,6 @@ fun TrackList(
                     modifier = Modifier.fillMaxWidth().align(Alignment.Center),
                 )
             }
-        } ?: run {
-            WarningMessage(
-                message = stringResource(id = R.string.tracks_not_found),
-                modifier = Modifier.fillMaxWidth().align(Alignment.Center),
-            )
         }
     }
 }

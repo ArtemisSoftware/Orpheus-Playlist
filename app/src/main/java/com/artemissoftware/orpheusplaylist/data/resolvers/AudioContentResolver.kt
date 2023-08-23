@@ -177,12 +177,12 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
     }
 
     @WorkerThread
-    fun getAudioData(audioQuery: AudioQuery = AudioQuery.DEFAULT): List<Audio> {
+    fun getAudioData(audioQuery: AudioQuery = AudioQuery.DEFAULT): List<AudioMetadata> {
         return getCursorData(audioQuery)
     }
 
-    private fun getCursorData(audioQuery: AudioQuery): MutableList<Audio> {
-        val audioList = mutableListOf<Audio>()
+    private fun getCursorData(audioQuery: AudioQuery): MutableList<AudioMetadata> {
+        val audioList = mutableListOf<AudioMetadata>()
 
         getQueryCursor(audioQuery)?.use { cursor ->
 
@@ -212,30 +212,26 @@ class AudioContentResolver @Inject constructor(@ApplicationContext context: Cont
                 )
 
                 val albumCover = getAlbumArt(context = context, uri = uri)
-/*
-                AudioMetadata(
+                val position = TrackPositionMetadata(
+                    track = 0,
+                    disc = 0,
+                )
+                val albumArtist = ArtistMetadata(
+                    name = artist,
+                )
+
+                audioList += AudioMetadata(
                     id = id,
-                    name = name,
-                    duration = duration,
-                    isOnPlaylist = audioIds.contains(id),
+                    name = displayName,
+                    duration = duration.toLong(),
                     position = position,
                     albumMetadata = AlbumMetadata(
-                        id = albumId,
-                        name = albumName,
+                        id = 0,
+                        name = "",
                         artist = albumArtist,
-                        uri = getAlbumArt(context = context, uri = uri),
+                        uri = albumCover,
                     ),
                     uri = uri,
-                )
-                */
-                audioList += Audio(
-                    uri = uri,
-                    displayName = displayName,
-                    id = id,
-                    artist = artist,
-                    duration = duration.toLong(),
-                    title = title,
-                    albumCover = albumCover,
                 )
             }
         }

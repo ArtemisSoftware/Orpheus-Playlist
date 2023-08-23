@@ -13,6 +13,8 @@
     <string name="txt_permissions">"Permissions are turned off for playing mp3 files, please authorize theme "</string>
     <string name="txt_error_app_settings">Error occurred while opening settings for this application</string>
 
+    <string name="grant_permission_first">Grant permission first to use this app</string>
+
     <!-- Notificaiton Channel -->
     <string name="notification_channel">Now Playing</string>
     <string name="notification_channel_description">Shows what music is currently playing in our App</string>
@@ -29,4 +31,5 @@
 
     <string name="album_not_found">Album not found</string>
     <string name="tracks_not_found">No tracks available for this album</string>
+    <string name="request_permissions">Request permissions</string>
 </resources>
